@@ -1,14 +1,16 @@
 import { Box, Paper, TableContainer, Table, TablePagination } from "@mui/material";
 import { useState, ChangeEvent, MouseEvent } from "react";
+import { Order, Data, rows } from "../containers/ClientTableContainer/ClientTableContainer";
 import GenericTableBody from "./GenericTableBody";
 import { GenericTableHead } from "./GenericTableHead";
-import { Order, Data, rows } from "./table/TableData";
 
 const GenericTable = () => {
+  const EnvRowsPerPage = process.env.NEXT_PUBLIC_ROWS_PER_PAGE ? parseInt(process.env.NEXT_PUBLIC_ROWS_PER_PAGE) : 10;
+
   const [order, setOrder]             = useState<Order>('asc');
   const [orderBy, setOrderBy]         = useState<keyof Data>('counter');
   const [page, setPage]               = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(EnvRowsPerPage);
 
   const handleRequestSort = (
     event: MouseEvent<unknown>,

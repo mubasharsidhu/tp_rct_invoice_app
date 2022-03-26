@@ -57,7 +57,7 @@ export const useClientData = (authToken: null | string) => {
       type: "CLEAN_LOADING"
     });
 
-    fetch(`http://localhost:3139/clients`, {
+    fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/clients`, {
       headers : {
         "Authorization": `Bearer ${authToken}`
       }

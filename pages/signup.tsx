@@ -1,16 +1,24 @@
 import { useState } from "react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { SignupForm } from "../src/forms/SignupForm/SignupForm";
+import { getCookie, setCookies } from "cookies-next";
 
 
 export const SignupPage = () => {
 
+  const router        = useRouter();
+  const userAuthToken = getCookie("userToken") as string;
+  if ( userAuthToken ) {
+    router.push('/');
+  }
+
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
+
   return (
     <SignupForm
       genericError={errorMessage}
       onSignupRequest={function (data) {
-        fetch("http://localhost:3139/register", {
+        fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -19,12 +27,10 @@ export const SignupPage = () => {
         })
         .then( async (response) => {
 
-          console.log('signup-response', response)
-
           if (response.status === 200) {
             const jsonResponse = await response.json();
-            window.localStorage.setItem('userToken', jsonResponse.token);
-            router.replace("/");
+            setCookies('userToken', jsonResponse.token)
+            router.push("/");
           }
           else {
             return Promise.reject(await response.text())

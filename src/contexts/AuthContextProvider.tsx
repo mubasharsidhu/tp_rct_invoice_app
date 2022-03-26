@@ -1,5 +1,7 @@
-import { createContext, useEffect, useState } from "react";
-import router from "next/router";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { getCookie, removeCookies } from "cookies-next";
+import { CircularProgress } from "@mui/material";
 
 export type AuthContextType = {
   authUserToken: string | null,
@@ -7,24 +9,31 @@ export type AuthContextType = {
   logout: ()=> void
 }
 
+export const AuthContext = createContext<null | AuthContextType>(null);
 
-export const AuthContext = createContext<AuthContextType>({
-  authUserToken : null,
-  login: (token: string) => {},
-  logout: () => {}
-});
+export const useAuthContext = () => {
+  const auth = useContext(AuthContext)
+  if ( auth === null ) {
+    throw new Error("Auth context is not initialised yet")
+  }
+
+  return auth;
+
+}
 
 
 const useUserAuth = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const router                            = useRouter();
+  const [isLoading, setIsLoading]         = useState(true);
   const [authUserToken, setAuthUserToken] = useState<null | string>( null );
+
   useEffect(() => {
-    const userToken = window.localStorage.getItem("userToken");
+    const userToken = getCookie("userToken") as string;
     if ( userToken ) {
       setAuthUserToken(userToken);
-      setIsLoading(false)
+      setIsLoading(false);
     } else {
-      router.replace("/login");
+      router.push("/login");
     }
   }, [])
 
@@ -38,17 +47,21 @@ const useUserAuth = () => {
 
 
 export const AuthContextProvider = (props: {
-  children?: React.ReactNode
+  children?: ReactNode
 }) => {
-  const {authUserToken, isLoading, setAuthUserToken} = useUserAuth();
+
+  const router                                         = useRouter();
+  const { authUserToken, isLoading, setAuthUserToken } = useUserAuth();
+
   if ( isLoading ) {
-    return (<>Loading</>)
+    return (<><CircularProgress /></>)
   }
+
   return (
     <AuthContext.Provider value={{
       authUserToken, login: setAuthUserToken, logout: () => {
-        window.localStorage.removeItem("userToken");
-        router.replace("/login");
+        removeCookies('userToken');
+        router.push("/login");
       }
     }}>
       {props.children}

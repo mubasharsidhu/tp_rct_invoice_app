@@ -1,7 +1,7 @@
 import { Box, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import React, { MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
-import { Data, headCells, Order } from "./table/TableData";
+import { Data, Order, headCells } from "../containers/ClientTableContainer/ClientTableContainer";
 
 interface GenericTableHeadProps {
   onRequestSort: (event: MouseEvent<unknown>, property: keyof Data) => void;
@@ -27,18 +27,25 @@ export const GenericTableHead = (props: GenericTableHeadProps) => {
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {
+              headCell.isSortable
+                ?
+                  <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : 'asc'}
+                    onClick={createSortHandler(headCell.id)}
+                  >
+                    {headCell.label}
+                    {orderBy === headCell.id ? (
+                      <Box component="span" sx={visuallyHidden}>
+                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                      </Box>
+                    ) : null}
+                  </TableSortLabel>
+                :
+                (<span>{headCell.label}</span>)
+            }
+
           </TableCell>
         ))}
       </TableRow>
