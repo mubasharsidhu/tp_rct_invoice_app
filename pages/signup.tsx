@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { SignupForm } from "../src/forms/SignupForm/SignupForm";
+import { SignupForm, SignupInputs } from "../src/forms/SignupForm/SignupForm";
 import { getCookie, setCookies } from "cookies-next";
+import { AuthAPI, UserValidationError } from "../src/api/auth";
 
 
 export const SignupPage = () => {
@@ -9,43 +10,39 @@ export const SignupPage = () => {
   const router        = useRouter();
   const userAuthToken = getCookie("userToken") as string;
   if ( userAuthToken ) {
-    router.push('/');
+    //router.push('/');
   }
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
+
+  const onSignupRequest = async (data: SignupInputs) => {
+
+    try {
+      const response = await AuthAPI.signupUserStep1(data);
+
+      console.log(response)
+      //setCookies('userToken', jsonResponse.token);
+      //router.push("/");
+
+    } catch (err: any) {
+
+      if ( typeof err === 'string' ) {
+        setErrorMessage(err);
+      }
+      else {
+        setErrorMessage(err.toString());
+      }
+
+    }
+
+  }
+
+
   return (
     <SignupForm
       genericError={errorMessage}
-      onSignupRequest={function (data) {
-        fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/register`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        })
-        .then( async (response) => {
-
-          if (response.status === 200) {
-            const jsonResponse = await response.json();
-            setCookies('userToken', jsonResponse.token)
-            router.push("/");
-          }
-          else {
-            return Promise.reject(await response.text())
-          }
-
-        })
-        .catch((err) => {
-          if ( typeof err === 'string' ) {
-            setErrorMessage(err)
-          }
-          else {
-            setErrorMessage(err.toString())
-          }
-        });
-      }}
+      onSignupRequest={onSignupRequest}
       onNavigateToLogin={() => {
         router.push("/login");
       } }

@@ -38,8 +38,7 @@ export const ClientAPI = {
         regNumber: params.companyRegNumber
       }
     }
-    console.log("Heeeeeee: ");
-    console.log(payload);
+
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/clients`, {
       method: "POST",
       headers: {
@@ -49,10 +48,7 @@ export const ClientAPI = {
       body: JSON.stringify(payload)
     });
 
-
     const jsonResponse = await httpResponse.json();
-    console.log(jsonResponse);
-
 
   },
 

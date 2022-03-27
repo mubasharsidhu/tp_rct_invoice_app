@@ -1,6 +1,6 @@
 import router from "next/router";
 import { useContext } from "react";
-import { ClientApi } from "../../api/clients";
+import { ClientAPI } from "../../api/clients";
 import { AuthContext } from "../../contexts/AuthContextProvider";
 import { AddClientForm } from "../../forms/AddClientForm/AddClientForm";
 
@@ -14,7 +14,7 @@ export const AddClientFormContainer = () => {
             return;
           }
           try {
-            const httpResponse = await ClientApi.createClient( auth.authUserToken, clientData );
+            const httpResponse = await ClientAPI.createClient( auth.authUserToken, clientData );
             router.push("/clients")
 
           } catch (err) {

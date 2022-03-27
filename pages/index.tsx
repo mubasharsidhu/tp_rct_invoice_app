@@ -2,18 +2,9 @@ import type { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import { ClientTable } from '../src/containers/ClientTableContainer/ClientTableContainer'
-import { LogoutButtonWrapper } from '../src/containers/LogoutButton/LogoutButton'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
+import Layout from '../src/page-layout/Layout'
 //import { ClientDataProvider } from '../src/contexts/ClientDataProvider'
-
-
-const MainNavigation = () => {
-  return (
-    <>
-      <LogoutButtonWrapper />
-    </>
-  )
-}
 
 
 type ClientPageProps = {
@@ -25,8 +16,9 @@ type ClientPageProps = {
 const Home: NextPage<ClientPageProps> = (props) => {
   return (
     <AuthContextProvider>
-      <MainNavigation/>
-      <ClientTable initialPayload={props}/>
+      <Layout pageTitle='Dashboard'>
+        <ClientTable initialPayload={props}/>
+      </Layout>
     </AuthContextProvider>
   )
 }

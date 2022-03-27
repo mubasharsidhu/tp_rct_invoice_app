@@ -6,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 export type AuthContextType = {
   authUserToken: string | null,
   login: (token: string) => void,
-  logout: ()=> void
+  logout: () => void
 }
 
 export const AuthContext = createContext<null | AuthContextType>(null);
@@ -67,4 +67,5 @@ export const AuthContextProvider = (props: {
       {props.children}
     </AuthContext.Provider>
   )
+
 }
