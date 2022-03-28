@@ -11,19 +11,25 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
   return (
     <>
       <TableBody>
-        {props.rows.map((row, index) => {
-          return (
-            <TableRow
-              hover
-              tabIndex={-1}
-              key={index}
-            >
-              <TableCell key={3} padding="normal">{row.name}</TableCell>
-              <TableCell key={2} padding="normal">{row.email}</TableCell>
-              <TableCell key={4} padding="normal">{row.companyDetails.name}</TableCell>
-            </TableRow>
-          );
-        })}
+        {
+          props.rows.length > 0
+          ?
+          props.rows.map((row, index) => {
+            return (
+              <TableRow
+                hover
+                tabIndex={-1}
+                key={index}
+              >
+                <TableCell key={3} padding="normal">{row.name}</TableCell>
+                <TableCell key={2} padding="normal">{row.email}</TableCell>
+                <TableCell key={4} padding="normal">{row.companyDetails.name}</TableCell>
+              </TableRow>
+            );
+          })
+          :
+          <TableRow><TableCell colSpan={3}>No Record Found!</TableCell></TableRow>
+        }
 
       </TableBody>
     </>

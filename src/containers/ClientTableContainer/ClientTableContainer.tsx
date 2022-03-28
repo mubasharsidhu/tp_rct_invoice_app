@@ -94,6 +94,7 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               rowCount={4}
+              pagination={props.pagination}
             />
 
             <ClientsTableBody rows={clientsArray}/>

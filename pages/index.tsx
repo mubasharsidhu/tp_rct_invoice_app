@@ -19,11 +19,11 @@ const Home: NextPage<ClientPageProps> = (props) => {
       <Layout pageTitle='Dashboard'>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
-          <Typography color='primary.main'>Clients</Typography>
+          <Typography>Clients</Typography>
           <ClientTable initialPayload={props}/>
         </Grid>
         <Grid item xs={6}>
-          <Typography color='primary.main'>Invoices (To be implemented...)</Typography>
+          <Typography>Invoices (To be implemented...)</Typography>
           <ClientTable initialPayload={props}/>
         </Grid>
       </Grid>

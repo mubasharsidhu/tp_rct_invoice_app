@@ -8,6 +8,7 @@ interface ClientsTableHeadProps {
   order: Order;
   orderBy: string;
   rowCount: number;
+  pagination?:boolean
 }
 
 export const ClientsTableHead = (props: ClientsTableHeadProps) => {
@@ -15,6 +16,8 @@ export const ClientsTableHead = (props: ClientsTableHeadProps) => {
   const createSortHandler = (property: keyof ClientSortBy) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
+
+  console.log(props.pagination);
 
   return (
     <TableHead>
@@ -26,7 +29,7 @@ export const ClientsTableHead = (props: ClientsTableHeadProps) => {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             {
-              headCell.isSortable
+              (headCell.isSortable && props.pagination)
                 ?
                   <TableSortLabel
                     active={orderBy === headCell.id}
