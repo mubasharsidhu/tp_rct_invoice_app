@@ -1,10 +1,7 @@
-import { Breadcrumbs, Link, Typography } from '@mui/material'
 import type { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import { ClientTable } from '../src/containers/ClientTableContainer/ClientTableContainer'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
-import { ClientDataProvider } from '../src/contexts/ClientDataProvider'
-import NextLink from 'next/link';
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import Layout from '../src/page-layout/Layout'
 
@@ -21,7 +18,10 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
     <AuthContextProvider>
 
       <Layout pageTitle={"Clients"}>
-        <ClientTable initialPayload={props} />
+        <ClientTable
+          initialPayload={props}
+          pagination={true}
+        />
       </Layout>
 
     </AuthContextProvider>

@@ -31,17 +31,17 @@ export const AuthAPI = {
     try {
       const jsonResponse = await httpResponse.json();
       return jsonResponse as {
-        user_id: String,
-        email: String,
-        name: String,
-        token: String,
+        user_id: string,
+        email: string,
+        name: string,
+        token: string,
       }
     } catch (err) {
       return {
-        user_id: null,
-        email: null,
-        name: null,
-        token: null,
+        user_id: '',
+        email: '',
+        name: '',
+        token: '',
       }
     }
 

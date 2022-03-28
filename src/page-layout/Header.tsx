@@ -1,10 +1,10 @@
-import { Logout, RoundedCorner } from "@mui/icons-material"
-import { Box, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, ListItemIcon, Grid } from "@mui/material"
+import { Box, Typography, Tooltip, IconButton, Avatar, Menu, Grid } from "@mui/material"
 import React from "react"
 import { LogoutMenuItem } from "../containers/LogoutMenuItemContainer/LogoutMenuItem";
 
 export const Header = () => {
 
+  const userName                = window.localStorage.getItem("userName");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open                    = Boolean(anchorEl);
   const handleClick             = (event: React.MouseEvent<HTMLElement>) => {
@@ -35,8 +35,8 @@ export const Header = () => {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
               >
-                <Typography sx={{ minWidth: 100, color: 'primary.contrastText' }}>UserName</Typography>
-                <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                <Typography sx={{ minWidth: 100, color: 'primary.contrastText' }}>{userName}</Typography>
+                <Avatar sx={{ width: 32, height: 32 }}>{userName?.charAt(0)}</Avatar>
               </IconButton>
             </Tooltip>
           </Box>

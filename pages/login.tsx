@@ -18,8 +18,10 @@ const LoginPage = () => {
   const onLoginRequest = async (data: LoginInputs) => {
 
     try {
+
       const response = await AuthAPI.login(data);
-      setCookies('userToken', response.token)
+      setCookies('userToken', response.token);
+      window.localStorage.setItem("userName", response.name);
       router.push("/");
 
     } catch (err: any) {
