@@ -91,16 +91,7 @@ export const ClientAPI = {
 
     try {
 
-
       const jsonReponse = await httpResponse.json();
-      /* return {
-        type: "success" as string,
-        jsonReponse: jsonReponse as {
-          total  : number,
-          clients: ClientResponseModel[]
-        }
-      } */
-
       return jsonReponse as {
         type: "success",
         total: number,
@@ -108,14 +99,6 @@ export const ClientAPI = {
       }
 
     } catch (err) {
-
-      /* return {
-        type: "error",
-        jsonReponse: {
-          total: 0,
-          clients: []
-        }
-      } */
 
       return {
         total: 0,

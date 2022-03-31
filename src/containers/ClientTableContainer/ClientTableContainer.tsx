@@ -90,10 +90,9 @@ const getClientsHandler = async (
 
   } catch (err) {
 
-    // TODO To be checked TNSB, maybe there is no return here
     return {
       type: "error" as string,
-      error: err as unknown
+      error: err as any
     }
 
   }
@@ -132,9 +131,8 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
 
     clientsHandlerResponse.then((response) => {
 
-      // TODO Type check for catch
-      if ( response.type == "error" ) {
-        if ( typeof response === 'string' ) {
+      if ( response.type === "error" ) {
+        if ( typeof response.error === 'string' ) {
           setErrorMessage(response.error);
         }
         else {
@@ -142,8 +140,8 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
         }
       }
       else {
-        setErrorMessage(""); // reset error message if it was already there
-        setClientsArray(response.clients);
+        setErrorMessage(""); // resetting the error message if it was there before
+        setClientsArray(response.clients as ClientResponseModel[]);
       }
 
     })
