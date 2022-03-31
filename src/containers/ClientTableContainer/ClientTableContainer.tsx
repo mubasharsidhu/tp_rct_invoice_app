@@ -84,8 +84,8 @@ const getClientsHandler = async (
     });
 
     return {
-      type: clientResponse.type as string,
-      clients: clientResponse.jsonReponse.clients as ClientResponseModel[]
+      type: "success" as string,
+      clients: clientResponse.clients as ClientResponseModel[]
     }
 
   } catch (err) {
@@ -133,16 +133,17 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
     clientsHandlerResponse.then((response) => {
 
       // TODO Type check for catch
-      if ( response.type == "success" ) {
-        setClientsArray(response.clients);
-      }
-      else {
+      if ( response.type == "error" ) {
         if ( typeof response === 'string' ) {
           setErrorMessage(response.error);
         }
         else {
           setErrorMessage(response.error.toString());
         }
+      }
+      else {
+        setErrorMessage(""); // reset error message if it was already there
+        setClientsArray(response.clients);
       }
 
     })
