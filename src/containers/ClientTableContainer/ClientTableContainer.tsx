@@ -1,16 +1,20 @@
-import { Box, Paper, TableContainer, Table, TablePagination, Pagination, PaginationItem } from "@mui/material"
+import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
-import { memo, useState } from "react"
+import { memo, useEffect, useState } from "react"
+import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
+import { ClientAPI, InvalidUserTokenError } from "../../api/clients"
 import { ClientsTableBody } from "../../components/ClientsTable/ClientsTableBody"
 import { ClientsTableHead } from "../../components/ClientsTable/ClientsTableHead"
+import { ErrorMessage } from "../../components/ErrorMessageComponent/ErrorMessage"
 import { GenericPagination } from "../../components/GenericPagination/GenericPagination"
+import { useAuthContext } from "../../contexts/AuthContextProvider"
 
 
 
 export type Order = 'asc' | 'desc';
 
 export type ClientSortBy = {
-  name: string,
+  clientName: string,
   email: string
 }
 
@@ -36,7 +40,7 @@ interface HeadCell {
 
 export const headCells: readonly HeadCell[] = [
   {
-    id        : 'name',
+    id        : 'clientName',
     label     : 'Name',
     isSortable: true
   },
@@ -47,6 +51,10 @@ export const headCells: readonly HeadCell[] = [
   {
     id   : 'companyName',
     label: 'Company Name',
+  },
+  {
+    id   : 'totalBilled',
+    label: 'Total Billed',
   }
 ];
 
@@ -59,10 +67,41 @@ export type ClientTableProps = {
   pagination?: boolean
 }
 
-export const ClientTable = memo<ClientTableProps>( (props) => {
 
-  const [order, setOrder]     = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof ClientSortBy>('name');
+const getClientsHandler = async (
+  authUserToken: string,
+  orderBy      : keyof ClientSortBy,
+  order        : Order,
+  offset       : number
+) => {
+
+  try {
+    const clientResponse = await ClientAPI.getClients(authUserToken, {
+      order  : order,
+      orderBy: orderBy,
+      limit  : DEFAULT_ROWS_PER_PAGE,
+      offset : offset
+    });
+
+    return {
+      type: clientResponse.type as string,
+      clients: clientResponse.jsonReponse.clients as ClientResponseModel[]
+    }
+
+  } catch (err) {
+
+    // TODO To be checked TNSB, maybe there is no return here
+    return {
+      type: "error" as string,
+      error: err as unknown
+    }
+
+  }
+
+}
+
+
+export const ClientTable = memo<ClientTableProps>( (props) => {
 
   const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: keyof ClientSortBy ) => {
     if (!property) {
@@ -73,18 +112,54 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
     setOrderBy(property);
   };
 
-  const clientsArray           = props.initialPayload?.clients ?? [];
-  const totalClients           = props.initialPayload?.total ?? 0;
-  const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
+  const initialPayloadClients = props.initialPayload?.clients ?? [];
+  const totalClients          = props.initialPayload?.total ?? 0;
+  const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1) * DEFAULT_ROWS_PER_PAGE
 
-  const EnvRowsPerPage         = process.env.NEXT_PUBLIC_ROWS_PER_PAGE ? parseInt(process.env.NEXT_PUBLIC_ROWS_PER_PAGE) : 10;
+  const [order, setOrder]               = useState<Order>('asc');
+  const [orderBy, setOrderBy]           = useState<keyof ClientSortBy>('clientName');
+  const [clientsArray, setClientsArray] = useState<ClientResponseModel[]>(initialPayloadClients);
+
+  const authUserToken = useAuthContext().authUserToken;
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+
+  useEffect(() => {
+    if ( authUserToken === null ) {
+      return;
+    }
+
+    const clientsHandlerResponse = getClientsHandler(authUserToken, orderBy, order, offset);
+
+    clientsHandlerResponse.then((response) => {
+
+      // TODO Type check for catch
+      if ( response.type == "success" ) {
+        setClientsArray(response.clients);
+      }
+      else {
+        if ( typeof response === 'string' ) {
+          setErrorMessage(response.error);
+        }
+        else {
+          setErrorMessage(response.error.toString());
+        }
+      }
+
+    })
+
+
+  }, [order, orderBy, authUserToken, offset]);
+
+
+  const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push(`/clients?page=${value}`)
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box >
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+      <Paper sx={{ mb: 2 }}>
         <TableContainer>
           <Table
             aria-labelledby="tableTitle"
@@ -93,7 +168,6 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={4}
               pagination={props.pagination}
             />
 
@@ -106,7 +180,6 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
           props.pagination
           ? (<GenericPagination
               totalRecords={totalClients}
-              limit={EnvRowsPerPage}
               currentPageNumber={currentPageNumber}
               handlePaginationChange={handlePaginationChange}
             />)

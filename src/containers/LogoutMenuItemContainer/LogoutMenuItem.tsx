@@ -1,11 +1,10 @@
 import { Logout } from "@mui/icons-material";
 import { MenuItem, ListItemIcon } from "@mui/material";
-import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContextProvider";
+import { useAuthContext } from "../../contexts/AuthContextProvider";
 
 
 export const LogoutMenuItem = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout } = useAuthContext();
   return (
     <MenuItem onClick={ () => {
         logout();

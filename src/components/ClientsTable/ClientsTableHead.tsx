@@ -5,19 +5,16 @@ import { ClientSortBy, headCells, Order } from "../../containers/ClientTableCont
 
 interface ClientsTableHeadProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property?: keyof ClientSortBy) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-  pagination?:boolean
+  order        : Order;
+  orderBy      : string;
+  pagination?  : boolean
 }
 
 export const ClientsTableHead = (props: ClientsTableHeadProps) => {
-  const { order, orderBy, rowCount, onRequestSort } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property: keyof ClientSortBy) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
-
-  console.log(props.pagination);
 
   return (
     <TableHead>

@@ -12,7 +12,7 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
     <>
       <TableBody>
         {
-          props.rows.length > 0
+          props.rows
           ?
           props.rows.map((row, index) => {
             return (
@@ -21,9 +21,10 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 tabIndex={-1}
                 key={index}
               >
-                <TableCell key={3} padding="normal">{row.name}</TableCell>
+                <TableCell key={1} padding="normal">{row.name}</TableCell>
                 <TableCell key={2} padding="normal">{row.email}</TableCell>
-                <TableCell key={4} padding="normal">{row.companyDetails.name}</TableCell>
+                <TableCell key={3} padding="normal">{row.companyDetails.name}</TableCell>
+                <TableCell key={4} padding="normal">{row.totalBilled}</TableCell>
               </TableRow>
             );
           })

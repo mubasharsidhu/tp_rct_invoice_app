@@ -1,5 +1,13 @@
 import { ServerResponse } from "http";
 
+
+export type Order = 'asc' | 'desc';
+
+export type ClientSortBy = {
+  clientName: string,
+  email: string
+}
+
 export type clientParams = {
   email           : string,
   clientName      : string,
@@ -53,9 +61,9 @@ export const ClientAPI = {
   },
 
   getClients: async (authToken: string, params: {
-    res    : ServerResponse,
-    order  : "asc" | "desc",
-    orderBy: "email" | "invoiceCount",
+    res?   : ServerResponse,
+    order  : Order,
+    orderBy: keyof ClientSortBy,
     limit  : number,
     offset : number
   }) => {
@@ -84,19 +92,22 @@ export const ClientAPI = {
     try {
 
       const jsonReponse = await httpResponse.json();
-
-      // TODO add typesafety with try catch and error if invalid data recieved
-      return jsonReponse as {
+      return {
         type: "success",
-        total: number,
-        clients: ClientResponseModel[]
+        jsonReponse: jsonReponse as {
+          total  : number,
+          clients: ClientResponseModel[]
+        }
       }
 
     } catch (err) {
 
       return {
-        total: 0,
-        clients: []
+        type: "error",
+        jsonReponse: {
+          total: 0,
+          clients: []
+        }
       }
 
     }
