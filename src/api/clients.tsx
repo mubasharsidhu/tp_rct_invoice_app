@@ -64,8 +64,8 @@ export const ClientAPI = {
     res?   : ServerResponse,
     order  : Order,
     orderBy: keyof ClientSortBy,
-    limit  : number,
-    offset : number
+    limit? : number,
+    offset?: number
   }) => {
     // TODO check and allow non filtered or sorted use
 
@@ -75,6 +75,11 @@ export const ClientAPI = {
       },
       limit: params.limit,
       offset: params.offset
+    }
+
+    if ( queryParams.limit === -1 ) {
+      delete queryParams.limit;
+      delete queryParams.offset;
     }
 
     const encodeParamsString = encodeURIComponent(JSON.stringify(queryParams));

@@ -2,15 +2,16 @@ import { ReactNode } from "react";
 import { Button, Container, Grid, Stack } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
+import type { searchOptionType } from "../../pages/clients";
+import { GenericSearch } from "../components/Search/genericSearch";
 
 
 type LayoutProps = {
-  pageTitle: string,
-  subMenus?: Array<{
-    label: string;
-    url  : string;
-  }>,
-  children?: ReactNode
+  pageTitle      : string,
+  subMenus?      : Array<{ label: string; url : string; }>,
+  isSearchEnabled: boolean,
+  searchOptions? : searchOptionType,
+  children?      : ReactNode,
 }
 
 const Layout = (props: LayoutProps ) => {
@@ -37,15 +38,26 @@ const Layout = (props: LayoutProps ) => {
           props.subMenus
           ?
           props.subMenus.map((data, index)=> {
-            return (<Grid item key={index}>
-              <Stack direction="row" spacing={2} sx={{ pt:2 }}>
-                <Button variant="contained" onClick={()=>{ router.push( data.url ) }} >{data.label}</Button>
-              </Stack>
-            </Grid>)
+            return (
+              <Grid item key={index}>
+                <Stack direction="row" spacing={2} sx={{ pt:2 }}>
+                  <Button variant="contained" onClick={()=>{ router.push( data.url ) }} >{data.label}</Button>
+                </Stack>
+              </Grid>
+            )
           })
           : null
         }
 
+        {
+          props.isSearchEnabled && props.searchOptions
+          ?
+            <GenericSearch
+              pageTitle={props.pageTitle}
+              searchOptions={props.searchOptions}
+            />
+          : null
+        }
 
       </Grid>
 

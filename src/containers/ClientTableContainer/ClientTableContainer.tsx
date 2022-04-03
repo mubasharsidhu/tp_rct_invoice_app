@@ -1,8 +1,9 @@
 import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
-import { memo, useEffect, useState } from "react"
+import { memo, SyntheticEvent, useCallback, useEffect, useState } from "react"
+import type { searchOptionType } from "../../../pages/clients"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
-import { ClientAPI, InvalidUserTokenError } from "../../api/clients"
+import { ClientAPI } from "../../api/clients"
 import { ClientsTableBody } from "../../components/ClientsTable/ClientsTableBody"
 import { ClientsTableHead } from "../../components/ClientsTable/ClientsTableHead"
 import { ErrorMessage } from "../../components/ErrorMessageComponent/ErrorMessage"
@@ -10,23 +11,22 @@ import { GenericPagination } from "../../components/GenericPagination/GenericPag
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 
 
-
 export type Order = 'asc' | 'desc';
 
 export type ClientSortBy = {
   clientName: string,
-  email: string
+  email     : string
 }
 
 export type ClientResponseModel = {
-  id: string;
-  email: string;
-  name: string;
-  totalBilled: number;
-  invoicesCount: number;
+  id            : string;
+  email         : string;
+  name          : string;
+  totalBilled   : number;
+  invoicesCount : number;
   companyDetails: {
-    name: string;
-    address: string;
+    name     : string;
+    address  : string;
     vatNumber: string;
     regNumber: string;
   };
@@ -61,41 +61,51 @@ export const headCells: readonly HeadCell[] = [
 
 export type ClientTableProps = {
   initialPayload?: {
-    clients: ClientResponseModel[],
-    total: number
+    clients       : ClientResponseModel[],
+    total         : number,
+    searchOptions?: searchOptionType
   },
-  pagination?: boolean
+  pagination?: boolean,
 }
 
 
-const getClientsHandler = async (
+export const getClientsHandler = async (params: {
   authUserToken: string,
   orderBy      : keyof ClientSortBy,
   order        : Order,
-  offset       : number
-) => {
+  limit?       : number,
+  offset?      : number
+}) => {
 
   try {
-    const clientResponse = await ClientAPI.getClients(authUserToken, {
-      order  : order,
-      orderBy: orderBy,
-      limit  : DEFAULT_ROWS_PER_PAGE,
-      offset : offset
+    const clientResponse = await ClientAPI.getClients(params.authUserToken, {
+      order  : params.order,
+      orderBy: params.orderBy,
+      limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
+      offset : params.offset
     });
 
     return {
-      type: "success" as string,
-      clients: clientResponse.clients as ClientResponseModel[]
+      type   : "success" as string,
+      clients: clientResponse.clients as ClientResponseModel[],
+      total  : clientResponse.total as number
     }
 
   } catch (err) {
 
     return {
-      type: "error" as string,
+      type : "error" as string,
       error: err as any
     }
 
   }
+
+}
+
+
+export const searchOnChangeHandler = (event: SyntheticEvent<Element, Event>, inputValue?: string) => {
+  console.log('iee: nputValue: ', inputValue)
+  //setSearchKeyword(inputValue);
 
 }
 
@@ -111,23 +121,32 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
     setOrderBy(property);
   };
 
+
   const initialPayloadClients = props.initialPayload?.clients ?? [];
   const totalClients          = props.initialPayload?.total ?? 0;
   const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1) * DEFAULT_ROWS_PER_PAGE
 
-  const [order, setOrder]               = useState<Order>('asc');
-  const [orderBy, setOrderBy]           = useState<keyof ClientSortBy>('clientName');
-  const [clientsArray, setClientsArray] = useState<ClientResponseModel[]>(initialPayloadClients);
+
+  const [searchKeyword, setSeachKeyword] = useState<String>('');
+
+  const [order, setOrder]                = useState<Order>('asc');
+  const [orderBy, setOrderBy]            = useState<keyof ClientSortBy>('clientName');
+  const [clientsArray, setClientsArray]  = useState<ClientResponseModel[]>(initialPayloadClients);
+  const [errorMessage, setErrorMessage]  = useState<string | undefined>();
 
   const authUserToken = useAuthContext().authUserToken;
-  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   useEffect(() => {
     if ( authUserToken === null ) {
       return;
     }
 
-    const clientsHandlerResponse = getClientsHandler(authUserToken, orderBy, order, offset);
+    const clientsHandlerResponse = getClientsHandler({
+      authUserToken: authUserToken,
+      orderBy      : orderBy,
+      order        : order,
+      offset       : offset
+    });
 
     clientsHandlerResponse.then((response) => {
 
@@ -147,13 +166,14 @@ export const ClientTable = memo<ClientTableProps>( (props) => {
     })
 
 
-  }, [order, orderBy, authUserToken, offset]);
+  }, [order, orderBy, authUserToken, offset, searchKeyword]);
 
 
   const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
     router.push(`/clients?page=${value}`)
   }
+
 
   return (
     <Box >
