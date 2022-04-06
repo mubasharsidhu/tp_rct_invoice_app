@@ -26,7 +26,7 @@ export const Header = () => {
         <Grid item xs={4}><h3>Invoice Manager </h3></Grid>
         <Grid item xs={8} sx={{ display: "flex", justifyContent: "flex-end"  }}>
           <Box>
-            <Tooltip title="Settings">
+            <Tooltip title="Click to open Settings">
               <IconButton
                 onClick={handleClick}
                 sx={{ ml: 2 }}

@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { PasswordField } from "../../components/PasswordFieldComponent/PasswordField";
+import { PasswordField } from "../../components/PasswordField/PasswordField";
 import { Avatar, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { ErrorMessage } from "../../components/ErrorMessageComponent/ErrorMessage";
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const SignupSchema = yup.object({
   name           : yup.string().required(),
@@ -17,16 +17,16 @@ const SignupSchema = yup.object({
 }).required();
 
 export type SignupInputs = {
-  name: string,
-  email: string,
-  password: string,
+  name           : string,
+  email          : string,
+  password       : string,
   confirmPassword: string
 };
 
 export type SignupFormProps = {
-  genericError?: string;
+  genericError?    : string;
   onNavigateToLogin: () => unknown
-  onSignupRequest: (data: SignupInputs) => unknown
+  onSignupRequest  : (data: SignupInputs) => unknown
 }
 
 export const SignupForm = (props: SignupFormProps) => {

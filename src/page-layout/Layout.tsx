@@ -4,6 +4,7 @@ import { Header } from "./Header";
 import { useRouter } from "next/router";
 import type { searchOptionType } from "../../pages/clients";
 import { GenericSearch } from "../components/Search/genericSearch";
+import { Footer } from "./Footer";
 
 
 type LayoutProps = {
@@ -63,6 +64,7 @@ const Layout = (props: LayoutProps ) => {
 
       {props.children}
 
+      <Footer />
     </Container>
   )
 

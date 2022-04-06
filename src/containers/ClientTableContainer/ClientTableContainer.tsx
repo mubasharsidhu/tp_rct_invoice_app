@@ -6,8 +6,8 @@ import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
 import { ClientAPI } from "../../api/clients"
 import { ClientsTableBody } from "../../components/ClientsTable/ClientsTableBody"
 import { ClientsTableHead } from "../../components/ClientsTable/ClientsTableHead"
-import { ErrorMessage } from "../../components/ErrorMessageComponent/ErrorMessage"
-import { GenericPagination } from "../../components/GenericPagination/GenericPagination"
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
+import { GenericPagination } from "../../components/Generic/GenericPagination"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 
 
@@ -55,6 +55,10 @@ export const headCells: readonly HeadCell[] = [
   {
     id   : 'totalBilled',
     label: 'Total Billed',
+  },
+  {
+    id   : 'manage',
+    label: 'Manage',
   }
 ];
 

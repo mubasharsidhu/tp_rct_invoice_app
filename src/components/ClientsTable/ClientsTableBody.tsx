@@ -1,10 +1,13 @@
-import { TableBody, TableRow, TableCell } from "@mui/material";
+import { Add, Edit } from "@mui/icons-material";
+import { TableBody, TableRow, TableCell} from "@mui/material";
 import { ClientResponseModel } from "../../containers/ClientTableContainer/ClientTableContainer";
+import { ClientsTableDropdown } from "./ClientsTableDropdown";
 
 
 type ClientsTableBodyProps = {
   rows: ClientResponseModel[]
 }
+
 
 export const ClientsTableBody = (props: ClientsTableBodyProps) => {
 
@@ -15,6 +18,20 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
           props.rows
           ?
           props.rows.map((row, index) => {
+
+            const menuItems = [
+              {
+                title      : "Edit",
+                icon       : <Edit fontSize="small" />,
+                redirectURL: `/clients/${row.id}`
+              },
+              {
+                title      : "Add a new invoice for the client",
+                icon       : <Add fontSize="small" />,
+                redirectURL: `/invoices/${row.id}`
+              }
+            ];
+
             return (
               <TableRow
                 hover
@@ -25,6 +42,12 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 <TableCell key={2} padding="normal">{row.email}</TableCell>
                 <TableCell key={3} padding="normal">{row.companyDetails.name}</TableCell>
                 <TableCell key={4} padding="normal">{row.totalBilled}</TableCell>
+                <TableCell key={5} padding="normal">
+                  <ClientsTableDropdown
+                    index={index}
+                    menuItems={menuItems}
+                  />
+                </TableCell>
               </TableRow>
             );
           })

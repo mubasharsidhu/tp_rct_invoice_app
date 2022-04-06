@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { PasswordField } from "../../components/PasswordFieldComponent/PasswordField";
+import { PasswordField } from "../../components/PasswordField/PasswordField";
 import { Avatar, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { ErrorMessage } from "../../components/ErrorMessageComponent/ErrorMessage";
+import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const loginSchema = yup.object({
   email: yup.string().email().required(),
