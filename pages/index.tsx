@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material'
 import type { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
-import { ClientTable } from '../src/containers/ClientTableContainer/ClientTableContainer'
+import { ClientTableContainer } from '../src/containers/ClientTableContainer/ClientTableContainer'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import Layout from '../src/page-layout/Layout'
 
@@ -20,11 +20,11 @@ const Home: NextPage<ClientPageProps> = (props) => {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item xs={6}>
           <Typography>Clients</Typography>
-          <ClientTable initialPayload={props}/>
+          <ClientTableContainer initialPayload={props}/>
         </Grid>
         <Grid item xs={6}>
           <Typography>Invoices (To be implemented...)</Typography>
-          <ClientTable initialPayload={props}/>
+          <ClientTableContainer initialPayload={props}/>
         </Grid>
       </Grid>
       </Layout>

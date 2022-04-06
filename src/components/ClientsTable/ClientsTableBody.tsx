@@ -1,7 +1,7 @@
 import { Add, Edit } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
 import { ClientResponseModel } from "../../containers/ClientTableContainer/ClientTableContainer";
-import { ClientsTableDropdown } from "./ClientsTableDropdown";
+import { GenericTableDropdown } from "../Generic/GenericDropdown";
 
 
 type ClientsTableBodyProps = {
@@ -43,7 +43,7 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 <TableCell key={3} padding="normal">{row.companyDetails.name}</TableCell>
                 <TableCell key={4} padding="normal">{row.totalBilled}</TableCell>
                 <TableCell key={5} padding="normal">
-                  <ClientsTableDropdown
+                  <GenericTableDropdown
                     index={index}
                     menuItems={menuItems}
                   />

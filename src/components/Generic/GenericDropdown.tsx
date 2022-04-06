@@ -2,16 +2,16 @@ import { MoreVert, Add } from "@mui/icons-material";
 import { Box, Tooltip, IconButton, Menu, MenuItem, ListItemIcon } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { GenericMenuItem, GenericMenuItemProps } from "../Generic/GenericMenuItem";
+import { GenericMenuItem, GenericMenuItemProps } from "./GenericMenuItem";
 
 
-type ClientsTableDropdownProps = {
+type GenericTableDropdownProps = {
   index     : number,
   menuItems?: Array<GenericMenuItemProps>
 }
 
 
-export const ClientsTableDropdown = (props: ClientsTableDropdownProps) => {
+export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
 
   const router                  = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

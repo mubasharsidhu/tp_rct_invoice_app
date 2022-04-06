@@ -3,7 +3,7 @@ import { MenuItem, ListItemIcon } from "@mui/material";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 
 
-export const LogoutMenuItem = () => {
+export const LogoutMenuItemContainer = () => {
   const { logout } = useAuthContext();
   return (
     <MenuItem onClick={ () => {

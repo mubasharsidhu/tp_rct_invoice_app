@@ -114,7 +114,7 @@ export const searchOnChangeHandler = (event: SyntheticEvent<Element, Event>, inp
 }
 
 
-export const ClientTable = memo<ClientTableProps>( (props) => {
+export const ClientTableContainer = memo<ClientTableProps>( (props) => {
 
   const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: keyof ClientSortBy ) => {
     if (!property) {

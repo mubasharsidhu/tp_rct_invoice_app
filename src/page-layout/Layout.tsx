@@ -3,8 +3,8 @@ import { Button, Container, Grid, Stack } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
 import type { searchOptionType } from "../../pages/clients";
-import { GenericSearch } from "../components/Search/genericSearch";
 import { Footer } from "./Footer";
+import { GenericSearch } from "../components/Search/GenericSearch";
 
 
 type LayoutProps = {

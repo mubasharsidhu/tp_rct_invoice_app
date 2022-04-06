@@ -1,6 +1,6 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, Grid } from "@mui/material"
 import React from "react"
-import { LogoutMenuItem } from "../containers/LogoutMenuItemContainer/LogoutMenuItem";
+import { LogoutMenuItemContainer } from "../containers/LogoutMenuItemContainer/LogoutMenuItemContainer";
 
 export const Header = () => {
 
@@ -75,7 +75,7 @@ export const Header = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-            <LogoutMenuItem />
+            <LogoutMenuItemContainer />
           </Menu>
         </Grid>
       </Grid>
