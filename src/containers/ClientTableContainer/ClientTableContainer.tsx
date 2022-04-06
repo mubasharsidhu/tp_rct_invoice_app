@@ -14,8 +14,8 @@ import { useAuthContext } from "../../contexts/AuthContextProvider"
 export type Order = 'asc' | 'desc';
 
 export type ClientSortBy = {
-  clientName: string,
-  email     : string
+  clientName   : string,
+  invoicesCount: string
 }
 
 export type ClientResponseModel = {
@@ -53,8 +53,9 @@ export const headCells: readonly HeadCell[] = [
     label: 'Company Name',
   },
   {
-    id   : 'totalBilled',
-    label: 'Total Billed',
+    id        : 'invoicesCount',
+    label     : 'Invoices Count',
+    isSortable: true
   },
   {
     id   : 'manage',

@@ -4,8 +4,8 @@ import { ServerResponse } from "http";
 export type Order = 'asc' | 'desc';
 
 export type ClientSortBy = {
-  clientName: string,
-  email: string
+  clientName   : string,
+  invoicesCount: string
 }
 
 export type ClientInputParams = {

@@ -37,11 +37,14 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 hover
                 tabIndex={-1}
                 key={index}
+                onClick={()=>{
+                  console.log(row.name)
+                }}
               >
                 <TableCell key={1} padding="normal">{row.name}</TableCell>
                 <TableCell key={2} padding="normal">{row.email}</TableCell>
                 <TableCell key={3} padding="normal">{row.companyDetails.name}</TableCell>
-                <TableCell key={4} padding="normal">{row.totalBilled}</TableCell>
+                <TableCell key={4} padding="normal">{row.invoicesCount}</TableCell>
                 <TableCell key={5} padding="normal">
                   <GenericTableDropdown
                     index={index}
