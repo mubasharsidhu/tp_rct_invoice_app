@@ -40,7 +40,7 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 tabIndex={-1}
                 key={index}
                 onClick={()=>{
-                  router.push(`/clients/view/${row.id}`);
+                  //router.push(`/clients/view/${row.id}`);
                 }}
               >
                 <TableCell key={1} padding="normal">{row.name}</TableCell>
