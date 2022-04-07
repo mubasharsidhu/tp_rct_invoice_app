@@ -1,14 +1,15 @@
 import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
-import { memo, SyntheticEvent, useCallback, useEffect, useState } from "react"
+import { memo, SyntheticEvent, useEffect, useState } from "react"
 import type { searchOptionType } from "../../../pages/clients"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
 import { ClientAPI } from "../../api/clients"
-import { ClientsTableBody } from "../../components/ClientsTable/ClientsTableBody"
-import { ClientsTableHead } from "../../components/ClientsTable/ClientsTableHead"
+import { ClientsTableBody } from "../../components/Clients/ClientsTableBody"
+import { ClientsTableHead } from "../../components/Clients/ClientsTableHead"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
 import { GenericPagination } from "../../components/Generic/GenericPagination"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
+import { ClientResponseModel } from "../ClientDetailContainer/ClientDetailContainer"
 
 
 export type Order = 'asc' | 'desc';
@@ -16,20 +17,6 @@ export type Order = 'asc' | 'desc';
 export type ClientSortBy = {
   clientName   : string,
   invoicesCount: string
-}
-
-export type ClientResponseModel = {
-  id            : string;
-  email         : string;
-  name          : string;
-  totalBilled   : number;
-  invoicesCount : number;
-  companyDetails: {
-    name     : string;
-    address  : string;
-    vatNumber: string;
-    regNumber: string;
-  };
 }
 
 interface HeadCell {
@@ -64,7 +51,7 @@ export const headCells: readonly HeadCell[] = [
 ];
 
 
-export type ClientTableProps = {
+export type ClientTableContainerProps = {
   initialPayload?: {
     clients       : ClientResponseModel[],
     total         : number,
@@ -115,7 +102,7 @@ export const searchOnChangeHandler = (event: SyntheticEvent<Element, Event>, inp
 }
 
 
-export const ClientTableContainer = memo<ClientTableProps>( (props) => {
+export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => {
 
   const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: keyof ClientSortBy ) => {
     if (!property) {

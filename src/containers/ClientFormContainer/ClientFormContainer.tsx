@@ -3,34 +3,8 @@ import { useEffect, useState } from "react";
 import { ClientAPI, ClientValidationError, InvalidUserIDError, InvalidUserTokenError } from "../../api/clients";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 import { ClientForm as ClientForm, ClientInputParams } from "../../forms/ClientForm/ClientForm";
-import { ClientResponseModel } from "../ClientTableContainer/ClientTableContainer";
+import { getClientByIDHandler } from "../ClientDetailContainer/ClientDetailContainer";
 
-
-const getClientByIDHandler = async (params: {
-  authUserToken: string,
-  clientID      : string
-}) => {
-
-  try {
-    const clientResponse = await ClientAPI.getClientsByID(params.authUserToken, {
-      clientID : params.clientID
-    });
-
-    return {
-      type   : "success" as string,
-      client: clientResponse.client as ClientResponseModel,
-    }
-
-  } catch (err: unknown) {
-
-    return {
-      type : "error" as string,
-      error: err as InvalidUserTokenError | InvalidUserIDError
-    }
-
-  }
-
-}
 
 type ClientFormContainerProps = {
   formType: "add" | "edit"
@@ -62,7 +36,6 @@ export const ClientFormContainer = (props: ClientFormContainerProps) => {
   const [currentClient, setCurrentClient] = useState<ClientInputParams | undefined>(defaultCurrentClient);
 
   if ( props.formType === 'edit' ) {
-
     useEffect(() => {
       if ( authUserToken === null || !clientID ) {
         return;

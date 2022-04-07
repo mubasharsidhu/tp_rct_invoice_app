@@ -2,7 +2,7 @@ import { ClientFormContainer as ClientFormContainer } from "../../src/containers
 import { AuthContextProvider } from "../../src/contexts/AuthContextProvider";
 import Layout from "../../src/page-layout/Layout";
 
-export const AddClient = () => {
+export const EditClient = () => {
 
   return (
     <AuthContextProvider>
@@ -17,4 +17,4 @@ export const AddClient = () => {
 
 }
 
-export default AddClient;
+export default EditClient;

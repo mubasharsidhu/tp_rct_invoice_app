@@ -1,5 +1,6 @@
 import { Add, Edit } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
+import { useRouter } from "next/router";
 import { ClientResponseModel } from "../../containers/ClientTableContainer/ClientTableContainer";
 import { GenericTableDropdown } from "../Generic/GenericDropdown";
 
@@ -11,6 +12,7 @@ type ClientsTableBodyProps = {
 
 export const ClientsTableBody = (props: ClientsTableBodyProps) => {
 
+  const router = useRouter();
   return (
     <>
       <TableBody>
@@ -38,7 +40,7 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 tabIndex={-1}
                 key={index}
                 onClick={()=>{
-                  console.log(row.name)
+                  router.push(`/clients/view/${row.id}`);
                 }}
               >
                 <TableCell key={1} padding="normal">{row.name}</TableCell>
