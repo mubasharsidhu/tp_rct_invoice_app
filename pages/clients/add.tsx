@@ -5,10 +5,7 @@ import Layout from "../../src/page-layout/Layout";
 export const AddClient = () => {
   return (
     <AuthContextProvider>
-      <Layout
-        pageTitle={"Add Client"}
-        isSearchEnabled={false}
-      >
+      <Layout pageTitle={"Add Client"} >
         <ClientFormContainer formType={"add"} />
       </Layout>
     </AuthContextProvider>

@@ -59,7 +59,9 @@ export const AuthContextProvider = (props: {
 
   return (
     <AuthContext.Provider value={{
-      authUserToken, login: setAuthUserToken, logout: () => {
+      authUserToken,
+      login: setAuthUserToken,
+      logout: () => {
         removeCookies('userToken');
         router.push("/login");
       }

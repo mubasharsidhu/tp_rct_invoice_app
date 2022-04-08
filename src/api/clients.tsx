@@ -93,6 +93,7 @@ export const ClientAPI = {
     try {
 
       const jsonReponse = await httpResponse.json();
+
       return jsonReponse as {
         type: "success",
         client: ClientResponseModel

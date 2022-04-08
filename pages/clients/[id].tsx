@@ -6,10 +6,7 @@ export const EditClient = () => {
 
   return (
     <AuthContextProvider>
-      <Layout
-        pageTitle={"Edit Client"}
-        isSearchEnabled={false}
-      >
+      <Layout pageTitle={"Edit Client"} >
         <ClientFormContainer formType={"edit"}/>
       </Layout>
     </AuthContextProvider>
