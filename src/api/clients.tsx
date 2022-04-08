@@ -65,8 +65,6 @@ export const ClientAPI = {
       body: JSON.stringify(payload)
     });
 
-    //console.log('status: ', httpResponse.status)
-
     if ( httpResponse.status >= 400 ) {
       throw new ClientValidationError( await httpResponse.text() );
     }

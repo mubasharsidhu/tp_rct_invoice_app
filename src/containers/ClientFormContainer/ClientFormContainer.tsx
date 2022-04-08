@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ClientAPI, ClientValidationError, InvalidUserIDError, InvalidUserTokenError } from "../../api/clients";
+import { ClientAPI, ClientValidationError } from "../../api/clients";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 import { ClientForm as ClientForm, ClientInputParams } from "../../forms/ClientForm/ClientForm";
 import { getClientByIDHandler } from "../ClientDetailContainer/ClientDetailContainer";

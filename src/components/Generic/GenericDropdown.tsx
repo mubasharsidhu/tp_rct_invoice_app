@@ -1,6 +1,5 @@
-import { MoreVert, Add } from "@mui/icons-material";
-import { Box, Tooltip, IconButton, Menu, MenuItem, ListItemIcon } from "@mui/material";
-import { useRouter } from "next/router";
+import { MoreVert } from "@mui/icons-material";
+import { Box, Tooltip, IconButton, Menu } from "@mui/material";
 import { useState } from "react";
 import { GenericMenuItem, GenericMenuItemProps } from "./GenericMenuItem";
 
@@ -13,13 +12,14 @@ type GenericTableDropdownProps = {
 
 export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
 
-  const router                  = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open                    = Boolean(anchorEl);
   const handleClick             = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(null);
   };
 

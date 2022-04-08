@@ -40,8 +40,9 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
                 tabIndex={-1}
                 key={index}
                 onClick={()=>{
-                  //router.push(`/clients/view/${row.id}`);
+                  router.push(`/clients/view/${row.id}`);
                 }}
+                sx={{cursor:"pointer"}}
               >
                 <TableCell key={1} padding="normal">{row.name}</TableCell>
                 <TableCell key={2} padding="normal">{row.email}</TableCell>
