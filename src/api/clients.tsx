@@ -1,12 +1,8 @@
 import { ServerResponse } from "http";
 
 
-export type Order = 'asc' | 'desc';
-
-export type ClientSortBy = {
-  clientName   : string,
-  invoicesCount: string
-}
+export type Order        = 'asc' | 'desc';
+export type ClientSortBy = 'clientName' | 'invoicesCount';
 
 export type ClientInputParams = {
   id?             : string,
@@ -61,7 +57,7 @@ export const ClientAPI = {
     }
 
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/clients`, {
-      method: "POST",
+      method: formType === "add" ? "POST" : "PUT",
       headers: {
         "Content-Type" : "application/json",
         "Authorization": `Bearer ${authToken}`
@@ -117,7 +113,7 @@ export const ClientAPI = {
   getClients: async (authToken: string, params: {
     res?   : ServerResponse,
     order  : Order,
-    orderBy: keyof ClientSortBy,
+    orderBy: ClientSortBy,
     limit? : number,
     offset?: number
   }) => {

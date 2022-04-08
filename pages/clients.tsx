@@ -7,20 +7,18 @@ import Layout from '../src/page-layout/Layout'
 import { DEFAULT_ROWS_PER_PAGE } from './config/config'
 
 
-export type searchOptionType = Array<string>;
+//export type searchOptionType = Array<string>;
 
 type ClientPageProps = {
   clients      : ClientResponseModel[],
   total        : number,
-  searchOptions: searchOptionType,
+  //searchOptions: searchOptionType,
 }
 
 const subMenus: { label: string; url  : string; }[] = [{
   label: 'Add Client',
   url  : '/clients/add'
 }];
-
-const isSearchEnabled = true as boolean;
 
 
 const ClientsPage: NextPage<ClientPageProps> = (props) => {
@@ -31,8 +29,6 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
       <Layout
         pageTitle={"Clients"}
         subMenus={subMenus}
-        isSearchEnabled={isSearchEnabled}
-        searchOptions={props.searchOptions}
         >
         <ClientTableContainer
           initialPayload={props}
@@ -62,8 +58,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
 
 
-    let searchOptions: searchOptionType = [];
-    const clientsHandlerResponse = getClientsHandler({
+    //let searchOptions: searchOptionType = [];
+    /* const clientsHandlerResponse = getClientsHandler({
       authUserToken: authUserToken,
       orderBy      : 'clientName',
       order        : 'asc',
@@ -83,14 +79,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       }
       // else searchOptions is already set to [];
 
-    });
+    }); */
 
 
     return {
       props: {
         clients      : JSON.parse(JSON.stringify(clientResponse.clients)),
         total        : JSON.parse(JSON.stringify(clientResponse.total)),
-        searchOptions: JSON.parse(JSON.stringify(searchOptions))
       }, // will be passed to the page component as props
     }
 

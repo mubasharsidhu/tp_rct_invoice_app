@@ -3,7 +3,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Box, Button, InputLabel, TextField } from "@mui/material";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
-import { ClientResponseModel } from "../../containers/ClientTableContainer/ClientTableContainer";
 import { useEffect, useMemo } from "react";
 
 
@@ -29,7 +28,6 @@ export type ClientInputParams = {
 
 
 export type ClientFormProps = {
-  formType                 : "add" | "edit";
   genericError?            : string
   currentClient?           : ClientInputParams | undefined
   onClientDataSubmitRequest: (data: ClientInputParams) => unknown
@@ -41,16 +39,11 @@ export const ClientForm = (props: ClientFormProps) => {
   const { register, reset, handleSubmit, formState: { errors } } = useForm<ClientInputParams>({
     mode         : "onBlur",
     resolver     : yupResolver(ClientSchema),
-    defaultValues: useMemo(() => {
-      return props.currentClient
-    }, [props])
   });
 
-  if ( props.formType === "edit" ) {
-    useEffect(() => {
-      reset(props.currentClient);
-    }, [props.currentClient]);
-  }
+  useEffect(() => {
+    reset(props.currentClient);
+  }, [props.currentClient]);
 
 
   return (

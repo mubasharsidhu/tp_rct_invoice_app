@@ -1,7 +1,6 @@
 import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
-import { memo, SyntheticEvent, useEffect, useState } from "react"
-import type { searchOptionType } from "../../../pages/clients"
+import { memo, useEffect, useState } from "react"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
 import { ClientAPI } from "../../api/clients"
 import { ClientsTableBody } from "../../components/Clients/ClientsTableBody"
@@ -14,10 +13,7 @@ import { ClientResponseModel } from "../ClientDetailContainer/ClientDetailContai
 
 export type Order = 'asc' | 'desc';
 
-export type ClientSortBy = {
-  clientName   : string,
-  invoicesCount: string
-}
+export type ClientSortBy = 'clientName' | 'invoicesCount';
 
 interface HeadCell {
   id         : string;
@@ -53,9 +49,8 @@ export const headCells: readonly HeadCell[] = [
 
 export type ClientTableContainerProps = {
   initialPayload?: {
-    clients       : ClientResponseModel[],
-    total         : number,
-    searchOptions?: searchOptionType
+    clients: ClientResponseModel[],
+    total  : number,
   },
   pagination?: boolean,
 }
@@ -63,7 +58,7 @@ export type ClientTableContainerProps = {
 
 export const getClientsHandler = async (params: {
   authUserToken: string,
-  orderBy      : keyof ClientSortBy,
+  orderBy      : ClientSortBy,
   order        : Order,
   limit?       : number,
   offset?      : number
@@ -95,38 +90,33 @@ export const getClientsHandler = async (params: {
 }
 
 
-export const searchOnChangeHandler = (event: SyntheticEvent<Element, Event>, inputValue?: string) => {
-  console.log('iee: nputValue: ', inputValue)
-  //setSearchKeyword(inputValue);
-
-}
-
-
 export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => {
-
-  const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: keyof ClientSortBy ) => {
-    if (!property) {
-      return;
-    }
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
 
   const initialPayloadClients = props.initialPayload?.clients ?? [];
   const totalClients          = props.initialPayload?.total ?? 0;
-  const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1) * DEFAULT_ROWS_PER_PAGE
+  const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
+  const authUserToken                   = useAuthContext().authUserToken;
+  const [clientsArray, setClientsArray] = useState<ClientResponseModel[]>(initialPayloadClients);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-  const [searchKeyword, setSeachKeyword] = useState<String>('');
+  const orderBy                = router.query.orderBy ? router.query.orderBy as ClientSortBy : 'clientName';
+  const order                  = router.query.order ? router.query.order as Order : 'asc';
+  const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
 
-  const [order, setOrder]                = useState<Order>('asc');
-  const [orderBy, setOrderBy]            = useState<keyof ClientSortBy>('clientName');
-  const [clientsArray, setClientsArray]  = useState<ClientResponseModel[]>(initialPayloadClients);
-  const [errorMessage, setErrorMessage]  = useState<string | undefined>();
+  const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    router.push(`/clients?orderBy=${orderBy}&order=${order}&page=${value}`)
+  }
 
-  const authUserToken = useAuthContext().authUserToken;
+  const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: ClientSortBy ) => {
+    if (!property) {
+      return;
+    }
+    const isAsc    = orderBy === property && order === 'asc';
+    const newOrder = isAsc ? 'desc' : 'asc';
+    router.push(`/clients?orderBy=${property}&order=${newOrder}`);
+  };
+
 
   useEffect(() => {
     if ( authUserToken === null ) {
@@ -157,14 +147,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
 
     })
 
-
-  }, [order, orderBy, authUserToken, offset, searchKeyword]);
-
-
-  const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
-  const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    router.push(`/clients?page=${value}`)
-  }
+  }, [authUserToken, orderBy, order, offset]);
 
 
   return (
@@ -172,21 +155,16 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <Paper sx={{ mb: 2 }}>
         <TableContainer>
-          <Table
-            aria-labelledby="tableTitle"
-          >
+          <Table aria-labelledby="Clients" >
             <ClientsTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               pagination={props.pagination}
             />
-
             <ClientsTableBody rows={clientsArray}/>
-
           </Table>
         </TableContainer>
-
         {
           props.pagination
           ? (<GenericPagination
@@ -196,7 +174,6 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
             />)
           : null
         }
-
       </Paper>
     </Box>
   )

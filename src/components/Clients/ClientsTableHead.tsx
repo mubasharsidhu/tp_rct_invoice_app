@@ -4,7 +4,7 @@ import { visuallyHidden } from '@mui/utils';
 import { ClientSortBy, headCells, Order } from "../../containers/ClientTableContainer/ClientTableContainer";
 
 interface ClientsTableHeadProps {
-  onRequestSort: (event: React.MouseEvent<unknown>, property?: keyof ClientSortBy) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property?: ClientSortBy) => void;
   order        : Order;
   orderBy      : string;
   pagination?  : boolean
@@ -12,7 +12,7 @@ interface ClientsTableHeadProps {
 
 export const ClientsTableHead = (props: ClientsTableHeadProps) => {
   const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof ClientSortBy) => (event: MouseEvent<unknown>) => {
+  const createSortHandler = (property: ClientSortBy) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -31,7 +31,7 @@ export const ClientsTableHead = (props: ClientsTableHeadProps) => {
                   <TableSortLabel
                     active={orderBy === headCell.id}
                     direction={orderBy === headCell.id ? order : 'asc'}
-                    onClick={createSortHandler(headCell.id as keyof ClientSortBy)}
+                    onClick={createSortHandler(headCell.id as ClientSortBy)}
                   >
                     {headCell.label}
                     {orderBy === headCell.id ? (

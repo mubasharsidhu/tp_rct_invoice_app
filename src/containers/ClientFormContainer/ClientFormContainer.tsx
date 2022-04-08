@@ -32,55 +32,51 @@ export const ClientFormContainer = (props: ClientFormContainerProps) => {
     }
   }
 
-
   const [currentClient, setCurrentClient] = useState<ClientInputParams | undefined>(defaultCurrentClient);
 
-  if ( props.formType === 'edit' ) {
-    useEffect(() => {
-      if ( authUserToken === null || !clientID ) {
-        return;
-      }
-      const clientsHandlerResponse = getClientByIDHandler({
-        authUserToken: authUserToken,
-        clientID     : clientID
-      });
+  useEffect(() => {
+    if ( authUserToken === null || !clientID ) {
+      return;
+    }
+    const clientsHandlerResponse = getClientByIDHandler({
+      authUserToken: authUserToken,
+      clientID     : clientID
+    });
 
-      clientsHandlerResponse.then((response) => {
+    clientsHandlerResponse.then((response) => {
 
-        if ( response.type === "error" ) {
-          if ( typeof response.error === 'string' ) {
-            setErrorMessage(response.error);
-          }
-          else {
-            const errorObj = response.error as object;
-            setErrorMessage( errorObj.toString() );
-          }
+      if ( response.type === "error" ) {
+        if ( typeof response.error === 'string' ) {
+          setErrorMessage(response.error);
         }
         else {
-          const theClient = {
-            id              : response.client?.id,
-            clientName      : response.client?.name,
-            email           : response.client?.email,
-            companyName     : response.client?.companyDetails.name,
-            companyAddress  : response.client?.companyDetails.address,
-            companyTaxNumber: response.client?.companyDetails.vatNumber,
-            companyRegNumber: response.client?.companyDetails.regNumber
-          }
-          setErrorMessage(""); // resetting the error message if it was there before
-          setCurrentClient(theClient as ClientInputParams);
+          const errorObj = response.error as object;
+          setErrorMessage( errorObj.toString() );
         }
+      }
+      else {
+        const theClient = {
+          id              : response.client?.id,
+          clientName      : response.client?.name,
+          email           : response.client?.email,
+          companyName     : response.client?.companyDetails.name,
+          companyAddress  : response.client?.companyDetails.address,
+          companyTaxNumber: response.client?.companyDetails.vatNumber,
+          companyRegNumber: response.client?.companyDetails.regNumber
+        }
+        setErrorMessage(""); // resetting the error message if it was there before
+        setCurrentClient(theClient as ClientInputParams);
+      }
 
-      })
+    })
 
-    }, [authUserToken, clientID]);
-  }
+  }, [authUserToken, clientID]);
 
   return (
     <>
       <ClientForm
         genericError={errorMessage}
         currentClient={currentClient}
-        formType={props.formType}
         onClientDataSubmitRequest={ async (clientData) => {
 
           if (! authUserToken) {

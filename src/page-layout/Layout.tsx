@@ -2,16 +2,12 @@ import { ReactNode } from "react";
 import { Button, Container, Grid, Stack } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
-import type { searchOptionType } from "../../pages/clients";
 import { Footer } from "./Footer";
-import { GenericSearch } from "../components/Search/GenericSearch";
 
 
 type LayoutProps = {
   pageTitle      : string,
   subMenus?      : Array<{ label: string; url : string; }>,
-  isSearchEnabled: boolean,
-  searchOptions? : searchOptionType,
   children?      : ReactNode,
 }
 
@@ -51,13 +47,13 @@ const Layout = (props: LayoutProps ) => {
         }
 
         {
-          props.isSearchEnabled && props.searchOptions
+          /* props.isSearchEnabled && props.searchOptions
           ?
             <GenericSearch
               pageTitle={props.pageTitle}
               searchOptions={props.searchOptions}
             />
-          : null
+          : null */
         }
 
       </Grid>
