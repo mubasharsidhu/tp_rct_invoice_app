@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
-import { ClientTableContainer, getClientsHandler } from '../src/containers/ClientTableContainer/ClientTableContainer'
+import { ClientTableContainer } from '../src/containers/ClientTableContainer/ClientTableContainer'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import Layout from '../src/page-layout/Layout'
@@ -32,7 +32,7 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
         >
         <ClientTableContainer
           initialPayload={props}
-          pagination={true}
+          isDetailPage={true}
         />
       </Layout>
 

@@ -6,9 +6,10 @@ import { Footer } from "./Footer";
 
 
 type LayoutProps = {
-  pageTitle      : string,
-  subMenus?      : Array<{ label: string; url : string; }>,
-  children?      : ReactNode,
+  hideMenu?: boolean,
+  pageTitle     : string,
+  subMenus?     : Array<{ label: string; url : string; }>,
+  children?     : ReactNode,
 }
 
 const Layout = (props: LayoutProps ) => {
@@ -17,14 +18,17 @@ const Layout = (props: LayoutProps ) => {
 
   return (
     <Container fixed>
-
       <Header />
 
-      <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: "flex-end", pt:1 }}>
-        <Button variant="outlined" onClick={()=>{ router.push('/') }} >Dashboard</Button>
-        <Button variant="outlined" onClick={()=>{ router.push('/clients') }}>Clients</Button>
-        <Button variant="outlined" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
-      </Stack>
+      {
+        props.hideMenu
+        ? null
+        : <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: "flex-end", pt:1 }}>
+            <Button variant="outlined" onClick={()=>{ router.push('/') }} >Dashboard</Button>
+            <Button variant="outlined" onClick={()=>{ router.push('/clients') }}>Clients</Button>
+            <Button variant="outlined" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
+          </Stack>
+      }
 
       <Grid container spacing={2}>
         <Grid item >

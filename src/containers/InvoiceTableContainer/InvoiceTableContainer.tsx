@@ -2,18 +2,18 @@ import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
 import { memo, useEffect, useState } from "react"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
-import { ClientAPI } from "../../api/clients"
-import { ClientsTableBody } from "../../components/Clients/ClientsTableBody"
-import { ClientsTableHead } from "../../components/Clients/ClientsTableHead"
+import { InvoiceAPI } from "../../api/invoices"
+import { InvoicesTableBody } from "../../components/Invoices/InvoicesTableBody"
+import { InvoicesTableHead } from "../../components/Invoices/InvoicesTableHead"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
 import { GenericPagination } from "../../components/Generic/GenericPagination"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
-import { ClientResponseModel } from "../ClientDetailContainer/ClientDetailContainer"
+import { InvoiceResponseModel } from "../InvoiceDetailContainer/InvoiceDetailContainer"
 
 
 export type Order = 'asc' | 'desc';
 
-export type ClientSortBy = 'clientName' | 'invoicesCount';
+export type InvoiceSortBy = 'clientName' | 'dueDate';
 
 interface HeadCell {
   id         : string;
@@ -24,12 +24,12 @@ interface HeadCell {
 export const headCells: readonly HeadCell[] = [
   {
     id        : 'clientName',
-    label     : 'Name',
+    label     : 'Client Name',
     isSortable: true
   },
   {
-    id   : 'email',
-    label: 'Email',
+    id   : 'companyName',
+    label: 'Company Name',
   },
   {
     id   : 'companyName',
@@ -47,25 +47,25 @@ export const headCells: readonly HeadCell[] = [
 ];
 
 
-export type ClientTableContainerProps = {
+export type InvoiceTableContainerProps = {
   initialPayload?: {
-    clients: ClientResponseModel[],
+    invoices: InvoiceResponseModel[],
     total  : number,
   },
   isDetailPage?: boolean,
 }
 
 
-export const getClientsHandler = async (params: {
+export const getInvoicesHandler = async (params: {
   authUserToken: string,
-  orderBy      : ClientSortBy,
+  orderBy      : InvoiceSortBy,
   order        : Order,
   limit?       : number,
   offset?      : number
 }) => {
 
   try {
-    const clientResponse = await ClientAPI.getClients(params.authUserToken, {
+    const invoiceResponse = await InvoiceAPI.getInvoices(params.authUserToken, {
       order  : params.order,
       orderBy: params.orderBy,
       limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
@@ -74,8 +74,8 @@ export const getClientsHandler = async (params: {
 
     return {
       type   : "success" as string,
-      clients: clientResponse.clients as ClientResponseModel[],
-      total  : clientResponse.total as number
+      invoices: invoiceResponse.invoices as InvoiceResponseModel[],
+      total  : invoiceResponse.total as number
     }
 
   } catch (err) {
@@ -90,31 +90,34 @@ export const getClientsHandler = async (params: {
 }
 
 
-export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => {
+export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) => {
 
-  const initialPayloadClients = props.initialPayload?.clients ?? [];
-  const totalClients          = props.initialPayload?.total ?? 0;
+  console.log('memo props: ', props);
+
+
+  const initialPayloadInvoices = props.initialPayload?.invoices ?? [];
+  const totalInvoices          = props.initialPayload?.total ?? 0;
   const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
   const authUserToken                   = useAuthContext().authUserToken;
-  const [clientsArray, setClientsArray] = useState<ClientResponseModel[]>(initialPayloadClients);
+  const [invoicesArray, setInvoicesArray] = useState<InvoiceResponseModel[]>(initialPayloadInvoices);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-  const orderBy                = router.query.orderBy ? router.query.orderBy as ClientSortBy : 'clientName';
+  const orderBy                = router.query.orderBy ? router.query.orderBy as InvoiceSortBy : 'invoiceName';
   const order                  = router.query.order ? router.query.order as Order : 'asc';
   const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
 
   const handlePaginationChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    router.push(`/clients?orderBy=${orderBy}&order=${order}&page=${value}`)
+    router.push(`/invoices?orderBy=${orderBy}&order=${order}&page=${value}`)
   }
 
-  const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: ClientSortBy ) => {
+  const handleRequestSort = ( event: React.MouseEvent<unknown>, property?: InvoiceSortBy ) => {
     if (!property) {
       return;
     }
     const isAsc    = orderBy === property && order === 'asc';
     const newOrder = isAsc ? 'desc' : 'asc';
-    router.push(`/clients?orderBy=${property}&order=${newOrder}`);
+    router.push(`/invoices?orderBy=${property}&order=${newOrder}`);
   };
 
 
@@ -123,14 +126,14 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       return;
     }
 
-    const clientsHandlerResponse = getClientsHandler({
+    const invoicesHandlerResponse = getInvoicesHandler({
       authUserToken: authUserToken,
       orderBy      : orderBy,
       order        : order,
       offset       : offset
     });
 
-    clientsHandlerResponse.then((response) => {
+    invoicesHandlerResponse.then((response) => {
 
       if ( response.type === "error" ) {
         if ( typeof response.error === 'string' ) {
@@ -142,7 +145,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       }
       else {
         setErrorMessage(""); // resetting the error message if it was there before
-        setClientsArray(response.clients as ClientResponseModel[]);
+        setInvoicesArray(response.invoices as InvoiceResponseModel[]);
       }
 
     })
@@ -151,29 +154,29 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
 
   return (
     <Box >
-      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+      {/* {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <Paper sx={{ mb: 2 }}>
         <TableContainer>
-          <Table aria-labelledby="Clients" >
-            <ClientsTableHead
+          <Table aria-labelledby="Invoices" >
+            <InvoicesTableHead
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
               pagination={props.isDetailPage}
             />
-            <ClientsTableBody rows={clientsArray}/>
+            <InvoicesTableBody rows={invoicesArray}/>
           </Table>
         </TableContainer>
         {
-          props.isDetailPage && totalClients > DEFAULT_ROWS_PER_PAGE
+          props.isDetailPage && totalInvoices > DEFAULT_ROWS_PER_PAGE
           ? (<GenericPagination
-              totalRecords={totalClients}
+              totalRecords={totalInvoices}
               currentPageNumber={currentPageNumber}
               handlePaginationChange={handlePaginationChange}
             />)
           : null
         }
-      </Paper>
+      </Paper> */}
     </Box>
   )
 

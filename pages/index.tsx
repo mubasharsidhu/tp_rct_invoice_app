@@ -10,7 +10,7 @@ import { DEFAULT_ROWS_PER_PAGE } from './config/config'
 
 type ClientPageProps = {
   clients: ClientResponseModel[],
-  total: number
+  total  : number
 }
 
 

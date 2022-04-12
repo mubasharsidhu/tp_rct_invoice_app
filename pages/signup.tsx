@@ -15,15 +15,20 @@ export const SignupPage = () => {
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
-
   const onSignupRequest = async (data: SignupInputs) => {
 
     try {
-      const response = await AuthAPI.signupUserStep1(data);
+      const signupResponse = await AuthAPI.signup(data);
 
-      console.log(response)
-      //setCookies('userToken', jsonResponse.token);
-      //router.push("/");
+      const payload = {
+        email   : data.email,
+        password: data.password
+      }
+      const response = await AuthAPI.login(payload);
+
+      setCookies('userToken', response.token);
+      window.localStorage.setItem("userName", response.name);
+      router.push(`/signup/company`);
 
     } catch (err: any) {
 
