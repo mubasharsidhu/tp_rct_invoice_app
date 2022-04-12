@@ -140,57 +140,56 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
 
             <Stack
               key={field.id}
-              direction="row"
               divider={<Divider orientation="vertical" flexItem />}
-              spacing={2}
-              sx={{p:2, mt:2, bgcolor: (theme) =>theme.palette.grey[200] }}
-            >
+              spacing={1}
+              justifyContent="space-evenly"
+              sx={{
+                mt:1, p:1, bgcolor: (theme) =>theme.palette.grey[200], borderRadius: 1,
+                display:'flex', flexDirection:'row', alignItems:'center'
+              }}
+              >
+                <Button
+                  type="button"
+                  variant="contained"
+                  disabled={items.length === 1}
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    remove(index);
+                  }}
+                  sx={{ height: '100%', mb:2 }}
+                >-</Button>
 
-              <Button
-                type="button"
-                variant="contained"
-                disabled={items.length === 1}
-                onClick={(ev) => {
-                  ev.preventDefault();
-                  remove(index);
-                }}
-              >-</Button>
+                <TextField
+                  id="item"
+                  name="item"
+                  label="Item"
+                  required={true}
+                  inputProps={{...register(`items.${index}.item`)} }
+                  error={!!errors.items?.[index]?.item ?? false}
+                  helperText={errors.items?.[index]?.item?.message ?? " "}
+                />
 
-              <TextField
-                id="item"
-                name="item"
-                label="Item"
-                required={true}
-                margin="dense"
-                inputProps={{...register(`items.${index}.item`), 'data-test': `invoice-item-${index}-item`} }
-                error={!!errors.items?.[index]?.item ?? false}
-                helperText={errors.items?.[index]?.item?.message}
-              />
-
-              <TextField
-                id="price"
-                name="price"
-                label="Price"
-                required={true}
-                margin="dense"
-                inputProps={{...register(`items.${index}.price`), 'data-test': `invoice-item-${index}-price`} }
-                error={!!errors.items?.[index]?.price}
-                helperText={errors.items?.[index]?.price?.message}
-              />
+                <TextField
+                  id="price"
+                  name="price"
+                  label="Price"
+                  required={true}
+                  inputProps={{...register(`items.${index}.price`)} }
+                  error={!!errors.items?.[index]?.price}
+                  helperText={errors.items?.[index]?.price?.message ?? " "}
+                />
 
             </Stack>
-
           ))}
+
           <Button
             variant="contained"
-            sx={{mt:2}}
             onClick={(ev) => {
               ev.preventDefault();
               append({})
             }}
+            sx={{mt:2}}
           >+</Button>
-
-
 
           <Button type="submit" fullWidth={true} variant="contained" sx={{mt:2}}>Submit Invoice</Button>
 
