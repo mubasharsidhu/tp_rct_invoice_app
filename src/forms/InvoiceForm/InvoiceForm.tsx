@@ -1,12 +1,12 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Box, Button, Divider, Grid, Stack, TextField, TextFieldProps } from "@mui/material";
+import { Box, Button, Divider, Stack, TextField } from "@mui/material";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 import { useEffect, useState } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 
 const InvoiceItemSchema = yup.object({
@@ -40,7 +40,7 @@ export type InvoiceFormProps = {
 export const InvoiceForm = (props: InvoiceFormProps) => {
 
 
-  const { control, register, handleSubmit, formState: { errors } } = useForm<InvoiceInputParams>({
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<InvoiceInputParams>({
     mode: "onBlur",
     resolver: yupResolver(InvoiceSchema),
     defaultValues: {
@@ -53,6 +53,10 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
     name: "items",
   });
 
+
+  const handleInvoiceRequest = (data: InvoiceInputParams) => {
+    console.log("ready to submit", data)
+  }
 
   useEffect(() => {
     //reset(props.currentInvoice);
@@ -68,34 +72,29 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
           maxWidth="sm"
           component="form"
           noValidate
-          onSubmit={handleSubmit(props.onInvoiceDataSubmitRequest)}
+          onSubmit={handleSubmit(handleInvoiceRequest)}
         >
           {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
 
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <MobileDatePicker
-              label="Date mobile"
-              inputFormat="MM/dd/yyyy"
+            <DatePicker
+
+              //id="invoiceDate"
+              //name="invoiceDate"
+              label="Date"
+              //required={true}
+              //fullWidth={true}
+              //inputProps={{ ...register("invoiceDate", { required: true }) }}
+              //error={!!errors.invoiceDate}
+              //helperText={errors.invoiceDate?.message ?? " "}
+              //label="Basic example"
               value={value}
-              onChange={(newValue: Date | null) => {
+              onChange={(newValue) => {
                 setValue(newValue);
               }}
-              renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => <TextField {...params} />}
+              renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-
-
-          <TextField
-            id="invoiceDate"
-            name="invoiceDate"
-            label="Date"
-            required={true}
-            fullWidth={true}
-            margin="dense"
-            inputProps={{ ...register("invoiceDate", { required: true }) }}
-            error={!!errors.invoiceDate}
-            helperText={errors.invoiceDate?.message ?? " "}
-          />
 
           <TextField
             id="invoiceDueDate"

@@ -17,7 +17,7 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
   const invoiceID                        = router.query.id as string;
 
   let defaultCurrentInvoice: InvoiceInputParams | undefined;
-  if ( props.formType === "edit" ) {
+  /* if ( props.formType === "edit" ) {
     // This space in the first set of default values is necessary otherwise MUI do not set the CSS for defaultValue
     // and when useEffect fetches and return the new default values
     // the Label within the input and the defaultValue messes with eachother.
@@ -30,11 +30,11 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
       companyTaxNumber: ' ',
       companyRegNumber: ' '
     }
-  }
+  } */
 
   const [currentInvoice, setCurrentInvoice] = useState<InvoiceInputParams | undefined>(defaultCurrentInvoice);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if ( authUserToken === null || !invoiceID ) {
       return;
     }
@@ -65,28 +65,35 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
           companyRegNumber: response.invoice?.companyDetails.regNumber
         }
         setErrorMessage(""); // resetting the error message if it was there before
-        setCurrentInvoice(theInvoice as InvoiceInputParams);
+        //setCurrentInvoice(theInvoice as InvoiceInputParams);
       }
 
     })
 
-  }, [authUserToken, invoiceID]);
+  }, [authUserToken, invoiceID]); */
+
+  console.log('1212');
 
   return (
     <>
       <InvoiceForm
         genericError={errorMessage}
         currentInvoice={currentInvoice}
-        onInvoiceDataSubmitRequest={ async (invoiceData) => {
+        onInvoiceDataSubmitRequest={ async (invoiceData: InvoiceInputParams) => {
 
-          if (! authUserToken) {
+          console.log('iform: container: invoiceData: ', invoiceData);
+
+          /* if (! authUserToken) {
             return;
           }
 
+
           try {
 
-            const httpResponse = await InvoiceAPI.manageInvoice( authUserToken, props.formType, invoiceData );
-            router.push("/invoices");
+            console.log('onInvoiceDataSubmitRequest: container' );
+
+            //const httpResponse = await InvoiceAPI.manageInvoice( authUserToken, props.formType, invoiceData );
+            //router.push("/invoices");
 
           } catch (err: unknown) {
 
@@ -99,7 +106,7 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
               }
             }
 
-          }
+          } */
 
         }}
 
