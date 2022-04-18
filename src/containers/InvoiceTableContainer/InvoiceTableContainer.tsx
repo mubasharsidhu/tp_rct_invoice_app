@@ -3,7 +3,7 @@ import router from "next/router"
 import { memo, useEffect, useState } from "react"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
 import { InvoiceResponseModel, InvoiceJobs as InvoiceJobs } from "../../api/invoices"
-import { InvoicesTableBody } from "../../components/Invoices/InvoicesTableBody"
+import { InvoicePropsModel as InvoiceRowPropsModel, InvoicesTableBody } from "../../components/Invoices/InvoicesTableBody"
 import { InvoicesTableHead } from "../../components/Invoices/InvoicesTableHead"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
 import { GenericPagination } from "../../components/Generic/GenericPagination"
@@ -54,7 +54,7 @@ export const headCells: readonly HeadCell[] = [
 
 export type InvoiceTableContainerProps = {
   initialPayload?: {
-    invoices: InvoiceResponseModel[],
+    invoices: InvoiceRowPropsModel[],
     total  : number,
   },
   isDetailPage?: boolean,
@@ -68,7 +68,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
   const offset                 = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
   const authUserToken                     = useAuthContext().authUserToken;
-  const [invoicesArray, setInvoicesArray] = useState<InvoiceResponseModel[]>(initialPayloadInvoices);
+  const [invoicesArray, setInvoicesArray] = useState<InvoiceRowPropsModel[]>(initialPayloadInvoices);
   const [errorMessage, setErrorMessage]   = useState<string | undefined>();
 
   const orderBy                = router.query.orderBy ? router.query.orderBy as InvoiceSortBy : 'clientName';

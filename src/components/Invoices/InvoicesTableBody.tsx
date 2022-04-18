@@ -5,12 +5,12 @@ import { CommonJobs } from "../../api/common";
 import { GenericTableDropdown } from "../Generic/GenericDropdown";
 
 
-export type InvoiceResponseModel = {
+export type InvoicePropsModel = {
   client: {
     id            : string;
     name          : string;
     user_id       : string;
-    email         : number;
+    email         : string;
     companyDetails: {
       name     : string;
       address  : string;
@@ -30,7 +30,7 @@ export type InvoiceResponseModel = {
 }
 
 type InvoicesTableBodyProps = {
-  rows: InvoiceResponseModel[]
+  rows: InvoicePropsModel[]
 }
 
 
