@@ -57,31 +57,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       offset : ( parseInt(context.query?.page as string, 10 ) - 1 ?? 1) * DEFAULT_ROWS_PER_PAGE
     });
 
-
-    //let searchOptions: searchOptionType = [];
-    /* const clientsHandlerResponse = getClientsHandler({
-      authUserToken: authUserToken,
-      orderBy      : 'clientName',
-      order        : 'asc',
-      limit        : -1
-    });
-
-    await clientsHandlerResponse.then((response) => {
-
-      if ( response.type === "success" ) {
-        if ( response.clients ) {
-          response.clients.map((data) => {
-            if(!searchOptions.includes(data.name)){
-              searchOptions.push(data.name)
-            }
-          });
-        }
-      }
-      // else searchOptions is already set to [];
-
-    }); */
-
-
     return {
       props: {
         clients      : JSON.parse(JSON.stringify(clientResponse.clients)),

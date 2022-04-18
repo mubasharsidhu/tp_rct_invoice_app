@@ -2,18 +2,17 @@ import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
 import { memo, useEffect, useState } from "react"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
-import { InvoiceAPI } from "../../api/invoices"
+import { InvoiceResponseModel, InvoiceJobs as InvoiceJobs } from "../../api/invoices"
 import { InvoicesTableBody } from "../../components/Invoices/InvoicesTableBody"
 import { InvoicesTableHead } from "../../components/Invoices/InvoicesTableHead"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
 import { GenericPagination } from "../../components/Generic/GenericPagination"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
-import { InvoiceResponseModel } from "../InvoiceDetailContainer/InvoiceDetailContainer"
 
 
 export type Order = 'asc' | 'desc';
 
-export type InvoiceSortBy = 'clientName' | 'dueDate';
+export type InvoiceSortBy = 'clientName' | 'invoiceNumber' | 'dueDate' | 'value';
 
 interface HeadCell {
   id         : string;
@@ -32,12 +31,18 @@ export const headCells: readonly HeadCell[] = [
     label: 'Company Name',
   },
   {
-    id   : 'companyName',
-    label: 'Company Name',
+    id        : 'invoiceNumber',
+    label     : 'Number',
+    isSortable: true
   },
   {
-    id        : 'invoicesCount',
-    label     : 'Invoices Count',
+    id        : 'dueDate',
+    label     : 'Due Date',
+    isSortable: true
+  },
+  {
+    id        : 'value',
+    label     : 'Total',
     isSortable: true
   },
   {
@@ -56,54 +61,17 @@ export type InvoiceTableContainerProps = {
 }
 
 
-export const getInvoicesHandler = async (params: {
-  authUserToken: string,
-  orderBy      : InvoiceSortBy,
-  order        : Order,
-  limit?       : number,
-  offset?      : number
-}) => {
-
-  try {
-    const invoiceResponse = await InvoiceAPI.getInvoices(params.authUserToken, {
-      order  : params.order,
-      orderBy: params.orderBy,
-      limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
-      offset : params.offset
-    });
-
-    return {
-      type   : "success" as string,
-      invoices: invoiceResponse.invoices as InvoiceResponseModel[],
-      total  : invoiceResponse.total as number
-    }
-
-  } catch (err) {
-
-    return {
-      type : "error" as string,
-      error: err as any
-    }
-
-  }
-
-}
-
-
 export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) => {
-
-  console.log('memo props: ', props);
-
 
   const initialPayloadInvoices = props.initialPayload?.invoices ?? [];
   const totalInvoices          = props.initialPayload?.total ?? 0;
-  const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
+  const offset                 = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
-  const authUserToken                   = useAuthContext().authUserToken;
+  const authUserToken                     = useAuthContext().authUserToken;
   const [invoicesArray, setInvoicesArray] = useState<InvoiceResponseModel[]>(initialPayloadInvoices);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>();
+  const [errorMessage, setErrorMessage]   = useState<string | undefined>();
 
-  const orderBy                = router.query.orderBy ? router.query.orderBy as InvoiceSortBy : 'invoiceName';
+  const orderBy                = router.query.orderBy ? router.query.orderBy as InvoiceSortBy : 'clientName';
   const order                  = router.query.order ? router.query.order as Order : 'asc';
   const currentPageNumber      = router.query.page ? parseInt(router.query.page as string, 10) : 1
 
@@ -120,13 +88,12 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
     router.push(`/invoices?orderBy=${property}&order=${newOrder}`);
   };
 
-
   useEffect(() => {
     if ( authUserToken === null ) {
       return;
     }
 
-    const invoicesHandlerResponse = getInvoicesHandler({
+    const invoicesHandlerResponse = InvoiceJobs.getInvoices({
       authUserToken: authUserToken,
       orderBy      : orderBy,
       order        : order,
@@ -154,7 +121,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
 
   return (
     <Box >
-      {/* {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
+      {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <Paper sx={{ mb: 2 }}>
         <TableContainer>
           <Table aria-labelledby="Invoices" >
@@ -176,7 +143,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
             />)
           : null
         }
-      </Paper> */}
+      </Paper>
     </Box>
   )
 

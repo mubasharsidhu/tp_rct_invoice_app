@@ -1,65 +1,50 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { InvoiceAPI, InvalidUserIDError, InvalidUserTokenError } from "../../api/invoices"
+import { InvoiceAPI, InvalidInvoiceIDError, InvalidUserTokenError, InvoiceJobs, InvoiceResponseModel } from "../../api/invoices"
 import { InvoiceDetail } from "../../components/Invoices/InvoiceDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 
 
-export const getInvoiceByIDHandler = async (params: {
-  authUserToken: string,
-  invoiceID     : string
-}) => {
+/* export type InvoiceResponseModel = {
 
-  try {
-    const invoiceResponse = await InvoiceAPI.getInvoicesByID(params.authUserToken, {
-      invoiceID : params.invoiceID
-    });
-
-    return {
-      type   : "success" as string,
-      invoice: invoiceResponse.invoice as InvoiceResponseModel,
-    }
-
-  } catch (err: unknown) {
-
-    return {
-      type : "error" as string,
-      error: err as InvalidUserTokenError | InvalidUserIDError
-    }
-
+  client: {
+    id            : string;
+    name          : string;
+    user_id       : string;
+    email         : number;
+    companyDetails: {
+      name     : string;
+      address  : string;
+      vatNumber: string;
+      regNumber: string;
+    };
+  },
+  invoice: {
+    client_id     : string;
+    date  : string;
+    dueDate: string;
+    id: string;
+    invoice_number: string;
+    userIid: string;
+    invoice_numbervalue: string;
   }
 
-}
-
-
-export type InvoiceResponseModel = {
-  id            : string;
-  email         : string;
-  name          : string;
-  totalBilled   : number;
-  invoicesCount : number;
-  companyDetails: {
-    name     : string;
-    address  : string;
-    vatNumber: string;
-    regNumber: string;
-  };
-}
+} */
 
 
 export const InvoiceDetailContainer = () => {
 
-  const router                            = useRouter();
-  const authUserToken                     = useAuthContext().authUserToken;
-  const invoiceID                          = router.query.id as string;
+  const router                              = useRouter();
+  const authUserToken                       = useAuthContext().authUserToken;
+  const invoiceID                           = router.query.id as string;
   const [currentInvoice, setCurrentInvoice] = useState<InvoiceResponseModel | undefined>();
-  const [errorMessage, setErrorMessage]   = useState<string | undefined>();
+  const [errorMessage, setErrorMessage]     = useState<string | undefined>();
 
   useEffect(() => {
     if ( authUserToken === null || !invoiceID ) {
       return;
     }
-    const invoicesHandlerResponse = getInvoiceByIDHandler({
+    const invoicesHandlerResponse = InvoiceJobs.getInvoiceByID({
       authUserToken: authUserToken,
       invoiceID     : invoiceID
     });

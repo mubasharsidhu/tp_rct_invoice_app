@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { ClientAPI, InvalidUserIDError, InvalidUserTokenError } from "../../api/clients"
+import { ClientAPI, InvalidClientIDError, InvalidUserTokenError } from "../../api/clients"
 import { ClientDetail } from "../../components/Clients/ClientDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 
@@ -24,7 +24,7 @@ export const getClientByIDHandler = async (params: {
 
     return {
       type : "error" as string,
-      error: err as InvalidUserTokenError | InvalidUserIDError
+      error: err as InvalidUserTokenError | InvalidClientIDError
     }
 
   }

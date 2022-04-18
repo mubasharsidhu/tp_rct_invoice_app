@@ -1,35 +1,65 @@
 import { ServerResponse } from "http";
+import { DEFAULT_ROWS_PER_PAGE } from "../../pages/config/config";
 
 
 export type Order        = 'asc' | 'desc';
-export type InvoiceSortBy = 'invoiceName' | 'invoicesCount';
+export type InvoiceSortBy = 'clientName' | 'invoiceNumber' | 'dueDate' | 'value';
 
 export type InvoiceInputParams = {
-  id?             : string,
-  email           : string,
-  invoiceName      : string,
-  companyName     : string,
-  companyAddress  : string,
-  companyTaxNumber: string,
-  companyRegNumber: string,
+  id?           : string,
+  clientID      : string,
+  invoiceDate   : Date,
+  invoiceDueDate: Date,
+  invoiceNumber : string,
+  projectCode   : string,
+  totalValue    : number,
+  items         : Array<{
+    item : string,
+    price: number,
+  }>,
 }
 
 export class InvalidUserTokenError extends Error {}
 export class InvoiceValidationError extends Error {}
-export class InvalidUserIDError extends Error {}
+export class InvalidInvoiceIDError extends Error {}
 
 export type InvoiceResponseModel = {
-  id            : string;
-  email         : string;
-  name          : string;
-  totalBilled   : number;
-  invoicesCount : number;
-  companyDetails: {
-    name     : string;
-    address  : string;
-    vatNumber: string;
-    regNumber: string;
-  };
+  client: {
+    id            : string,
+    name          : string,
+    user_id       : string,
+    email         : string,
+    companyDetails: {
+      name     : string,
+      address  : string,
+      vatNumber: string,
+      regNumber: string,
+    };
+  },
+  invoice: {
+    id            : string,
+    userID        : string,
+    client_id     : string,
+    date          : Date,
+    dueDate       : Date,
+    invoice_number: string,
+    value         : number,
+    projectCode?  : number,
+    meta          : Array<{item: string, price: number}>
+  }
+}
+
+
+export type InvoiceDetailResponseModel = {
+  id            : string,
+  user_id       : string,
+  client_id     : string,
+  date          : Date,
+  dueDate       : Date,
+  invoice_number: string,
+  value         : number,
+  projectCode?  : string,
+  meta          : Array<{item: string, price: number}>
 }
 
 
@@ -42,14 +72,13 @@ export const InvoiceAPI = {
   ) => {
     const payload = {
       id            : params.id,
-      email         : params.email,
-      name          : params.invoiceName,
-      companyDetails: {
-        name     : params.companyName,
-        address  : params.companyAddress,
-        vatNumber: params.companyTaxNumber,
-        regNumber: params.companyRegNumber
-      }
+      invoice_number: params.invoiceNumber,
+      client_id     : params.clientID,
+      projectCode   : params.projectCode,
+      date          : params.invoiceDate,
+      dueDate       : params.invoiceDueDate,
+      value         : params.totalValue,
+      meta          : params.items
     }
 
     if ( formType === "add" ) {
@@ -65,15 +94,25 @@ export const InvoiceAPI = {
       body: JSON.stringify(payload)
     });
 
-    if ( httpResponse.status >= 400 ) {
+    if ( httpResponse.status === 401 ) {
+      throw new InvalidUserTokenError( await httpResponse.text() );
+    }
+    if ( httpResponse.status === 404 ) {
+      throw new InvoiceValidationError( await httpResponse.text() );
+    }
+    if ( httpResponse.status === 500 ) {
       throw new InvoiceValidationError( await httpResponse.text() );
     }
 
     const jsonResponse = await httpResponse.json();
 
+    console.log('params', jsonResponse);
+    console.log('payload', payload);
+    return;
+
   },
 
-  getInvoicesByID: async (authToken: string, params: {
+  getInvoiceByID: async (authToken: string, params: {
     invoiceID: string
   }) => {
 
@@ -87,7 +126,7 @@ export const InvoiceAPI = {
       throw new InvalidUserTokenError('Invalid access: Login again');
     }
     if ( httpResponse.status === 404 ) {
-      throw new InvalidUserIDError('No user Found with this ID');
+      throw new InvalidInvoiceIDError('No Invoice Found with this ID');
     }
 
     try {
@@ -95,8 +134,8 @@ export const InvoiceAPI = {
       const jsonReponse = await httpResponse.json();
 
       return jsonReponse as {
-        type: "success",
-        invoice: InvoiceResponseModel
+        type   : "success",
+        invoice: InvoiceDetailResponseModel
       }
 
     } catch (err) {
@@ -143,13 +182,11 @@ export const InvoiceAPI = {
       throw new InvalidUserTokenError('Invalid Access')
     }
 
-
     try {
 
       const jsonReponse = await httpResponse.json();
       return jsonReponse as {
         type: "success",
-        total: number,
         invoices: InvoiceResponseModel[]
       }
 
@@ -163,5 +200,70 @@ export const InvoiceAPI = {
     }
 
   }
+
+}
+
+
+export const InvoiceJobs = {
+
+  getInvoices : async (params: {
+    authUserToken: string,
+    orderBy      : InvoiceSortBy,
+    order        : Order,
+    limit?       : number,
+    offset?      : number
+  }) => {
+
+    try {
+      const invoiceResponse = await InvoiceAPI.getInvoices(params.authUserToken, {
+        order  : params.order,
+        orderBy: params.orderBy,
+        limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
+        offset : params.offset
+      });
+
+      return {
+        type    : "success" as string,
+        invoices: invoiceResponse.invoices as InvoiceResponseModel[],
+        total   : invoiceResponse.total as number
+      }
+
+    } catch (err) {
+
+      return {
+        type : "error" as string,
+        error: err as any
+      }
+
+    }
+
+  },
+
+  getInvoiceByID : async (params: {
+    authUserToken: string,
+    invoiceID     : string
+  }) => {
+
+    try {
+      const invoiceResponse = await InvoiceAPI.getInvoiceByID(params.authUserToken, {
+        invoiceID : params.invoiceID
+      });
+
+      return {
+        type   : "success" as string,
+        invoice: invoiceResponse.invoice as InvoiceDetailResponseModel,
+      }
+
+    } catch (err: unknown) {
+
+      return {
+        type : "error" as string,
+        error: err as InvalidUserTokenError | InvalidInvoiceIDError
+      }
+
+    }
+
+  }
+
 
 }

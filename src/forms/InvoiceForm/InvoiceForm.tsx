@@ -1,112 +1,219 @@
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Box, Button, Divider, Stack, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Divider, Stack, TextField, TextFieldProps } from "@mui/material";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { CommonJobs } from "../../api/common";
 
 
 const InvoiceItemSchema = yup.object({
-  item : yup.string().required(),
-  price: yup.number().required().typeError("price must be a positive number")
+  item : yup.string().required("Item is a required field"),
+  price: yup.number().required().typeError("Price must be a positive number")
 })
+
 
 type InvoiceItemSchemaData = yup.InferType<typeof InvoiceItemSchema>
 
+
 const InvoiceSchema = yup.object({
-  invoiceDate   : yup.string().required(),
-  invoiceDueDate: yup.string().required(),
-  invoiceNumber : yup.string().required(),
-  projectCode   : yup.string().required(),
-  items         : yup.array().of(InvoiceItemSchema).required().min(1)
+  clientID      : yup.string().required("Please select a client"),
+  invoiceDate   : yup.date().required("The Date field is required."),//.typeError(),//.typeError("The Date field is required and in a valid Date format. (mm/dd/yyyy"),
+  invoiceDueDate: yup.date().required("The Due Date field is required."),//.typeError(),//.typeError("The Due Date field is required and in a valid Date format. (mm/dd/yyyy"),
+  invoiceNumber : yup.string().required("Invoice Number is a required field"),
+  projectCode   : yup.string().required("Project Code is a required field"),
+  items         : yup.array().of(InvoiceItemSchema).required().min(1),
 })
 
-
+//userID    : string,
+//totalPrice: number,
 export interface InvoiceInputParams extends Omit<yup.InferType<typeof InvoiceSchema>, 'items'> {
-  items: InvoiceItemSchemaData[]
+  totalValue: number;
+  items     : InvoiceItemSchemaData[]
 }
 
 
 export type InvoiceFormProps = {
-  genericError?             : string
-  currentInvoice?           : InvoiceInputParams | undefined
+  genericError?             : string,
+  currentInvoice?           : InvoiceInputParams | undefined,
+  allClientsList?           : Array<{ id: string, label: string }> | undefined,
+  selectedClientID          : string,
+  setSelectedClientID       : (selectedClientID: string) => void,
   onInvoiceDataSubmitRequest: (data: InvoiceInputParams) => unknown
 }
 
 
 export const InvoiceForm = (props: InvoiceFormProps) => {
 
+  const [invoiceDate, setInvoiceDate]       = useState<Date | null>(new Date());
+  const [invoiceDueDate, setInvoiceDueDate] = useState<Date | null>(new Date());
 
-  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<InvoiceInputParams>({
-    mode: "onBlur",
-    resolver: yupResolver(InvoiceSchema),
+  const { control, register, handleSubmit, setFocus, reset, formState: { errors } } = useForm<InvoiceInputParams>({
+    mode         : "onBlur",
+    resolver     : yupResolver(InvoiceSchema),
     defaultValues: {
+      clientID: "",
       items: [{}]
     }
   });
 
-  const { fields: items, append, prepend, remove, swap, move, insert } = useFieldArray({
+  const { fields: items, append, remove } = useFieldArray({
     control,
     name: "items",
   });
 
 
-  const handleInvoiceRequest = (data: InvoiceInputParams) => {
-    console.log("ready to submit", data)
-  }
+  // To enable focus on change, when selecting after null value
+  useEffect(() => {
+    if (invoiceDate!==null) {
+      setFocus("invoiceDate");
+    }
+  }, [invoiceDate]);
+
+  // To enable focus on change, when selecting after null value
+  useEffect(() => {
+    if (invoiceDate) {
+      setFocus("invoiceDueDate");
+    }
+  }, [invoiceDueDate]);
+
 
   useEffect(() => {
-    //reset(props.currentInvoice);
+    reset(props.currentInvoice);
   }, [props.currentInvoice]);
-
-
-  const [value, setValue] = useState<Date | null>(null);
 
   return (
     <>
+
       <Box sx={{ display:'flex', flexDirection:'column', alignItems:'center' }} >
+
         <Box
           maxWidth="sm"
           component="form"
           noValidate
-          onSubmit={handleSubmit(handleInvoiceRequest)}
+          onSubmit={handleSubmit(props.onInvoiceDataSubmitRequest)}
         >
           {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
 
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
+          <Controller
+            name="clientID"
+            control={control}
+            render={({ field: { ref, ...field }, fieldState: { error } }) => {
+              return (
+                <Autocomplete
+                  {...field}
+                  freeSolo
+                  options={props.allClientsList ? props.allClientsList.map((option) => option) : []}
+                  value={field.value && props.allClientsList
+                    ? props.allClientsList.find((obj)=>{
+                        return obj.id === field.value ? obj.id : ""
+                      })
+                    : ""
+                  }
+                  onChange={(event: SyntheticEvent<Element, Event>, optionObject: { id: string, label: string } | string | null ): void => {
+                    const clientID = optionObject && typeof optionObject === 'object' ? optionObject.id : "";
+                    props.setSelectedClientID(clientID);
+                    return field.onChange(clientID);
+                  }}
+                  renderInput={(params) => {
+                    return (
+                      <TextField
+                        {...params}
+                        id={"clientID"}
+                        name={"clientID"}
+                        label={"Select a Client"}
+                        required={true}
+                        margin="dense"
+                        error={!!errors.clientID}
+                        helperText={errors.clientID?.message ?? " "}
+                        inputRef={ref}
+                      />
+                    )
+                  }}
+                />
+              )
+            }}
+          />
 
-              //id="invoiceDate"
-              //name="invoiceDate"
-              label="Date"
-              //required={true}
-              //fullWidth={true}
-              //inputProps={{ ...register("invoiceDate", { required: true }) }}
-              //error={!!errors.invoiceDate}
-              //helperText={errors.invoiceDate?.message ?? " "}
-              //label="Basic example"
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Controller
+              name="invoiceDate"
+              control={control}
+              render={({ field: { ref, ...field }, fieldState: { error } }) => {
+                return (
+                  <DatePicker
+                    {...field}
+                    label="Date"
+                    value={field.value ? CommonJobs.formatDate(field.value) : "" }
+                    disablePast={true}
+                    allowSameDateSelection={true}
+                    InputProps={{ ...register("invoiceDate", { required: true } ) }}
+                    onChange={(newValue: Date | null) => {
+                      setInvoiceDate(newValue);
+                      return field.onChange(newValue);
+                    }}
+                    renderInput={(params: TextFieldProps) => {
+                      return (
+                        <TextField
+                          id="invoiceDate"
+                          name="invoiceDate"
+                          label="Date"
+                          required={true}
+                          fullWidth={true}
+                          margin="dense"
+                          helperText={errors.invoiceDate?.message ?? "mm/dd/yyyy"}
+                          inputRef={ref}
+                          {...params}
+                          error={!!errors.invoiceDate}
+                        />
+                      )
+                    }}
+                  />
+                )}
+              }
+            />
+
+            <Controller
+              name="invoiceDueDate"
+              control={control}
+              //defaultValue={new Date()}
+              render={({ field: { ref, ...field }, fieldState: { error } }) => {
+                return (
+                  <DatePicker
+                    {...field}
+                    label="Due Date"
+                    value={field.value ? CommonJobs.formatDate(field.value) : "" }
+                    disablePast={true}
+                    allowSameDateSelection={true}
+                    InputProps={{ ...register("invoiceDueDate", { required: true } ) }}
+                    onChange={(newValue: Date | null) => {
+                      setInvoiceDueDate(newValue);
+                      return field.onChange(newValue);
+                    }}
+                    renderInput={(params: TextFieldProps) => {
+                      return (
+                        <TextField
+                          id="invoiceDueDate"
+                          name="invoiceDueDate"
+                          label="Due Date"
+                          required={true}
+                          fullWidth={true}
+                          margin="dense"
+                          helperText={errors.invoiceDueDate?.message ?? "mm/dd/yyyy"}
+                          inputRef={ref}
+                          {...params}
+                          error={!!errors.invoiceDueDate}
+                        />
+                      )
+                    }}
+                  />
+                )}
+              }
             />
           </LocalizationProvider>
-
-          <TextField
-            id="invoiceDueDate"
-            name="invoiceDueDate"
-            label="Due Date"
-            required={true}
-            fullWidth={true}
-            margin="dense"
-            inputProps={{ ...register("invoiceDueDate", { required: true }) }}
-            error={!!errors.invoiceDueDate}
-            helperText={errors.invoiceDueDate?.message ?? " "}
-          />
 
           <TextField
             id="invoiceNumber"

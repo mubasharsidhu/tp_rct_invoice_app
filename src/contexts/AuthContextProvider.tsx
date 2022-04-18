@@ -48,7 +48,7 @@ const useUserAuth = () => {
   const router                            = useRouter();
   const [isLoading, setIsLoading]         = useState<boolean>(true);
   const [authUserToken, setAuthUserToken] = useState<null | string>(null);
-  const [isCompanyAvailable, SetIsCompanyAvailable] = useState<boolean>(true);
+  const [isCompanyAvailable, setIsCompanyAvailable] = useState<boolean>(true);
 
   useEffect(() => {
     const userToken = getCookie("userToken") as string;
@@ -63,8 +63,11 @@ const useUserAuth = () => {
           router.push('/login');
         }
 
+        if ( response.me?.companyDetails && router.pathname === "/signup/company" ) {
+          router.push(`/`);
+        }
         if (!response.me?.companyDetails ) {
-          SetIsCompanyAvailable(false);
+          setIsCompanyAvailable(false);
           // && router.pathname !== "/signup/company"
           //router.push(`signup/company`);
         }
@@ -80,7 +83,7 @@ const useUserAuth = () => {
   }, [])
 
   if (!isCompanyAvailable && router.pathname !== "/signup/company") {
-    router.push(`signup/company`);
+    router.push(`/signup/company`);
   }
 
   return {

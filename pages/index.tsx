@@ -18,12 +18,12 @@ const Home: NextPage<ClientPageProps> = (props) => {
   return (
     <AuthContextProvider>
       <Layout pageTitle='Dashboard'>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-          <Grid item xs={6}>
+        <Grid container rowSpacing={1} columnSpacing={3}>
+          <Grid item md={12} lg={6}>
             <Typography>Clients</Typography>
             <ClientTableContainer initialPayload={props}/>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item md={12} lg={6}>
             <Typography>Invoices (To be implemented...)</Typography>
             <ClientTableContainer initialPayload={props}/>
           </Grid>

@@ -16,7 +16,7 @@ export type ClientInputParams = {
 
 export class InvalidUserTokenError extends Error {}
 export class ClientValidationError extends Error {}
-export class InvalidUserIDError extends Error {}
+export class InvalidClientIDError extends Error {}
 
 export type ClientResponseModel = {
   id            : string;
@@ -87,7 +87,7 @@ export const ClientAPI = {
       throw new InvalidUserTokenError('Invalid access: Login again');
     }
     if ( httpResponse.status === 404 ) {
-      throw new InvalidUserIDError('No user Found with this ID');
+      throw new InvalidClientIDError('No Client Found with this ID');
     }
 
     try {

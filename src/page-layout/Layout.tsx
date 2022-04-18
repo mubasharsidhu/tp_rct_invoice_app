@@ -50,16 +50,6 @@ const Layout = (props: LayoutProps ) => {
           : null
         }
 
-        {
-          /* props.isSearchEnabled && props.searchOptions
-          ?
-            <GenericSearch
-              pageTitle={props.pageTitle}
-              searchOptions={props.searchOptions}
-            />
-          : null */
-        }
-
       </Grid>
 
       {props.children}

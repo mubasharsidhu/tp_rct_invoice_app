@@ -1,9 +1,33 @@
 import { Add, Edit } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
 import { useRouter } from "next/router";
-import { InvoiceResponseModel } from "../../containers/InvoiceTableContainer/InvoiceTableContainer";
+import { CommonJobs } from "../../api/common";
 import { GenericTableDropdown } from "../Generic/GenericDropdown";
 
+
+export type InvoiceResponseModel = {
+  client: {
+    id            : string;
+    name          : string;
+    user_id       : string;
+    email         : number;
+    companyDetails: {
+      name     : string;
+      address  : string;
+      vatNumber: string;
+      regNumber: string;
+    };
+  },
+  invoice: {
+    id            : string;
+    userID        : string;
+    client_id     : string;
+    date          : Date;
+    dueDate       : Date;
+    invoice_number: string;
+    value         : number;
+  }
+}
 
 type InvoicesTableBodyProps = {
   rows: InvoiceResponseModel[]
@@ -25,12 +49,12 @@ export const InvoicesTableBody = (props: InvoicesTableBodyProps) => {
               {
                 title      : "Edit",
                 icon       : <Edit fontSize="small" />,
-                redirectURL: `/invoices/${row.id}`
+                redirectURL: `/invoices/${row.invoice.id}`
               },
               {
-                title      : "Add a new invoice for the invoice",
+                title      : "Print Invoice",
                 icon       : <Add fontSize="small" />,
-                redirectURL: `/invoices/${row.id}`
+                redirectURL: `/invoices/print/${row.invoice.id}`
               }
             ];
 
@@ -40,15 +64,16 @@ export const InvoicesTableBody = (props: InvoicesTableBodyProps) => {
                 tabIndex={-1}
                 key={index}
                 onClick={()=>{
-                  router.push(`/invoices/view/${row.id}`);
+                  router.push(`/invoices/view/${row.invoice.id}`);
                 }}
                 sx={{cursor:"pointer"}}
               >
-                <TableCell key={1} padding="normal">{row.name}</TableCell>
-                <TableCell key={2} padding="normal">{row.email}</TableCell>
-                <TableCell key={3} padding="normal">{row.companyDetails.name}</TableCell>
-                <TableCell key={4} padding="normal">{row.invoicesCount}</TableCell>
-                <TableCell key={5} padding="normal">
+                <TableCell key={1} padding="normal">{row.client.name}</TableCell>
+                <TableCell key={2} padding="normal">{row.client.companyDetails.name}</TableCell>
+                <TableCell key={3} padding="normal">{row.invoice.invoice_number}</TableCell>
+                <TableCell key={4} padding="normal">{CommonJobs.formatDate(row.invoice.dueDate) }</TableCell>
+                <TableCell key={5} padding="normal">{row.invoice.value}</TableCell>
+                <TableCell key={6} padding="normal">
                   <GenericTableDropdown
                     index={index}
                     menuItems={menuItems}
@@ -58,7 +83,7 @@ export const InvoicesTableBody = (props: InvoicesTableBodyProps) => {
             );
           })
           :
-          <TableRow><TableCell colSpan={3}>No Record Found!</TableCell></TableRow>
+          <TableRow><TableCell colSpan={6}>No Record Found!</TableCell></TableRow>
         }
 
       </TableBody>
