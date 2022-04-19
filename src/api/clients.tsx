@@ -1,4 +1,5 @@
 import { ServerResponse } from "http";
+import { DEFAULT_ROWS_PER_PAGE } from "../../pages/config/config";
 
 
 export type Order        = 'asc' | 'desc';
@@ -158,6 +159,70 @@ export const ClientAPI = {
       return {
         total: 0,
         clients: []
+      }
+
+    }
+
+  }
+
+}
+
+
+export const ClientJobs = {
+
+  getClientsHandler: async (params: {
+    authUserToken: string,
+    orderBy      : ClientSortBy,
+    order        : Order,
+    limit?       : number,
+    offset?      : number
+  }) => {
+
+    try {
+      const clientResponse = await ClientAPI.getClients(params.authUserToken, {
+        order  : params.order,
+        orderBy: params.orderBy,
+        limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
+        offset : params.offset
+      });
+
+      return {
+        type   : "success" as string,
+        clients: clientResponse.clients as ClientResponseModel[],
+        total  : clientResponse.total as number
+      }
+
+    } catch (err) {
+
+      return {
+        type : "error" as string,
+        error: err as any
+      }
+
+    }
+
+  },
+
+  getClientByID: async (params: {
+    authUserToken: string,
+    clientID     : string
+  }) => {
+
+    try {
+      const clientResponse = await ClientAPI.getClientsByID(params.authUserToken, {
+        clientID : params.clientID
+      });
+
+      return {
+        type   : "success" as string,
+        client: clientResponse.client as ClientResponseModel,
+      }
+
+    } catch (err: unknown) {
+
+      return {
+        type : "error" as string,
+        error: err as InvalidUserTokenError | InvalidClientIDError
       }
 
     }

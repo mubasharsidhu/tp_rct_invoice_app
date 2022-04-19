@@ -1,21 +1,40 @@
-import { Grid, Card, CardHeader, CardContent, Box, Typography, CardActions, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { InvoiceResponseModel } from "../../containers/InvoiceDetailContainer/InvoiceDetailContainer"
+import { Grid, Card, CardHeader, CardContent, Table, TableBody, TableCell, TableRow } from "@mui/material"
+import { ClientPropsModel } from "../Clients/ClientDetail"
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
 
+
+export type InvoiceDetailPropsModel = {
+  id            : string,
+  user_id       : string,
+  client_id     : string,
+  date          : Date,
+  dueDate       : Date,
+  invoice_number: string,
+  value         : number,
+  projectCode?  : string,
+  meta          : Array<{item: string, price: number}>
+}
+
+
 type InvoiceDetailProps = {
-  genericError? : string
-  currentInvoice?: InvoiceResponseModel | undefined
+  genericError?  : string
+  currentInvoice?: InvoiceDetailPropsModel | undefined
+  clientName?    : string,
+  formatDate: (date: Date) => string;
 }
 
 
 export const InvoiceDetail = (props: InvoiceDetailProps) => {
+  console.log(props.currentInvoice)
+  const aa = props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : "";
+  console.log(aa)
   return (
     <>
       {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
 
-      <Grid container spacing={5}>
+      <Grid container spacing={5} sx={{mb:5}}>
 
-        <Grid item key={"Invoice Detail"} xs={12} sm={6} >
+        <Grid item key={"Invoice Detail"} sm={12} md={6} >
           <Card>
             <CardHeader
               title={"Invoice Detail"}
@@ -23,19 +42,25 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
               sx={{ backgroundColor: (theme) =>theme.palette.grey[200] }}
             />
             <CardContent>
-            <Table aria-label="Company table" size="small">
+            <Table aria-label="Invoice table" size="small">
               <TableBody>
                 <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Name:</TableCell><TableCell>{props.currentInvoice?.name}</TableCell>
+                  <TableCell variant="head">Client Name:</TableCell><TableCell>{props.clientName}</TableCell>
                 </TableRow>
                 <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Email:</TableCell><TableCell>{props.currentInvoice?.email}</TableCell>
+                  <TableCell variant="head">Invoice Number:</TableCell><TableCell>{props.currentInvoice?.invoice_number}</TableCell>
+                </TableRow>
+                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                  <TableCell variant="head">Date:</TableCell><TableCell>{props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : ""}</TableCell>
+                </TableRow>
+                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                  <TableCell variant="head">Due Date:</TableCell><TableCell>{props.currentInvoice?.dueDate ? props.formatDate(props.currentInvoice.dueDate) : ""}</TableCell>
                 </TableRow>
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Invoice Count:</TableCell><TableCell>{props.currentInvoice?.invoicesCount}</TableCell>
+                  <TableCell variant="head">Project Code:</TableCell><TableCell>{props.currentInvoice?.projectCode}</TableCell>
                 </TableRow>
                 <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Total Billed:</TableCell><TableCell>{props.currentInvoice?.totalBilled}</TableCell>
+                  <TableCell variant="head">Total Value:</TableCell><TableCell>$ {props.currentInvoice?.value}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -43,28 +68,29 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
           </Card>
         </Grid>
 
-        <Grid item key={"Company Detail"} xs={12} sm={6} >
+        <Grid item key={"Invoice Meta"} sm={12} md={6} >
           <Card>
             <CardHeader
-              title={"Company Detail"}
+              title={"Invoice Meta"}
               titleTypographyProps={{ align: 'center' }}
               sx={{ backgroundColor: (theme) =>theme.palette.grey[200] }}
             />
             <CardContent>
               <Table aria-label="Company table" size="small">
                 <TableBody>
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                      <TableCell variant="head">Name:</TableCell><TableCell>{props.currentInvoice?.companyDetails.name}</TableCell>
-                    </TableRow>
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                      <TableCell variant="head">Reg Number:</TableCell><TableCell>{props.currentInvoice?.companyDetails.regNumber}</TableCell>
-                    </TableRow>
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                      <TableCell variant="head">Tax Number:</TableCell><TableCell>{props.currentInvoice?.companyDetails.vatNumber}</TableCell>
-                    </TableRow>
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                      <TableCell variant="head">Address:</TableCell><TableCell>{props.currentInvoice?.companyDetails.address}</TableCell>
-                    </TableRow>
+
+                  {
+                    props.currentInvoice?.meta
+                    ? props.currentInvoice?.meta.map((data, index)=>{
+                      return (
+                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                          <TableCell variant="head" sx={{textTransform:"capitalize"}}>{data.item}:</TableCell><TableCell>$ {data.price}</TableCell>
+                        </TableRow>
+                      )
+                    })
+                    : null
+                  }
+
                 </TableBody>
               </Table>
             </CardContent>

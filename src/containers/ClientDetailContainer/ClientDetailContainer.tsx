@@ -1,50 +1,8 @@
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { ClientAPI, InvalidClientIDError, InvalidUserTokenError } from "../../api/clients"
+import { ClientJobs, ClientResponseModel } from "../../api/clients"
 import { ClientDetail } from "../../components/Clients/ClientDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
-
-
-export const getClientByIDHandler = async (params: {
-  authUserToken: string,
-  clientID     : string
-}) => {
-
-  try {
-    const clientResponse = await ClientAPI.getClientsByID(params.authUserToken, {
-      clientID : params.clientID
-    });
-
-    return {
-      type   : "success" as string,
-      client: clientResponse.client as ClientResponseModel,
-    }
-
-  } catch (err: unknown) {
-
-    return {
-      type : "error" as string,
-      error: err as InvalidUserTokenError | InvalidClientIDError
-    }
-
-  }
-
-}
-
-
-export type ClientResponseModel = {
-  id            : string;
-  email         : string;
-  name          : string;
-  totalBilled   : number;
-  invoicesCount : number;
-  companyDetails: {
-    name     : string;
-    address  : string;
-    vatNumber: string;
-    regNumber: string;
-  };
-}
 
 
 export const ClientDetailContainer = () => {
@@ -59,7 +17,7 @@ export const ClientDetailContainer = () => {
     if ( authUserToken === null || !clientID ) {
       return;
     }
-    const clientsHandlerResponse = getClientByIDHandler({
+    const clientsHandlerResponse = ClientJobs.getClientByID({
       authUserToken: authUserToken,
       clientID     : clientID
     });

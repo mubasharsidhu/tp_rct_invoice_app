@@ -8,6 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CommonJobs } from "../../api/common";
+import { ComboBox } from "../../components/ComboBox/ComboBox";
 
 
 const InvoiceItemSchema = yup.object({
@@ -21,15 +22,13 @@ type InvoiceItemSchemaData = yup.InferType<typeof InvoiceItemSchema>
 
 const InvoiceSchema = yup.object({
   clientID      : yup.string().required("Please select a client"),
-  invoiceDate   : yup.date().required("The Date field is required."),//.typeError(),//.typeError("The Date field is required and in a valid Date format. (mm/dd/yyyy"),
-  invoiceDueDate: yup.date().required("The Due Date field is required."),//.typeError(),//.typeError("The Due Date field is required and in a valid Date format. (mm/dd/yyyy"),
+  invoiceDate   : yup.date().required("The Date field is required.").typeError("The Date field is required and must have a valid Date format. (mm/dd/yyyy"),
+  invoiceDueDate: yup.date().required("The Due Date field is required.").typeError("The Due Date field is required and must have a valid Date format. (mm/dd/yyyy"),
   invoiceNumber : yup.string().required("Invoice Number is a required field"),
   projectCode   : yup.string().required("Project Code is a required field"),
   items         : yup.array().of(InvoiceItemSchema).required().min(1),
 })
 
-//userID    : string,
-//totalPrice: number,
 export interface InvoiceInputParams extends Omit<yup.InferType<typeof InvoiceSchema>, 'items'> {
   totalValue: number;
   items     : InvoiceItemSchemaData[]
@@ -48,8 +47,8 @@ export type InvoiceFormProps = {
 
 export const InvoiceForm = (props: InvoiceFormProps) => {
 
-  const [invoiceDate, setInvoiceDate]       = useState<Date | null>(new Date());
-  const [invoiceDueDate, setInvoiceDueDate] = useState<Date | null>(new Date());
+  const [invoiceDate, setInvoiceDate]       = useState<Date | null>(null);
+  const [invoiceDueDate, setInvoiceDueDate] = useState<Date | null>(null);
 
   const { control, register, handleSubmit, setFocus, reset, formState: { errors } } = useForm<InvoiceInputParams>({
     mode         : "onBlur",
@@ -75,7 +74,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
 
   // To enable focus on change, when selecting after null value
   useEffect(() => {
-    if (invoiceDate) {
+    if (invoiceDueDate!==null) {
       setFocus("invoiceDueDate");
     }
   }, [invoiceDueDate]);
@@ -116,6 +115,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
                   onChange={(event: SyntheticEvent<Element, Event>, optionObject: { id: string, label: string } | string | null ): void => {
                     const clientID = optionObject && typeof optionObject === 'object' ? optionObject.id : "";
                     props.setSelectedClientID(clientID);
+                    //console.log('optionObject: ', optionObject)
                     return field.onChange(clientID);
                   }}
                   renderInput={(params) => {

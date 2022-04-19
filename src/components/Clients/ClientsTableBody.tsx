@@ -1,12 +1,12 @@
 import { Add, Edit } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
 import { useRouter } from "next/router";
-import { ClientResponseModel } from "../../containers/ClientTableContainer/ClientTableContainer";
+import { ClientPropsModel } from "./ClientDetail";
 import { GenericTableDropdown } from "../Generic/GenericDropdown";
 
 
 type ClientsTableBodyProps = {
-  rows: ClientResponseModel[]
+  rows: ClientPropsModel[]
 }
 
 

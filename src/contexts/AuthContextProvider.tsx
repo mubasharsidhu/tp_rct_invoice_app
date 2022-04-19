@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { getCookie, removeCookies } from "cookies-next";
 import { CircularProgress } from "@mui/material";
 import { UsersAPI } from "../api/users";
-import { ClientResponseModel } from "../containers/ClientDetailContainer/ClientDetailContainer";
+import { ClientPropsModel } from "../components/Clients/ClientDetail";
 
 export type AuthContextType = {
   authUserToken: string | null,
@@ -30,7 +30,7 @@ const getMe = async (authUserToken: string) => {
     const response = await UsersAPI.me(authUserToken);
     return {
       type: "success" as string,
-      me  : response as ClientResponseModel,
+      me  : response as ClientPropsModel,
     }
 
   } catch (err: any) {

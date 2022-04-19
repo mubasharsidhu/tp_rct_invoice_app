@@ -105,9 +105,6 @@ export const InvoiceAPI = {
     }
 
     const jsonResponse = await httpResponse.json();
-
-    console.log('params', jsonResponse);
-    console.log('payload', payload);
     return;
 
   },
@@ -149,15 +146,19 @@ export const InvoiceAPI = {
   },
 
   getInvoices: async (authToken: string, params: {
-    res?   : ServerResponse,
-    order  : Order,
-    orderBy: InvoiceSortBy,
-    limit? : number,
-    offset?: number
+    res?     : ServerResponse,
+    order    : Order,
+    orderBy  : InvoiceSortBy,
+    limit?   : number,
+    offset?  : number,
+    clientID?: string
   }) => {
     // TODO check and allow non filtered or sorted use
 
     const queryParams = {
+      filter: {
+        clientId: params.clientID
+      },
       sort: {
         [params.orderBy]: params.order,
       },
@@ -186,8 +187,9 @@ export const InvoiceAPI = {
 
       const jsonReponse = await httpResponse.json();
       return jsonReponse as {
-        type: "success",
-        invoices: InvoiceResponseModel[]
+        type    : "success",
+        invoices: InvoiceResponseModel[],
+        total   : number
       }
 
     } catch (err) {
@@ -211,21 +213,23 @@ export const InvoiceJobs = {
     orderBy      : InvoiceSortBy,
     order        : Order,
     limit?       : number,
-    offset?      : number
+    offset?      : number,
+    clientID?    : string,
   }) => {
 
     try {
       const invoiceResponse = await InvoiceAPI.getInvoices(params.authUserToken, {
-        order  : params.order,
-        orderBy: params.orderBy,
-        limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
-        offset : params.offset
+        order   : params.order,
+        orderBy : params.orderBy,
+        limit   : params.limit ? params.limit: DEFAULT_ROWS_PER_PAGE,
+        offset  : params.offset,
+        clientID: params.clientID,
       });
 
       return {
         type    : "success" as string,
         invoices: invoiceResponse.invoices as InvoiceResponseModel[],
-        total   : invoiceResponse.total as number
+        total   : invoiceResponse.total as number,
       }
 
     } catch (err) {
@@ -241,12 +245,12 @@ export const InvoiceJobs = {
 
   getInvoiceByID : async (params: {
     authUserToken: string,
-    invoiceID     : string
+    invoiceID    : string
   }) => {
 
     try {
       const invoiceResponse = await InvoiceAPI.getInvoiceByID(params.authUserToken, {
-        invoiceID : params.invoiceID
+        invoiceID: params.invoiceID
       });
 
       return {

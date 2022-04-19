@@ -5,21 +5,23 @@ import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import Layout from '../src/page-layout/Layout'
 import { DEFAULT_ROWS_PER_PAGE } from './config/config'
+import type { GenericMenuItemProps } from '../src/components/Generic/GenericMenuItem'
+import { Add } from '@mui/icons-material'
 
 
-//export type searchOptionType = Array<string>;
+const subMenus: Array<GenericMenuItemProps> = [
+  {
+    title      : "Add Client",
+    icon       : <Add fontSize="small" />,
+    redirectURL: `/clients/add`
+  }
+];
+
 
 type ClientPageProps = {
   clients      : ClientResponseModel[],
   total        : number,
-  //searchOptions: searchOptionType,
 }
-
-const subMenus: { label: string; url  : string; }[] = [{
-  label: 'Add Client',
-  url  : '/clients/add'
-}];
-
 
 const ClientsPage: NextPage<ClientPageProps> = (props) => {
 

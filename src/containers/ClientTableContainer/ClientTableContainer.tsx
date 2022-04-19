@@ -2,13 +2,13 @@ import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
 import { memo, useEffect, useState } from "react"
 import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
-import { ClientAPI } from "../../api/clients"
+import { ClientJobs } from "../../api/clients"
+import { ClientPropsModel } from "../../components/Clients/ClientDetail"
 import { ClientsTableBody } from "../../components/Clients/ClientsTableBody"
 import { ClientsTableHead } from "../../components/Clients/ClientsTableHead"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage"
 import { GenericPagination } from "../../components/Generic/GenericPagination"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
-import { ClientResponseModel } from "../ClientDetailContainer/ClientDetailContainer"
 
 
 export type Order = 'asc' | 'desc';
@@ -49,44 +49,10 @@ export const headCells: readonly HeadCell[] = [
 
 export type ClientTableContainerProps = {
   initialPayload?: {
-    clients: ClientResponseModel[],
+    clients: ClientPropsModel[],
     total  : number,
   },
   isDetailPage?: boolean,
-}
-
-
-export const getClientsHandler = async (params: {
-  authUserToken: string,
-  orderBy      : ClientSortBy,
-  order        : Order,
-  limit?       : number,
-  offset?      : number
-}) => {
-
-  try {
-    const clientResponse = await ClientAPI.getClients(params.authUserToken, {
-      order  : params.order,
-      orderBy: params.orderBy,
-      limit  : params.limit ? params.limit : DEFAULT_ROWS_PER_PAGE,
-      offset : params.offset
-    });
-
-    return {
-      type   : "success" as string,
-      clients: clientResponse.clients as ClientResponseModel[],
-      total  : clientResponse.total as number
-    }
-
-  } catch (err) {
-
-    return {
-      type : "error" as string,
-      error: err as any
-    }
-
-  }
-
 }
 
 
@@ -97,7 +63,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
   const offset                = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
   const authUserToken                   = useAuthContext().authUserToken;
-  const [clientsArray, setClientsArray] = useState<ClientResponseModel[]>(initialPayloadClients);
+  const [clientsArray, setClientsArray] = useState<ClientPropsModel[]>(initialPayloadClients);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const orderBy                = router.query.orderBy ? router.query.orderBy as ClientSortBy : 'clientName';
@@ -123,7 +89,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       return;
     }
 
-    const clientsHandlerResponse = getClientsHandler({
+    const clientsHandlerResponse = ClientJobs.getClientsHandler({
       authUserToken: authUserToken,
       orderBy      : orderBy,
       order        : order,
@@ -142,10 +108,14 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       }
       else {
         setErrorMessage(""); // resetting the error message if it was there before
-        setClientsArray(response.clients as ClientResponseModel[]);
+        setClientsArray(response.clients as ClientPropsModel[]);
       }
 
-    })
+    });
+
+    clientsHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
 
   }, [authUserToken, orderBy, order, offset]);
 

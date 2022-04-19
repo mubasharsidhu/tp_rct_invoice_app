@@ -5,17 +5,23 @@ import { InvoiceAPI, InvoiceResponseModel, InvalidUserTokenError } from '../src/
 import Layout from '../src/page-layout/Layout'
 import { DEFAULT_ROWS_PER_PAGE } from './config/config'
 import { InvoiceTableContainer } from '../src/containers/InvoiceTableContainer/InvoiceTableContainer'
+import type { GenericMenuItemProps } from '../src/components/Generic/GenericMenuItem'
+import { Add } from '@mui/icons-material'
+
+
+const subMenus: Array<GenericMenuItemProps> = [
+  {
+    title      : "Add Invoice",
+    icon       : <Add fontSize="small" />,
+    redirectURL: `/invoices/add`
+  }
+];
 
 
 type InvoicesPageProps = {
   invoices: InvoiceResponseModel[],
   total   : number,
 }
-
-const subMenus: { label: string; url  : string; }[] = [{
-  label: 'Add Invoice',
-  url  : '/invoices/add'
-}];
 
 
 const InvoicesPage: NextPage<InvoicesPageProps> = (props) => {

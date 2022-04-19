@@ -1,10 +1,23 @@
-import { Grid, Card, CardHeader, CardContent, Box, Typography, CardActions, Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { ClientResponseModel } from "../../containers/ClientDetailContainer/ClientDetailContainer"
+import { Grid, Card, CardHeader, CardContent, Table, TableBody, TableCell, TableRow } from "@mui/material"
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
+
+export type ClientPropsModel = {
+  id            : string;
+  email         : string;
+  name          : string;
+  totalBilled   : number;
+  invoicesCount : number;
+  companyDetails: {
+    name     : string;
+    address  : string;
+    vatNumber: string;
+    regNumber: string;
+  };
+}
 
 type ClientDetailProps = {
   genericError? : string
-  currentClient?: ClientResponseModel | undefined
+  currentClient?: ClientPropsModel | undefined
 }
 
 
@@ -15,7 +28,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
 
       <Grid container spacing={5}>
 
-        <Grid item key={"Client Detail"} xs={12} sm={6} >
+        <Grid item key={"Client Detail"} xs={12} md={6} >
           <Card>
             <CardHeader
               title={"Client Detail"}
@@ -43,7 +56,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
           </Card>
         </Grid>
 
-        <Grid item key={"Company Detail"} xs={12} sm={6} >
+        <Grid item key={"Company Detail"} sm={12} md={6} >
           <Card>
             <CardHeader
               title={"Company Detail"}

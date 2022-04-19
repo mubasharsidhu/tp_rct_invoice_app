@@ -1,9 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { ClientAPI, ClientValidationError } from "../../api/clients";
+import { ClientAPI, ClientJobs, ClientValidationError } from "../../api/clients";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 import { ClientForm as ClientForm, ClientInputParams } from "../../forms/ClientForm/ClientForm";
-import { getClientByIDHandler } from "../ClientDetailContainer/ClientDetailContainer";
 
 
 type ClientFormContainerProps = {
@@ -38,7 +37,7 @@ export const ClientFormContainer = (props: ClientFormContainerProps) => {
     if ( authUserToken === null || !clientID ) {
       return;
     }
-    const clientsHandlerResponse = getClientByIDHandler({
+    const clientsHandlerResponse = ClientJobs.getClientByID({
       authUserToken: authUserToken,
       clientID     : clientID
     });

@@ -3,12 +3,13 @@ import { Button, Container, Grid, Stack } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
 import { Footer } from "./Footer";
+import { GenericMenuItemProps } from "../components/Generic/GenericMenuItem";
 
 
 type LayoutProps = {
   hideMenu?: boolean,
   pageTitle     : string,
-  subMenus?     : Array<{ label: string; url : string; }>,
+  subMenus?     : Array<GenericMenuItemProps>,
   children?     : ReactNode,
 }
 
@@ -42,7 +43,7 @@ const Layout = (props: LayoutProps ) => {
             return (
               <Grid item key={index}>
                 <Stack direction="row" spacing={2} sx={{ pt:2 }}>
-                  <Button variant="contained" onClick={()=>{ router.push( data.url ) }} >{data.label}</Button>
+                  <Button variant="contained" onClick={()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
                 </Stack>
               </Grid>
             )
