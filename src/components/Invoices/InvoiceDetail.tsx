@@ -50,25 +50,30 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
               <Grid item container xs={12} mb={3}>
 
                 <Grid item xs={4}>
-                  <Table aria-label="Company table" size="small">
-                    <TableBody>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Name:</TableCell><TableCell>{props.currentInvoiceClient?.name}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Email:</TableCell><TableCell>{props.currentInvoiceClient?.email}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Tax Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.vatNumber}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Reg Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.regNumber}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Address:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.address}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <TableContainer>
+                    <Table aria-label="Company table" size="small">
+                      <TableHead>
+                        <TableRow><TableCell colSpan={2}>Billed To</TableCell></TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell variant="head">Name:</TableCell><TableCell>{props.currentInvoiceClient?.name}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Email:</TableCell><TableCell>{props.currentInvoiceClient?.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Tax Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.vatNumber}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Reg Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.regNumber}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Address:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.address}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Grid>
 
                 <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
@@ -76,22 +81,27 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
                 </Grid>
 
                 <Grid item xs={4}>
-                  <Table aria-label="Company table" size="small">
-                    <TableBody>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Invoice Number:</TableCell><TableCell>{props.currentInvoice?.invoice_number}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Project Code:</TableCell><TableCell>{props.currentInvoice?.projectCode}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Invoice Date:</TableCell><TableCell>{props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : ""}</TableCell>
-                      </TableRow>
-                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                        <TableCell variant="head">Due Date:</TableCell><TableCell>{props.currentInvoice?.dueDate ? props.formatDate(props.currentInvoice.dueDate) : ""}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <TableContainer>
+                    <Table aria-label="Company table" size="small">
+                      <TableHead>
+                          <TableRow><TableCell colSpan={2}>Invoice Information</TableCell></TableRow>
+                        </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell variant="head">Invoice Number:</TableCell><TableCell>{props.currentInvoice?.invoice_number}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Project Code:</TableCell><TableCell>{props.currentInvoice?.projectCode}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Invoice Date:</TableCell><TableCell>{props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : ""}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Due Date:</TableCell><TableCell>{props.currentInvoice?.dueDate ? props.formatDate(props.currentInvoice.dueDate) : ""}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
                 </Grid>
 
               </Grid>

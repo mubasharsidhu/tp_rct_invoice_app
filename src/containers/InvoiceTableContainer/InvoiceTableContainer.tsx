@@ -181,7 +181,8 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
 
       <Grid item xs={12} >
         <Autocomplete
-          sx={{maxWidth: "300px"}}
+          sx={{maxWidth: "300px", mb:1}}
+          size="small"
           freeSolo
           options={allClientsList ? allClientsList.map((option) => option) : []}
           value={clientID && allClientsList
