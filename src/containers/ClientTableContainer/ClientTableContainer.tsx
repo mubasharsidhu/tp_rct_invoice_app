@@ -89,7 +89,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       return;
     }
 
-    const clientsHandlerResponse = ClientJobs.getClientsHandler({
+    const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
       orderBy      : orderBy,
       order        : order,

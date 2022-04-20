@@ -2,7 +2,7 @@ import { ServerResponse } from "http";
 import { DEFAULT_ROWS_PER_PAGE } from "../../pages/config/config";
 
 
-export type Order        = 'asc' | 'desc';
+export type Order         = 'asc' | 'desc';
 export type InvoiceSortBy = 'clientName' | 'invoiceNumber' | 'dueDate' | 'value';
 
 export type InvoiceInputParams = {

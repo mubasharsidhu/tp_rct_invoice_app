@@ -1,5 +1,5 @@
-import { Grid, Card, CardHeader, CardContent, Table, TableBody, TableCell, TableRow } from "@mui/material"
-import { ClientPropsModel } from "../Clients/ClientDetail"
+import { Grid, Card, CardHeader, CardContent, Table, TableBody, TableCell, TableRow, Paper, Typography, Divider, TableHead, TableContainer } from "@mui/material"
+import { ClientDetail, ClientPropsModel } from "../Clients/ClientDetail"
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
 
 
@@ -17,84 +17,131 @@ export type InvoiceDetailPropsModel = {
 
 
 type InvoiceDetailProps = {
-  genericError?  : string
-  currentInvoice?: InvoiceDetailPropsModel | undefined
-  clientName?    : string,
-  formatDate: (date: Date) => string;
+  genericError?       : string
+  currentInvoice?     : InvoiceDetailPropsModel | undefined
+  currentInvoiceClient: ClientPropsModel | undefined,
+  formatDate          : (date: Date) => string;
 }
 
 
 export const InvoiceDetail = (props: InvoiceDetailProps) => {
-  console.log(props.currentInvoice)
-  const aa = props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : "";
-  console.log(aa)
+
   return (
     <>
       {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
 
-      <Grid container spacing={5} sx={{mb:5}}>
+      <Grid>
+        <Grid item xs={12}>
+          <Paper sx={{ p:2 }} >
+            <Grid>
 
-        <Grid item key={"Invoice Detail"} sm={12} md={6} >
-          <Card>
-            <CardHeader
-              title={"Invoice Detail"}
-              titleTypographyProps={{ align: 'center' }}
-              sx={{ backgroundColor: (theme) =>theme.palette.grey[200] }}
-            />
-            <CardContent>
-            <Table aria-label="Invoice table" size="small">
-              <TableBody>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Client Name:</TableCell><TableCell>{props.clientName}</TableCell>
-                </TableRow>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Invoice Number:</TableCell><TableCell>{props.currentInvoice?.invoice_number}</TableCell>
-                </TableRow>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Date:</TableCell><TableCell>{props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : ""}</TableCell>
-                </TableRow>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Due Date:</TableCell><TableCell>{props.currentInvoice?.dueDate ? props.formatDate(props.currentInvoice.dueDate) : ""}</TableCell>
-                </TableRow>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Project Code:</TableCell><TableCell>{props.currentInvoice?.projectCode}</TableCell>
-                </TableRow>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Total Value:</TableCell><TableCell>$ {props.currentInvoice?.value}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            </CardContent>
-          </Card>
-        </Grid>
+              <Grid item
+                xs={12} mb={3}
+                container
+                borderRadius={1}
+                bgcolor={'primary.light'}
+                color={'primary.contrastText'}
+                sx={{ py:2 }}
+                justifyContent="center"
+              >
+                <Typography component="h1" variant="h2">Invoice</Typography>
+              </Grid>
 
-        <Grid item key={"Invoice Meta"} sm={12} md={6} >
-          <Card>
-            <CardHeader
-              title={"Invoice Meta"}
-              titleTypographyProps={{ align: 'center' }}
-              sx={{ backgroundColor: (theme) =>theme.palette.grey[200] }}
-            />
-            <CardContent>
-              <Table aria-label="Company table" size="small">
-                <TableBody>
+              <Grid item container xs={12} mb={3}>
 
-                  {
-                    props.currentInvoice?.meta
-                    ? props.currentInvoice?.meta.map((data, index)=>{
-                      return (
-                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                          <TableCell variant="head" sx={{textTransform:"capitalize"}}>{data.item}:</TableCell><TableCell>$ {data.price}</TableCell>
-                        </TableRow>
-                      )
-                    })
-                    : null
-                  }
+                <Grid item xs={4}>
+                  <Table aria-label="Company table" size="small">
+                    <TableBody>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Name:</TableCell><TableCell>{props.currentInvoiceClient?.name}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Email:</TableCell><TableCell>{props.currentInvoiceClient?.email}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Tax Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.vatNumber}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Reg Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.regNumber}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Address:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.address}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Grid>
 
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
+                  <Divider orientation="vertical" variant="inset" />
+                </Grid>
+
+                <Grid item xs={4}>
+                  <Table aria-label="Company table" size="small">
+                    <TableBody>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Invoice Number:</TableCell><TableCell>{props.currentInvoice?.invoice_number}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Project Code:</TableCell><TableCell>{props.currentInvoice?.projectCode}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Invoice Date:</TableCell><TableCell>{props.currentInvoice?.date ? props.formatDate(props.currentInvoice.date) : ""}</TableCell>
+                      </TableRow>
+                      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                        <TableCell variant="head">Due Date:</TableCell><TableCell>{props.currentInvoice?.dueDate ? props.formatDate(props.currentInvoice.dueDate) : ""}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Grid>
+
+              </Grid>
+
+              <Grid item key={"Invoice Items"} xs={12} mb={3}>
+                <TableContainer>
+                  <Table aria-label="Invoice Items" size="small">
+                    <TableHead>
+                      <TableRow><TableCell>Item</TableCell><TableCell align="right">Price</TableCell></TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {
+                        props.currentInvoice?.meta
+                        ? props.currentInvoice?.meta.map((data, index)=>{
+                          return (
+                            <TableRow key={index} hover>
+                              <TableCell sx={{textTransform:"capitalize"}}>{data.item}:</TableCell>
+                              <TableCell align="right">$ {data.price}</TableCell>
+                            </TableRow>
+                          )
+                        })
+                        : null
+                      }
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Grid>
+
+              <Grid item xs={12}>
+                <Table
+                  aria-label="Totals"
+                  size="small"
+                  sx={{mt:3, display: 'flex', flexDirection: 'row-reverse',}}>
+                  <TableBody>
+                    <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                      <TableCell variant="head">Sub Total:</TableCell><TableCell align="right">$ {props.currentInvoice?.value}</TableCell>
+                    </TableRow>
+                    <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                      <TableCell variant="head">Tax:</TableCell><TableCell align="right">$ {0}</TableCell>
+                    </TableRow>
+                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                      <TableCell variant="head">Grand Total:</TableCell><TableCell align="right">$ {props.currentInvoice?.value}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Grid>
+            </Grid>
+
+          </Paper>
+
         </Grid>
 
       </Grid>

@@ -55,36 +55,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const invoiceResponse = await InvoiceAPI.getInvoices(authUserToken, {
       res,
       order  : "asc",
-      orderBy: "invoiceName",
+      orderBy: "clientName",
       limit  : DEFAULT_ROWS_PER_PAGE,
       offset : ( parseInt(context.query?.page as string, 10 ) - 1 ?? 1) * DEFAULT_ROWS_PER_PAGE
     });
-
-
-    //let searchOptions: searchOptionType = [];
-    /* const invoicesHandlerResponse = getInvoicesHandler({
-      authUserToken: authUserToken,
-      orderBy      : 'invoiceName',
-      order        : 'asc',
-      limit        : -1
-    });
-
-    await invoicesHandlerResponse.then((response) => {
-
-      if ( response.type === "success" ) {
-        if ( response.invoices ) {
-          response.invoices.map((data) => {
-            if(!searchOptions.includes(data.name)){
-              searchOptions.push(data.name)
-            }
-          });
-        }
-      }
-      // else searchOptions is already set to [];
-
-    }); */
-
-    console.log('invoiceResponse: ', invoiceResponse)
 
     return {
       props: {

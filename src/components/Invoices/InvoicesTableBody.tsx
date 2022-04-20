@@ -1,4 +1,4 @@
-import { Add, Edit } from "@mui/icons-material";
+import { Add, Edit, Print } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
 import { useRouter } from "next/router";
 import { CommonJobs } from "../../api/common";
@@ -53,8 +53,8 @@ export const InvoicesTableBody = (props: InvoicesTableBodyProps) => {
               },
               {
                 title      : "Print Invoice",
-                icon       : <Add fontSize="small" />,
-                redirectURL: `/invoices/print/${row.invoice.id}`
+                icon       : <Print fontSize="small" />,
+                redirectURL: `/invoices/view/${row.invoice.id}#print`
               }
             ];
 

@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material"
 import { useRouter } from "next/router"
 import React from "react"
 import { useEffect, useState } from "react"
@@ -9,7 +10,7 @@ import { InvoiceDetail } from "../../components/Invoices/InvoiceDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 
 
-export const InvoiceDetailContainer = React.forwardRef(( props, ref ) => {
+export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<HTMLDivElement> ) => {
 
   const router                                          = useRouter();
   const authUserToken                                   = useAuthContext().authUserToken;
@@ -82,19 +83,16 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref ) => {
   }, [authUserToken, currentInvoice?.client_id]);
 
   return (
-    <>
+    <Grid ref={ref}>
+
       <InvoiceDetail
         genericError={errorMessage}
         currentInvoice={currentInvoice}
-        clientName={currentInvoiceClient?.name}
         formatDate={CommonJobs.formatDate}
+        currentInvoiceClient={currentInvoiceClient}
       />
 
-      <ClientDetail
-        genericError={errorMessage}
-        currentClient={currentInvoiceClient}
-      />
-    </>
+    </Grid>
   )
 }
 )

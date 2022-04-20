@@ -46,7 +46,7 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
     }
 
     // Get All Clients Starts here
-    const clientsHandlerResponse = ClientJobs.getClientsHandler({
+    const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
       orderBy      : "clientName",
       order        : "asc",

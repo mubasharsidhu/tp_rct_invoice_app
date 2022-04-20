@@ -66,7 +66,6 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
 
   const initialPayloadInvoices = props.initialPayload?.invoices ?? [];
   const totalInvoicesInitial   = props.initialPayload?.total ?? 0;
-  //console.log(totalInvoices)
   const offset                 = ( parseInt(router.query?.page as string, 10 ) - 1 ?? 1 ) * DEFAULT_ROWS_PER_PAGE
 
   const authUserToken                       = useAuthContext().authUserToken;
@@ -139,7 +138,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
     }
 
     // Get All Clients Starts here
-    const clientsHandlerResponse = ClientJobs.getClientsHandler({
+    const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
       orderBy      : "clientName",
       order        : "asc",

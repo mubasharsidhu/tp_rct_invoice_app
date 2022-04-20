@@ -170,7 +170,7 @@ export const ClientAPI = {
 
 export const ClientJobs = {
 
-  getClientsHandler: async (params: {
+  getClients: async (params: {
     authUserToken: string,
     orderBy      : ClientSortBy,
     order        : Order,

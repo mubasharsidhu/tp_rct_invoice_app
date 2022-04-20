@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Button, Container, Grid, Stack } from "@mui/material";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
 import { Footer } from "./Footer";
@@ -31,9 +31,9 @@ const Layout = (props: LayoutProps ) => {
           </Stack>
       }
 
-      <Grid container spacing={2}>
+      <Grid container spacing={2} sx={{py:1}}>
         <Grid item >
-          <h2>{props.pageTitle}</h2>
+          <Typography component="h1" variant="h4">{props.pageTitle}</Typography>
         </Grid>
 
         {
@@ -42,8 +42,8 @@ const Layout = (props: LayoutProps ) => {
           props.subMenus.map((data, index)=> {
             return (
               <Grid item key={index}>
-                <Stack direction="row" spacing={2} sx={{ pt:2 }}>
-                  <Button variant="contained" onClick={()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="contained" onClick={data.clickHandler ? data.clickHandler : ()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
                 </Stack>
               </Grid>
             )

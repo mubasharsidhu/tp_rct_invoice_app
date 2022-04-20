@@ -28,7 +28,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
 
       <Grid container spacing={5}>
 
-        <Grid item key={"Client Detail"} xs={12} md={6} >
+        <Grid item key={"Client Detail"} xs={12} md={6} sx={{mb:5}}>
           <Card>
             <CardHeader
               title={"Client Detail"}
@@ -36,22 +36,22 @@ export const ClientDetail = (props: ClientDetailProps) => {
               sx={{ backgroundColor: (theme) =>theme.palette.grey[200] }}
             />
             <CardContent>
-            <Table aria-label="Company table" size="small">
-              <TableBody>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Name:</TableCell><TableCell>{props.currentClient?.name}</TableCell>
-                </TableRow>
-                <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Email:</TableCell><TableCell>{props.currentClient?.email}</TableCell>
-                </TableRow>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Invoice Count:</TableCell><TableCell>{props.currentClient?.invoicesCount}</TableCell>
-                </TableRow>
-                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                  <TableCell variant="head">Total Billed:</TableCell><TableCell>{props.currentClient?.totalBilled}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+              <Table aria-label="Company table" size="small">
+                <TableBody>
+                  <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell variant="head">Name:</TableCell><TableCell>{props.currentClient?.name}</TableCell>
+                  </TableRow>
+                  <TableRow  sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell variant="head">Email:</TableCell><TableCell>{props.currentClient?.email}</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell variant="head">Invoice Count:</TableCell><TableCell>{props.currentClient?.invoicesCount}</TableCell>
+                  </TableRow>
+                  <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
+                    <TableCell variant="head">Total Billed:</TableCell><TableCell>{props.currentClient?.totalBilled}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </CardContent>
           </Card>
         </Grid>
