@@ -1,8 +1,11 @@
+import { Add } from "@mui/icons-material"
+import { Button, Grid, Stack, Typography } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { ClientJobs, ClientResponseModel } from "../../api/clients"
 import { ClientDetail } from "../../components/Clients/ClientDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
+import { InvoiceTableContainer } from "../InvoiceTableContainer/InvoiceTableContainer"
 
 
 export const ClientDetailContainer = () => {
@@ -48,6 +51,21 @@ export const ClientDetailContainer = () => {
         genericError={errorMessage}
         currentClient={currentClient}
       />
+
+      <Grid container spacing={2} sx={{py:1}}>
+        <Grid item>
+          <Typography component="h1" variant="h4">Recent Invoices</Typography>
+        </Grid>
+        <Grid item>
+          <Stack direction="row" spacing={2}>
+            <Button variant="contained" onClick={()=>{ router.push(`/invoices/add?clientID=${clientID}`)}} >
+              <Add fontSize="small" />Add Invoice
+            </Button>
+          </Stack>
+        </Grid>
+      </Grid>
+
+      <InvoiceTableContainer clientID={clientID} />
     </>
   )
 }

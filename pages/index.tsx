@@ -3,6 +3,7 @@ import type { GetServerSideProps, NextPage } from 'next'
 import React from 'react'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import { ClientTableContainer } from '../src/containers/ClientTableContainer/ClientTableContainer'
+import { InvoiceTableContainer } from '../src/containers/InvoiceTableContainer/InvoiceTableContainer'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import Layout from '../src/page-layout/Layout'
 import { DEFAULT_ROWS_PER_PAGE } from './config/config'
@@ -24,8 +25,8 @@ const Home: NextPage<ClientPageProps> = (props) => {
             <ClientTableContainer initialPayload={props}/>
           </Grid>
           <Grid item md={12} lg={6}>
-            <Typography>Invoices (To be implemented...)</Typography>
-            <ClientTableContainer initialPayload={props}/>
+            <Typography>Invoices</Typography>
+            <InvoiceTableContainer />
           </Grid>
         </Grid>
       </Layout>

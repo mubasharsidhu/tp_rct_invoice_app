@@ -35,7 +35,7 @@ const InvoicesPage: NextPage<InvoicesPageProps> = (props) => {
         >
         <InvoiceTableContainer
           initialPayload={props}
-          isDetailPage={true}
+          isMainPage={true}
         />
       </Layout>
 

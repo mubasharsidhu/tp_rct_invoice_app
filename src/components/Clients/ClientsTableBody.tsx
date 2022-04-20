@@ -30,7 +30,7 @@ export const ClientsTableBody = (props: ClientsTableBodyProps) => {
               {
                 title      : "Add a new invoice for the client",
                 icon       : <Add fontSize="small" />,
-                redirectURL: `/invoices/${row.id}`
+                redirectURL: `/invoices/add?clientID=${row.id}`
               }
             ];
 

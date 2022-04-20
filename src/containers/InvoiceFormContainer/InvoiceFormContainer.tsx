@@ -15,6 +15,7 @@ type InvoiceFormContainerProps = {
 
 export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
   const router                          = useRouter();
+  const queryClientID                   = router.query.clientID;
   const invoiceID                       = router.query.id as string;
   const authUserToken                   = useAuthContext().authUserToken;
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -39,6 +40,15 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
   const [allClientsList, setAllClientsList]         = useState<{ id: string, label: string }[] | undefined>(undefined);
   const [selectedClientID, setSelectedClientID]     = useState<string>("");
   const [selectedClientInfo, setSelectedClientInfo] = useState<ClientPropsModel | null>(null);
+
+  useEffect(()=> {
+    if (!queryClientID) {
+      return;
+    }
+    console.log('111', queryClientID)
+    setSelectedClientID(queryClientID as string);
+  }, [queryClientID])
+
 
   useEffect(() => {
     if ( authUserToken === null ) {
@@ -161,6 +171,7 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
     // Get Current Invoice Ends here
 
   }, [authUserToken, invoiceID]);
+
 
   return (
     <>

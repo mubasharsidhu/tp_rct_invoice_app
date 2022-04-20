@@ -34,7 +34,7 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
         >
         <ClientTableContainer
           initialPayload={props}
-          isDetailPage={true}
+          isMainPage={true}
         />
       </Layout>
 

@@ -52,7 +52,7 @@ export type ClientTableContainerProps = {
     clients: ClientPropsModel[],
     total  : number,
   },
-  isDetailPage?: boolean,
+  isMainPage?: boolean,
 }
 
 
@@ -129,13 +129,13 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              pagination={props.isDetailPage}
+              pagination={props.isMainPage}
             />
             <ClientsTableBody rows={clientsArray}/>
           </Table>
         </TableContainer>
         {
-          props.isDetailPage && totalClients > DEFAULT_ROWS_PER_PAGE
+          props.isMainPage && totalClients > DEFAULT_ROWS_PER_PAGE
           ? (<GenericPagination
               totalRecords={totalClients}
               currentPageNumber={currentPageNumber}

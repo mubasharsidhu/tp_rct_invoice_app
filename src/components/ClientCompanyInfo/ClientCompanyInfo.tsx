@@ -13,7 +13,7 @@ export const ClientCompanyInfo = (props: ClientCompanyInfoProps) => {
       <Grid item sm={12} md={8}>
         <Table
           aria-label="Company table" size="small"
-          sx={{ mb:1, borderRadius: 1, backgroundColor: (theme) =>theme.palette.grey[200] }}
+          sx={{ mb:3, borderRadius: 1, backgroundColor: (theme) =>theme.palette.grey[200] }}
         >
           <TableBody>
             <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >

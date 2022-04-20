@@ -54,11 +54,12 @@ export const headCells: readonly HeadCell[] = [
 
 
 export type InvoiceTableContainerProps = {
+  isMainPage?    : boolean,
+  clientID?      : string
   initialPayload?: {
     invoices: InvoiceRowPropsModel[],
     total   : number,
   },
-  isDetailPage?: boolean,
 }
 
 
@@ -74,7 +75,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
   const [totalInvoices, setTotalInvoices]   = useState<number>(totalInvoicesInitial);
   const [errorMessage, setErrorMessage]     = useState<string | undefined>();
 
-  const clientID          = router.query.clientID ? router.query.clientID as string : "";
+  const clientID          = router.query.clientID ? router.query.clientID as string : ( props.clientID ?? "" );
   const orderBy           = router.query.orderBy ? router.query.orderBy as InvoiceSortBy : 'clientName';
   const order             = router.query.order ? router.query.order as Order : 'asc';
   const currentPageNumber = router.query.page ? parseInt(router.query.page as string, 10) : 1
@@ -179,32 +180,36 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
     <Grid >
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
 
-      <Grid item xs={12} >
-        <Autocomplete
-          sx={{maxWidth: "300px", mb:1}}
-          size="small"
-          freeSolo
-          options={allClientsList ? allClientsList.map((option) => option) : []}
-          value={clientID && allClientsList
-            ? allClientsList.find((obj)=>{
-                return obj.id === clientID ? obj.id : ""
-              })
-            : ""
-          }
-          onChange={clientIDFilterHandler}
-          renderInput={(params) => {
-            return (
-              <TextField
-                {...params}
-                id={"clientID"}
-                name={"clientID"}
-                label={"Filter by Client"}
-                margin="dense"
-              />
-            )
-          }}
-        />
-      </Grid>
+      {
+        props.isMainPage
+        ? <Grid item xs={12} >
+            <Autocomplete
+              sx={{maxWidth: "300px", mb:1}}
+              size="small"
+              freeSolo
+              options={allClientsList ? allClientsList.map((option) => option) : []}
+              value={clientID && allClientsList
+                ? allClientsList.find((obj)=>{
+                    return obj.id === clientID ? obj.id : ""
+                  })
+                : ""
+              }
+              onChange={clientIDFilterHandler}
+              renderInput={(params) => {
+                return (
+                  <TextField
+                    {...params}
+                    id={"clientID"}
+                    name={"clientID"}
+                    label={"Filter by Client"}
+                    margin="dense"
+                  />
+                )
+              }}
+            />
+          </Grid>
+        : null
+      }
 
       <Grid item>
         <Paper sx={{ mb: 2 }}>
@@ -214,13 +219,13 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleRequestSort}
-                pagination={props.isDetailPage}
+                pagination={props.isMainPage}
               />
               <InvoicesTableBody rows={invoicesArray}/>
             </Table>
           </TableContainer>
           {
-            props.isDetailPage && totalInvoices > DEFAULT_ROWS_PER_PAGE
+            props.isMainPage && totalInvoices > DEFAULT_ROWS_PER_PAGE
             ? (<GenericPagination
                 totalRecords={totalInvoices}
                 currentPageNumber={currentPageNumber}

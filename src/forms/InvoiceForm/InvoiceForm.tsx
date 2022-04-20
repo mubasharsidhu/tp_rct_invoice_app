@@ -8,7 +8,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CommonJobs } from "../../api/common";
-import { ComboBox } from "../../components/ComboBox/ComboBox";
 
 
 const InvoiceItemSchema = yup.object({
@@ -50,7 +49,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
   const [invoiceDate, setInvoiceDate]       = useState<Date | null>(null);
   const [invoiceDueDate, setInvoiceDueDate] = useState<Date | null>(null);
 
-  const { control, register, handleSubmit, setFocus, reset, formState: { errors } } = useForm<InvoiceInputParams>({
+  const { control, register, handleSubmit, setFocus, setValue, reset, formState: { errors } } = useForm<InvoiceInputParams>({
     mode         : "onBlur",
     resolver     : yupResolver(InvoiceSchema),
     defaultValues: {
@@ -84,6 +83,10 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
     reset(props.currentInvoice);
   }, [props.currentInvoice]);
 
+  useEffect(() => {
+    setValue('clientID', props.selectedClientID);
+  }, [props.selectedClientID]);
+
   return (
     <>
 
@@ -115,7 +118,6 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
                   onChange={(event: SyntheticEvent<Element, Event>, optionObject: { id: string, label: string } | string | null ): void => {
                     const clientID = optionObject && typeof optionObject === 'object' ? optionObject.id : "";
                     props.setSelectedClientID(clientID);
-                    //console.log('optionObject: ', optionObject)
                     return field.onChange(clientID);
                   }}
                   renderInput={(params) => {

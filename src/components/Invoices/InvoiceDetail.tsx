@@ -51,9 +51,9 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
                 <Grid item xs={4}>
                   <TableContainer>
-                    <Table aria-label="Company table" size="small">
+                    <Table aria-label="Billed To" size="small">
                       <TableHead>
-                        <TableRow><TableCell colSpan={2}>Billed To</TableCell></TableRow>
+                        <TableRow><TableCell colSpan={2} align="center">Billed To</TableCell></TableRow>
                       </TableHead>
                       <TableBody>
                         <TableRow>
@@ -61,6 +61,9 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
                         </TableRow>
                         <TableRow>
                           <TableCell variant="head">Email:</TableCell><TableCell>{props.currentInvoiceClient?.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell variant="head">Company Name:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.name}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell variant="head">Tax Number:</TableCell><TableCell>{props.currentInvoiceClient?.companyDetails.vatNumber}</TableCell>
@@ -77,14 +80,14 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
                 </Grid>
 
                 <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
-                  <Divider orientation="vertical" variant="inset" />
+
                 </Grid>
 
                 <Grid item xs={4}>
                   <TableContainer>
-                    <Table aria-label="Company table" size="small">
+                    <Table aria-label="Invoice Information" size="small">
                       <TableHead>
-                          <TableRow><TableCell colSpan={2}>Invoice Information</TableCell></TableRow>
+                          <TableRow><TableCell colSpan={2} align="center">Invoice Information</TableCell></TableRow>
                         </TableHead>
                       <TableBody>
                         <TableRow>

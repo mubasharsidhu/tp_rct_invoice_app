@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import {  useState } from "react";
-import { ClientAPI, ClientValidationError } from "../../api/clients";
 import { CompanyValidationError, UsersAPI, UserValidationError } from "../../api/users";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 import { SignupCompanyForm, SignupCompanyInputs } from "../../forms/SignupForm/SignupCompanyForm";
