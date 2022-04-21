@@ -18,8 +18,8 @@ type LayoutProps = {
 const Layout = (props: LayoutProps ) => {
 
   const router   = useRouter();
-  const authData = useAuthContext();
 
+  const authData = useAuthContext();
   if ( !authData.meData?.companyDetails && router.asPath !== `/signup/company` ) {
     return (<BackdropLoader />)
   }

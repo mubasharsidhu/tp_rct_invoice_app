@@ -89,7 +89,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       return;
     }
 
-    let abortController = new AbortController();
+    let isEffectActive = true;
 
     const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
@@ -100,17 +100,19 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
 
     clientsHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if ( isEffectActive ) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            setErrorMessage(response.error.toString());
+          }
         }
         else {
-          setErrorMessage(response.error.toString());
+          setErrorMessage(""); // resetting the error message if it was there before
+          setClientsArray(response.clients as ClientPropsModel[]);
         }
-      }
-      else {
-        setErrorMessage(""); // resetting the error message if it was there before
-        setClientsArray(response.clients as ClientPropsModel[]);
       }
 
     });
@@ -119,9 +121,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       setErrorMessage("An Unknown error occured");
     });
 
-    return () => {
-      abortController.abort();
-    }
+    return () => { isEffectActive = false }
 
   }, [authUserToken, orderBy, order, offset]);
 

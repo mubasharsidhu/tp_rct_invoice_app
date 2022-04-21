@@ -37,6 +37,9 @@ export const ClientFormContainer = (props: ClientFormContainerProps) => {
     if ( authUserToken === null || !clientID ) {
       return;
     }
+
+    let isEffectActive = true;
+
     const clientsHandlerResponse = ClientJobs.getClientByID({
       authUserToken: authUserToken,
       clientID     : clientID
@@ -44,30 +47,38 @@ export const ClientFormContainer = (props: ClientFormContainerProps) => {
 
     clientsHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
+          const theClient = {
+            id              : response.client?.id,
+            clientName      : response.client?.name,
+            email           : response.client?.email,
+            companyName     : response.client?.companyDetails.name,
+            companyAddress  : response.client?.companyDetails.address,
+            companyTaxNumber: response.client?.companyDetails.vatNumber,
+            companyRegNumber: response.client?.companyDetails.regNumber
+          }
+          setErrorMessage(""); // resetting the error message if it was there before
+          setCurrentClient(theClient as ClientInputParams);
         }
-      }
-      else {
-        const theClient = {
-          id              : response.client?.id,
-          clientName      : response.client?.name,
-          email           : response.client?.email,
-          companyName     : response.client?.companyDetails.name,
-          companyAddress  : response.client?.companyDetails.address,
-          companyTaxNumber: response.client?.companyDetails.vatNumber,
-          companyRegNumber: response.client?.companyDetails.regNumber
-        }
-        setErrorMessage(""); // resetting the error message if it was there before
-        setCurrentClient(theClient as ClientInputParams);
       }
 
-    })
+    });
+
+    clientsHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, clientID]);
 

@@ -60,6 +60,7 @@ export type InvoiceTableContainerProps = {
     invoices: InvoiceRowPropsModel[],
     total   : number,
   },
+  setInvoicesCount?: (invoicesCount: number) => void,
 }
 
 
@@ -104,6 +105,8 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
       return;
     }
 
+    let isEffectActive = true;
+
     const invoicesHandlerResponse = InvoiceJobs.getInvoices({
       authUserToken: authUserToken,
       orderBy      : orderBy,
@@ -114,21 +117,34 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
 
     invoicesHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            setErrorMessage(response.error.toString());
+          }
         }
         else {
-          setErrorMessage(response.error.toString());
+          setErrorMessage(""); // resetting the error message if it was there before
+          setInvoicesArray(response.invoices as InvoiceResponseModel[]);
+          setTotalInvoices(response.total as number);
+
+          if (props.setInvoicesCount) {
+            props.setInvoicesCount(response.total as number);
+          }
+
         }
       }
-      else {
-        setErrorMessage(""); // resetting the error message if it was there before
-        setInvoicesArray(response.invoices as InvoiceResponseModel[]);
-        setTotalInvoices(response.total as number);
-      }
 
-    })
+    });
+
+    invoicesHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, clientID, orderBy, order, offset]);
 
@@ -138,6 +154,8 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
       return;
     }
 
+    let isEffectActive = true;
+
     // Get All Clients Starts here
     const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
@@ -146,33 +164,37 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
       limit        : -1
     });
     clientsHandlerResponse.then((response) => {
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
-        }
-      }
-      else {
-        const responseClients = response.clients as ClientResponseModel[];
+          const responseClients = response.clients as ClientResponseModel[];
 
-        let clientsOptions: Array<{ id: string, label: string }> | undefined = [];
-        if ( responseClients != null ) {
-          responseClients.map((data: ClientResponseModel) => {
-            clientsOptions ? clientsOptions.push({ id: data.id, label: (data.name + ' (' + data.email + ')') }) : [];
-          });
+          let clientsOptions: Array<{ id: string, label: string }> | undefined = [];
+          if ( responseClients != null ) {
+            responseClients.map((data: ClientResponseModel) => {
+              clientsOptions ? clientsOptions.push({ id: data.id, label: (data.name + ' (' + data.email + ')') }) : [];
+            });
+          }
+          setErrorMessage(""); // resetting the error message if it was there before
+          setAllClientsList(clientsOptions as { id: string, label: string }[]);
         }
-        setErrorMessage(""); // resetting the error message if it was there before
-        setAllClientsList(clientsOptions as { id: string, label: string }[]);
       }
     });
 
     clientsHandlerResponse.catch((err: unknown)=>{
-      setErrorMessage("An Unknown error occured"); // resetting the error message if it was there before
+      setErrorMessage("An Unknown error occured");
     });
     // Get All Clients Ends here
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken]);
 

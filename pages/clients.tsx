@@ -19,8 +19,8 @@ const subMenus: Array<GenericMenuItemProps> = [
 
 
 type ClientPageProps = {
-  clients      : ClientResponseModel[],
-  total        : number,
+  clients: ClientResponseModel[],
+  total  : number,
 }
 
 const ClientsPage: NextPage<ClientPageProps> = (props) => {
@@ -61,8 +61,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     return {
       props: {
-        clients      : JSON.parse(JSON.stringify(clientResponse.clients)),
-        total        : JSON.parse(JSON.stringify(clientResponse.total)),
+        clients: JSON.parse(JSON.stringify(clientResponse.clients)),
+        total  : JSON.parse(JSON.stringify(clientResponse.total)),
       }, // will be passed to the page component as props
     }
 

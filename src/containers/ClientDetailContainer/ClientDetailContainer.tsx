@@ -16,10 +16,16 @@ export const ClientDetailContainer = () => {
   const [currentClient, setCurrentClient] = useState<ClientResponseModel | undefined>();
   const [errorMessage, setErrorMessage]   = useState<string | undefined>();
 
+  const [invoicesCount, setInvoicesCount] = useState<number | undefined>(0);
+  const [totalBilled, setTotalBilled]     = useState<number | undefined>(0);
+
   useEffect(() => {
     if ( authUserToken === null || !clientID ) {
       return;
     }
+
+    let isEffectActive = true;
+
     const clientsHandlerResponse = ClientJobs.getClientByID({
       authUserToken: authUserToken,
       clientID     : clientID
@@ -27,32 +33,42 @@ export const ClientDetailContainer = () => {
 
     clientsHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
+          setErrorMessage(""); // resetting the error message if it was there before
+          setCurrentClient(response.client as ClientResponseModel);
         }
       }
-      else {
-        setErrorMessage(""); // resetting the error message if it was there before
-        setCurrentClient(response.client as ClientResponseModel);
-      }
 
-    })
+    });
+
+    clientsHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, clientID]);
+
 
   return (
     <>
       <ClientDetail
         genericError={errorMessage}
         currentClient={currentClient}
+        invoicesCount={invoicesCount}
       />
 
-      <Grid container spacing={2} sx={{py:1}}>
+      <Grid container spacing={2} sx={{py:1, mt:1}}>
         <Grid item>
           <Typography component="h1" variant="h4">Recent Invoices</Typography>
         </Grid>
@@ -65,7 +81,10 @@ export const ClientDetailContainer = () => {
         </Grid>
       </Grid>
 
-      <InvoiceTableContainer clientID={clientID} />
+      <InvoiceTableContainer
+        clientID={clientID}
+        setInvoicesCount={setInvoicesCount}
+      />
     </>
   )
 }

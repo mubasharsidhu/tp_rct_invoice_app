@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { getCookie, removeCookies } from "cookies-next";
-import { CircularProgress, Stack } from "@mui/material";
 import { MeResponseModel, UserJobs } from "../api/users";
+import { BackdropLoader } from "../components/BackdropLoader/BackdropLoader";
 
 export type AuthContextType = {
   authUserToken: string | null,
@@ -33,7 +33,7 @@ const useUserAuth = () => {
 
   useEffect(() => {
 
-    let abortController = new AbortController();
+    let isEffectActive = true;
 
     const userToken = getCookie("userToken") as string;
     if ( userToken ) {
@@ -42,15 +42,22 @@ const useUserAuth = () => {
       const meResponse = UserJobs.getMe(userToken);
       meResponse.then((response) => {
 
-        if (response.success) {
-          setMeData(response.me);
-          if ( response.me && response.me.companyDetails === null ) {
-            router.push(`/signup/company`);
+        if ( isEffectActive ) {
+          if (response.success) {
+            setMeData(response.me);
+            if ( response.me && response.me.companyDetails === null ) {
+              router.push(`/signup/company`);
+            }
+            else {
+              if (router.asPath === `/signup/company`) {
+                router.push(`/`);
+              }
+            }
           }
-        }
-        else { // the token is expired
-          removeCookies('userToken');
-          router.push('/login');
+          else { // the token is expired
+            removeCookies('userToken');
+            router.push('/login');
+          }
         }
 
       })
@@ -60,13 +67,12 @@ const useUserAuth = () => {
       });
 
       setIsLoading(false);
+
     } else {
       router.push("/login");
     }
 
-    return () => {
-      abortController.abort();
-    }
+    return () => { isEffectActive = false }
 
   }, [])
 
@@ -88,7 +94,7 @@ export const AuthContextProvider = (props: {
   const { authUserToken, isLoading, setAuthUserToken, meData } = useUserAuth();
 
   if ( isLoading ) {
-    return (<><Stack alignItems="center"><CircularProgress /></Stack></>)
+    return (<BackdropLoader />)
   }
 
   return (

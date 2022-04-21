@@ -16,7 +16,6 @@ export const GenericPagination= (props: GenericPaginationProps) => {
         onChange={props.handlePaginationChange}
         renderItem={(item) => (
           <PaginationItem
-            data-test={`page-${item.page}`}
             {...item}
           />
         )}

@@ -1,13 +1,15 @@
 import { useRouter } from "next/router";
-import {  useState } from "react";
+import { useState } from "react";
 import { CompanyValidationError, UsersAPI, UserValidationError } from "../../api/users";
+import { BackdropLoader } from "../../components/BackdropLoader/BackdropLoader";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
 import { SignupCompanyForm, SignupCompanyInputs } from "../../forms/SignupForm/SignupCompanyForm";
 
 
 export const CompanyFormContainer = () => {
   const router                          = useRouter();
-  const authUserToken                   = useAuthContext().authUserToken;
+  const authData                        = useAuthContext();
+  const authUserToken                   = authData.authUserToken;
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const onSignupCompanySubmit           = async (companyData: SignupCompanyInputs) => {
@@ -43,6 +45,10 @@ export const CompanyFormContainer = () => {
 
     }
 
+  }
+
+  if ( authData.meData?.companyDetails ) {
+    return (<BackdropLoader />)
   }
 
   return (

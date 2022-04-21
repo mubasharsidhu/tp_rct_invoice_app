@@ -45,7 +45,6 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
     if (!queryClientID) {
       return;
     }
-    console.log('111', queryClientID)
     setSelectedClientID(queryClientID as string);
   }, [queryClientID])
 
@@ -55,6 +54,8 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
       return;
     }
 
+    let isEffectActive = true;
+
     // Get All Clients Starts here
     const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
@@ -63,32 +64,38 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
       limit        : -1
     });
     clientsHandlerResponse.then((response) => {
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
-        }
-      }
-      else {
-        const responseClients = response.clients as ClientPropsModel[];
+          const responseClients = response.clients as ClientPropsModel[];
 
-        let clientsOptions: Array<{ id: string, label: string }> | undefined = [];
-        if ( responseClients != null ) {
-          responseClients.map((data: ClientPropsModel) => {
-            clientsOptions ? clientsOptions.push({ id: data.id, label: (data.name + ' (' + data.email + ')') }) : [];
-          });
+          let clientsOptions: Array<{ id: string, label: string }> | undefined = [];
+          if ( responseClients != null ) {
+            responseClients.map((data: ClientPropsModel) => {
+              clientsOptions ? clientsOptions.push({ id: data.id, label: (data.name + ' (' + data.email + ')') }) : [];
+            });
+          }
+          setErrorMessage(""); // resetting the error message if it was there before
+          setAllClientsList(clientsOptions as { id: string, label: string }[]);
         }
-        setErrorMessage(""); // resetting the error message if it was there before
-        setAllClientsList(clientsOptions as { id: string, label: string }[]);
       }
+
     });
 
     clientsHandlerResponse.catch((err: unknown)=>{
-      setErrorMessage("An Unknown error occured"); // resetting the error message if it was there before
+      setErrorMessage("An Unknown error occured");
     });
+
+    return () => { isEffectActive = false }
     // Get All Clients Ends here
 
   }, [authUserToken]);
@@ -100,6 +107,8 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
       return;
     }
 
+    let isEffectActive = true;
+
     // Get Selected Client Detail Starts here
     if ( selectedClientID ) {
       const clientByIDHandlerResponse = ClientJobs.getClientByID({
@@ -107,23 +116,31 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
         clientID     : selectedClientID
       });
       clientByIDHandlerResponse.then((response) => {
-        if ( response.type === "error" ) {
-          if ( typeof response.error === 'string' ) {
-            setErrorMessage(response.error);
+        if (isEffectActive) {
+          if ( response.type === "error" ) {
+            if ( typeof response.error === 'string' ) {
+              setErrorMessage(response.error);
+            }
+            else {
+              const errorObj = response.error as object;
+              setErrorMessage( errorObj.toString() );
+            }
           }
           else {
-            const errorObj = response.error as object;
-            setErrorMessage( errorObj.toString() );
+            const responseClient = response.client as ClientPropsModel;
+            setErrorMessage(""); // resetting the error message if it was there before
+            setSelectedClientInfo(responseClient);
           }
         }
-        else {
-          const responseClient = response.client as ClientPropsModel;
-          setErrorMessage(""); // resetting the error message if it was there before
-          setSelectedClientInfo(responseClient);
-        }
       });
+
+      clientByIDHandlerResponse.catch((err: unknown)=>{
+        setErrorMessage("An Unknown error occured");
+      });
+
     }
     // Get Selected Client Detail Ends here
+    return () => { isEffectActive = false }
 
   }, [authUserToken, selectedClientID]);
 
@@ -132,6 +149,8 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
     if ( authUserToken === null ) {
       return;
     }
+
+    let isEffectActive = true;
 
     // Get Current Invoice Starts here
     if ( invoiceID !== undefined ) {
@@ -142,33 +161,42 @@ export const InvoiceFormContainer = (props: InvoiceFormContainerProps) => {
       });
 
       invoiceHandlerResponse.then((response) => {
-        if ( response.type === "error" ) {
-          if ( typeof response.error === 'string' ) {
-            setErrorMessage(response.error);
+        if (isEffectActive) {
+          if ( response.type === "error" ) {
+            if ( typeof response.error === 'string' ) {
+              setErrorMessage(response.error);
+            }
+            else {
+              const errorObj = response.error as object;
+              setErrorMessage( errorObj.toString() );
+            }
           }
           else {
-            const errorObj = response.error as object;
-            setErrorMessage( errorObj.toString() );
+            const theInvoice = {
+              id            : response.invoice?.id,
+              clientID      : response.invoice?.client_id,
+              invoiceDate   : response.invoice?.date,
+              invoiceDueDate: response.invoice?.dueDate,
+              invoiceNumber : response.invoice?.invoice_number,
+              projectCode   : response.invoice?.projectCode,
+              totalValue    : response.invoice?.value,
+              items         : response.invoice?.meta,
+            }
+            setErrorMessage(""); // resetting the error message if it was there before
+            setCurrentInvoice(theInvoice as InvoiceInputParams);
+            setSelectedClientID(theInvoice.clientID as string);
           }
         }
-        else {
-          const theInvoice = {
-            id            : response.invoice?.id,
-            clientID      : response.invoice?.client_id,
-            invoiceDate   : response.invoice?.date,
-            invoiceDueDate: response.invoice?.dueDate,
-            invoiceNumber : response.invoice?.invoice_number,
-            projectCode   : response.invoice?.projectCode,
-            totalValue    : response.invoice?.value,
-            items         : response.invoice?.meta,
-          }
-          setErrorMessage(""); // resetting the error message if it was there before
-          setCurrentInvoice(theInvoice as InvoiceInputParams);
-          setSelectedClientID(theInvoice.clientID as string);
-        }
-      })
+      });
+
+      invoiceHandlerResponse.catch((err: unknown)=>{
+        setErrorMessage("An Unknown error occured");
+      });
+
     }
     // Get Current Invoice Ends here
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, invoiceID]);
 

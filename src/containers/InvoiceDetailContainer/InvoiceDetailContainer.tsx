@@ -22,6 +22,9 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<H
     if ( authUserToken === null || !invoiceID ) {
       return;
     }
+
+    let isEffectActive = true;
+
     const invoicesHandlerResponse = InvoiceJobs.getInvoiceByID({
       authUserToken: authUserToken,
       invoiceID    : invoiceID
@@ -29,22 +32,30 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<H
 
     invoicesHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
+          setErrorMessage(""); // resetting the error message if it was there before
+          const theInvoice = response.invoice as InvoiceDetailResponseModel;
+          setCurrentInvoice(theInvoice);
         }
       }
-      else {
-        setErrorMessage(""); // resetting the error message if it was there before
-        const theInvoice = response.invoice as InvoiceDetailResponseModel;
-        setCurrentInvoice(theInvoice);
-      }
 
-    })
+    });
+
+    invoicesHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, invoiceID]);
 
@@ -53,6 +64,8 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<H
     if ( authUserToken === null || !currentInvoice?.client_id ) {
       return;
     }
+
+    let isEffectActive = true;
 
     const clientID = currentInvoice.client_id;
 
@@ -63,21 +76,29 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<H
 
     clientsHandlerResponse.then((response) => {
 
-      if ( response.type === "error" ) {
-        if ( typeof response.error === 'string' ) {
-          setErrorMessage(response.error);
+      if (isEffectActive) {
+        if ( response.type === "error" ) {
+          if ( typeof response.error === 'string' ) {
+            setErrorMessage(response.error);
+          }
+          else {
+            const errorObj = response.error as object;
+            setErrorMessage( errorObj.toString() );
+          }
         }
         else {
-          const errorObj = response.error as object;
-          setErrorMessage( errorObj.toString() );
+          setErrorMessage(""); // resetting the error message if it was there before
+          setCurrentInvoiceClient(response.client as ClientResponseModel);
         }
       }
-      else {
-        setErrorMessage(""); // resetting the error message if it was there before
-        setCurrentInvoiceClient(response.client as ClientResponseModel);
-      }
 
-    })
+    });
+
+    clientsHandlerResponse.catch((err: unknown)=>{
+      setErrorMessage("An Unknown error occured");
+    });
+
+    return () => { isEffectActive = false }
 
   }, [authUserToken, currentInvoice?.client_id]);
 

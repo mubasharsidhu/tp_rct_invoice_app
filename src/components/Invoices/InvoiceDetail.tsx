@@ -1,5 +1,5 @@
-import { Grid, Card, CardHeader, CardContent, Table, TableBody, TableCell, TableRow, Paper, Typography, Divider, TableHead, TableContainer } from "@mui/material"
-import { ClientDetail, ClientPropsModel } from "../Clients/ClientDetail"
+import { Grid, Table, TableBody, TableCell, TableRow, Paper, Typography, Divider, TableHead, TableContainer } from "@mui/material"
+import { ClientPropsModel } from "../Clients/ClientDetail"
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
 
 
@@ -47,9 +47,9 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
                 <Typography component="h1" variant="h2">Invoice</Typography>
               </Grid>
 
-              <Grid item container xs={12} mb={3}>
+              <Grid item container mb={3} spacing={2}>
 
-                <Grid item xs={4}>
+                <Grid item xs={12} sm={6} md={4}>
                   <TableContainer>
                     <Table aria-label="Billed To" size="small">
                       <TableHead>
@@ -79,11 +79,13 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
                   </TableContainer>
                 </Grid>
 
-                <Grid item xs={4} sx={{display: "flex", justifyContent: "center"}}>
-
+                <Grid
+                  item xs={12} sm={6} md={4}
+                  sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
+                  >
                 </Grid>
 
-                <Grid item xs={4}>
+                <Grid item xs={12} sm={6} md={4}>
                   <TableContainer>
                     <Table aria-label="Invoice Information" size="small">
                       <TableHead>

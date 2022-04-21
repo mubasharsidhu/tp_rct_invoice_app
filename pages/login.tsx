@@ -33,7 +33,6 @@ const LoginPage = () => {
       }
 
     }
-
   }
 
   return (

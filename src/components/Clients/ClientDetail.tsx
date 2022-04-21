@@ -17,7 +17,8 @@ export type ClientPropsModel = {
 
 type ClientDetailProps = {
   genericError? : string
-  currentClient?: ClientPropsModel | undefined
+  currentClient?: ClientPropsModel | undefined,
+  invoicesCount?: number,
 }
 
 
@@ -45,10 +46,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
                     <TableCell variant="head">Email:</TableCell><TableCell>{props.currentClient?.email}</TableCell>
                   </TableRow>
                   <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                    <TableCell variant="head">Invoice Count:</TableCell><TableCell>{props.currentClient?.invoicesCount}</TableCell>
-                  </TableRow>
-                  <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} >
-                    <TableCell variant="head">Total Billed:</TableCell><TableCell>{props.currentClient?.totalBilled}</TableCell>
+                    <TableCell variant="head">Invoice Count:</TableCell><TableCell>{props.invoicesCount}</TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
