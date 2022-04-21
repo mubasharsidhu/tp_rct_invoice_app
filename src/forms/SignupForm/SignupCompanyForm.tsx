@@ -5,12 +5,12 @@ import { Box, Button, Step, StepLabel, Stepper, TextField } from "@mui/material"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const SignupCompanySchema = yup.object({
-  companyName     : yup.string().required(),
-  companyAddress  : yup.string().required(),
-  companyTaxNumber: yup.string().required(),
-  companyRegNumber: yup.string().required(),
-  iban            : yup.string(),
-  swift           : yup.string(),
+  companyName     : yup.string().required("This field is required").typeError("This field should contain valid text"),
+  companyAddress  : yup.string().required("This field is required").typeError("This field should contain valid text"),
+  companyTaxNumber: yup.string().required("This field is required").typeError("This field should contain valid text"),
+  companyRegNumber: yup.string().required("This field is required").typeError("This field should contain valid text"),
+  iban            : yup.string().typeError("This field contain valid text"),
+  swift           : yup.string().typeError("This field should contain valid text"),
 }).required();
 
 export type SignupCompanyInputs = {
@@ -115,7 +115,7 @@ export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
           <TextField
             id="swift"
             name="swift"
-            label="Swift"
+            label="Swift Code"
             fullWidth={true}
             margin="dense"
             inputProps={{ ...register("swift") }}

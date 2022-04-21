@@ -1,4 +1,4 @@
-import { ClientResponseModel } from "./clients";
+import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
 
 type SignupCompanyInputs = {
   companyName     : string,
@@ -9,6 +9,22 @@ type SignupCompanyInputs = {
   swift           : string,
 };
 
+
+export type MeResponseModel = {
+  id            : string,
+  email         : string,
+  name          : string,
+  password      : string,
+  companyDetails: {
+    name     : string,
+    address  : string,
+    vatNumber: string,
+    regNumber: string,
+    iban?    : string,
+    swift?   : string,
+  };
+}
+
 export class UserValidationError extends Error {}
 export class CompanyValidationError extends Error {}
 
@@ -18,7 +34,7 @@ export const UsersAPI = {
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/me`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type" : "application/json",
         "Authorization": `Bearer ${authToken}`
       },
     });
@@ -29,16 +45,22 @@ export const UsersAPI = {
 
     try {
       const jsonResponse = await httpResponse.json();
-      return jsonResponse as ClientResponseModel;
+      return {
+        success: true,
+        me     : jsonResponse
+      } as {
+        success: boolean,
+        me     : MeResponseModel
+      }
     } catch (err) {
       return {
-        clients: {
-          companyDetails: null
-        }
+        success: false as boolean,
+        me     : null
       }
     }
 
   },
+
   companyDetails: async (authToken: string, params: SignupCompanyInputs) => {
 
     const payload = {
@@ -53,7 +75,7 @@ export const UsersAPI = {
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/me/company`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type" : "application/json",
         "Authorization": `Bearer ${authToken}`
       },
       body: JSON.stringify(payload)
@@ -71,7 +93,7 @@ export const UsersAPI = {
       const jsonResponse = await httpResponse.json();
       return jsonResponse as {
         success: boolean,
-        user   : ClientResponseModel
+        user   : MeResponseModel
       }
     } catch (err) {
       return {
@@ -82,4 +104,27 @@ export const UsersAPI = {
 
   }
 
+}
+
+
+export const UserJobs = {
+  getMe : async (authUserToken: string) => {
+
+    try {
+      const response = await UsersAPI.me(authUserToken);
+      return {
+        success: response.success as boolean,
+        me     : response.me as MeResponseModel,
+      }
+
+    } catch (err: unknown) {
+
+      return {
+        success: false as boolean,
+        error  : err as unknown
+      }
+
+    }
+
+  }
 }

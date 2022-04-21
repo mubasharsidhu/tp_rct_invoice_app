@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 import { ClientJobs, ClientResponseModel } from "../../api/clients"
 import { CommonJobs } from "../../api/common"
 import { InvoiceJobs, InvoiceDetailResponseModel } from "../../api/invoices"
-import { ClientDetail } from "../../components/Clients/ClientDetail"
 import { InvoiceDetail } from "../../components/Invoices/InvoiceDetail"
 import { useAuthContext } from "../../contexts/AuthContextProvider"
 

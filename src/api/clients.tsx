@@ -93,9 +93,9 @@ export const ClientAPI = {
 
     try {
 
-      const jsonReponse = await httpResponse.json();
+      const jsonResponse = await httpResponse.json();
 
-      return jsonReponse as {
+      return jsonResponse as {
         type: "success",
         client: ClientResponseModel
       }
@@ -103,6 +103,7 @@ export const ClientAPI = {
     } catch (err) {
 
       return {
+        type: "error",
         client: {}
       }
 
@@ -117,7 +118,6 @@ export const ClientAPI = {
     limit? : number,
     offset?: number
   }) => {
-    // TODO check and allow non filtered or sorted use
 
     const queryParams = {
       sort: {
@@ -144,7 +144,6 @@ export const ClientAPI = {
       throw new InvalidUserTokenError('Invalid Access')
     }
 
-
     try {
 
       const jsonReponse = await httpResponse.json();
@@ -157,7 +156,7 @@ export const ClientAPI = {
     } catch (err) {
 
       return {
-        total: 0,
+        total  : 0,
         clients: []
       }
 

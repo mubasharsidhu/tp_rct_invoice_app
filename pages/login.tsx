@@ -21,7 +21,6 @@ const LoginPage = () => {
 
       const response = await AuthAPI.login(data);
       setCookies('userToken', response.token);
-      window.localStorage.setItem("userName", response.name);
       router.push("/");
 
     } catch (err: any) {

@@ -1,10 +1,12 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, Grid } from "@mui/material"
 import React from "react"
 import { LogoutMenuItemContainer } from "../containers/LogoutMenuItemContainer/LogoutMenuItemContainer";
+import { useAuthContext } from "../contexts/AuthContextProvider";
 
 export const Header = () => {
 
-  const userName                = window.localStorage.getItem("userName");
+  const authData = useAuthContext();
+  const userName                = authData.meData?.name;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open                    = Boolean(anchorEl);
   const handleClick             = (event: React.MouseEvent<HTMLElement>) => {

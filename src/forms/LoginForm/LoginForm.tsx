@@ -7,19 +7,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const loginSchema = yup.object({
-  email: yup.string().email().required(),
+  email   : yup.string().email().required(),
   password: yup.string().required(),
 }).required();
 
 export type LoginInputs = {
-  email: string,
+  email   : string,
   password: string,
 };
 
 export type LoginFormProps = {
-  genericError?: string;
+  genericError?     : string;
   onNavigateToSignUp: () => unknown
-  onLoginRequest: (data: LoginInputs) => unknown
+  onLoginRequest    : (data: LoginInputs) => unknown
 }
 
 export const LoginForm = (props: LoginFormProps) => {

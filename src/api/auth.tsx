@@ -46,6 +46,7 @@ export const AuthAPI = {
     }
 
   },
+
   signup: async (data: SignupInputs) => {
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/register`, {
       method: "POST",

@@ -27,16 +27,17 @@ export const SignupPage = () => {
       const response = await AuthAPI.login(payload);
 
       setCookies('userToken', response.token);
-      window.localStorage.setItem("userName", response.name);
       router.push(`/signup/company`);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
 
-      if ( typeof err === 'string' ) {
-        setErrorMessage(err);
-      }
-      else {
-        setErrorMessage(err.toString());
+      if ( err instanceof UserValidationError) {
+        if ( typeof err === 'string' ) {
+          setErrorMessage(err);
+        }
+        else {
+          setErrorMessage(err.toString());
+        }
       }
 
     }

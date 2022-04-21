@@ -89,6 +89,8 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       return;
     }
 
+    let abortController = new AbortController();
+
     const clientsHandlerResponse = ClientJobs.getClients({
       authUserToken: authUserToken,
       orderBy      : orderBy,
@@ -116,6 +118,10 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
     clientsHandlerResponse.catch((err: unknown)=>{
       setErrorMessage("An Unknown error occured");
     });
+
+    return () => {
+      abortController.abort();
+    }
 
   }, [authUserToken, orderBy, order, offset]);
 

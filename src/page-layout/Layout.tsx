@@ -1,9 +1,11 @@
 import { ReactNode } from "react";
-import { Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { Backdrop, Button, CircularProgress, Container, Grid, Stack, Typography } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
 import { Footer } from "./Footer";
 import { GenericMenuItemProps } from "../components/Generic/GenericMenuItem";
+import { useAuthContext } from "../contexts/AuthContextProvider";
+import { BackdropLoader } from "../components/BackdropLoader/BackdropLoader";
 
 
 type LayoutProps = {
@@ -15,7 +17,12 @@ type LayoutProps = {
 
 const Layout = (props: LayoutProps ) => {
 
-  const router = useRouter();
+  const router   = useRouter();
+  const authData = useAuthContext();
+
+  if ( !authData.meData?.companyDetails && router.asPath !== `/signup/company` ) {
+    return (<BackdropLoader />)
+  }
 
   return (
     <Container fixed>

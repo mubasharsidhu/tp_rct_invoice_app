@@ -53,11 +53,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {
         clients: clientResponse.clients,
-        total: clientResponse.total
+        total  : clientResponse.total
       }, // will be passed to the page component as props
     }
 
-  } catch (err) {
+  } catch (err: unknown) {
 
     if ( err instanceof InvalidUserTokenError) {
       context.res.setHeader(
