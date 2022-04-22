@@ -154,7 +154,6 @@ export const InvoiceAPI = {
     offset?  : number,
     clientID?: string
   }) => {
-    // TODO check and allow non filtered or sorted use
 
     const queryParams = {
       filter: {

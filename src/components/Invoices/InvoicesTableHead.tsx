@@ -1,7 +1,7 @@
 import { Box, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import React, { MouseEvent } from 'react';
 import { visuallyHidden } from '@mui/utils';
-import { InvoiceSortBy, headCells, Order } from "../../containers/InvoiceTableContainer/InvoiceTableContainer";
+import { InvoiceSortBy, headCells, Order, HeadCell } from "../../containers/InvoiceTableContainer/InvoiceTableContainer";
 
 interface InvoicesTableHeadProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property?: InvoiceSortBy) => void;
@@ -20,7 +20,7 @@ export const InvoicesTableHead = (props: InvoicesTableHeadProps) => {
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell: HeadCell) => (
           <TableCell
             key={headCell.id}
             padding="normal"

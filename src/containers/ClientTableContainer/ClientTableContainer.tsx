@@ -15,7 +15,7 @@ export type Order = 'asc' | 'desc';
 
 export type ClientSortBy = 'clientName' | 'invoicesCount';
 
-interface HeadCell {
+export interface HeadCell {
   id         : string;
   label      : string;
   isSortable?: boolean
