@@ -61,8 +61,8 @@ const useUserAuth = () => {
         }
 
       })
-      .catch((err)=>{
-        //setMeData is already undefined here
+      .catch((err: unknown)=>{
+        //meData is not available, let's redirect to login
         router.push('/login');
       });
 

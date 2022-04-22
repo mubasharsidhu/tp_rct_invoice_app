@@ -1,20 +1,23 @@
 
 import { getCookie, setCookies } from "cookies-next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthAPI } from "../src/api/auth";
+import { BackdropLoader } from "../src/components/BackdropLoader/BackdropLoader";
 import { LoginForm, LoginInputs } from "../src/forms/LoginForm/LoginForm";
 
 const LoginPage = () => {
 
   const router        = useRouter();
   const userAuthToken = getCookie("userToken") as string;
-  if ( userAuthToken ) {
-    router.push('/');
-  }
+
+  useEffect(()=>{
+    if ( userAuthToken ) {
+      router.push('/');
+    }
+  }, []);
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
-
   const onLoginRequest = async (data: LoginInputs) => {
 
     try {
@@ -35,14 +38,26 @@ const LoginPage = () => {
     }
   }
 
+  const [backdropLoader, setBackdropLoader] = useState<boolean>(false);
+  useEffect(() => {
+    if (userAuthToken) {
+      setBackdropLoader(true);
+    }
+  }, [])
+  if ( backdropLoader ) {
+    return (<BackdropLoader />)
+  }
+
   return (
-    <LoginForm
-      genericError={errorMessage}
-      onLoginRequest={onLoginRequest}
-      onNavigateToSignUp={() => {
-        router.push("/signup");
-      } }
-    />
+    <>
+      <LoginForm
+        genericError={errorMessage}
+        onLoginRequest={onLoginRequest}
+        onNavigateToSignUp={() => {
+          router.push("/signup");
+        } }
+      />
+    </>
   )
 }
 

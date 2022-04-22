@@ -6,7 +6,7 @@ export const BackdropLoader = () => {
   return (
     <>
       <Backdrop
-        sx={{ color: 'primary.light', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open
       >
         <Stack gap={1} justifyContent="center" alignItems="center">

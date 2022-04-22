@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { SignupForm, SignupInputs } from "../src/forms/SignupForm/SignupForm";
 import { getCookie, setCookies } from "cookies-next";
 import { AuthAPI, UserValidationError } from "../src/api/auth";
+import { BackdropLoader } from "../src/components/BackdropLoader/BackdropLoader";
 
 
 export const SignupPage = () => {
@@ -10,7 +11,7 @@ export const SignupPage = () => {
   const router        = useRouter();
   const userAuthToken = getCookie("userToken") as string;
   if ( userAuthToken ) {
-    //router.push('/');
+    router.push('/');
   }
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
@@ -42,6 +43,17 @@ export const SignupPage = () => {
 
     }
 
+  }
+
+
+  const [backdropLoader, setBackdropLoader] = useState<boolean>(false);
+  useEffect(() => {
+    if (userAuthToken) {
+      setBackdropLoader(true);
+    }
+  }, [])
+  if ( backdropLoader ) {
+    return (<BackdropLoader />)
   }
 
 
