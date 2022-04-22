@@ -11,8 +11,9 @@ interface InvoicesTableHeadProps {
 }
 
 export const InvoicesTableHead = (props: InvoicesTableHeadProps) => {
+
   const { order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: InvoiceSortBy) => (event: MouseEvent<unknown>) => {
+  const createSortHandler                 = (property: InvoiceSortBy) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -49,4 +50,5 @@ export const InvoicesTableHead = (props: InvoicesTableHeadProps) => {
       </TableRow>
     </TableHead>
   );
+
 }

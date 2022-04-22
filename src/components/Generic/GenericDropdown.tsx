@@ -9,7 +9,6 @@ type GenericTableDropdownProps = {
   menuItems?: Array<GenericMenuItemProps>
 }
 
-
 export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -90,6 +89,7 @@ export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
               })
             : null
           }
+
       </Menu>
     </>
   );

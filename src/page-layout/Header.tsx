@@ -5,7 +5,7 @@ import { useAuthContext } from "../contexts/AuthContextProvider";
 
 export const Header = () => {
 
-  const authData = useAuthContext();
+  const authData                = useAuthContext();
   const userName                = authData.meData?.name;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open                    = Boolean(anchorEl);
@@ -24,7 +24,7 @@ export const Header = () => {
         bgcolor={'primary.light'}
         color={'primary.contrastText'}
         sx={{ mt:2, px: 2, py: 0 }}
-        >
+      >
         <Grid item xs={4}><h3>Invoice Manager </h3></Grid>
         <Grid item xs={8} sx={{ display: "flex", justifyContent: "flex-end"  }}>
           <Box>
@@ -83,4 +83,5 @@ export const Header = () => {
       </Grid>
     </>
   )
+
 }

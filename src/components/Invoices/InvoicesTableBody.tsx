@@ -1,4 +1,4 @@
-import { Add, Edit, Print } from "@mui/icons-material";
+import { Edit, Print } from "@mui/icons-material";
 import { TableBody, TableRow, TableCell} from "@mui/material";
 import { useRouter } from "next/router";
 import { CommonJobs } from "../../api/common";
@@ -29,14 +29,15 @@ export type InvoicePropsModel = {
   }
 }
 
+
 type InvoicesTableBodyProps = {
   rows: InvoicePropsModel[]
 }
 
-
 export const InvoicesTableBody = (props: InvoicesTableBodyProps) => {
 
   const router = useRouter();
+
   return (
     <>
       <TableBody>

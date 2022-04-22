@@ -1,5 +1,6 @@
 import { Pagination, PaginationItem, Box } from "@mui/material"
-import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
+import { DEFAULT_ROWS_PER_PAGE } from "../../config/config"
+
 
 type GenericPaginationProps = {
   totalRecords          : number,
@@ -8,6 +9,7 @@ type GenericPaginationProps = {
 }
 
 export const GenericPagination= (props: GenericPaginationProps) => {
+
   return (
     <Box sx={{ display: "flex", justifyContent: "flex-end", py: 1  }}>
       <Pagination
@@ -23,6 +25,6 @@ export const GenericPagination= (props: GenericPaginationProps) => {
         color="primary"
       />
     </Box>
-
   )
+
 }

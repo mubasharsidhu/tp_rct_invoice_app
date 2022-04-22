@@ -2,10 +2,11 @@ import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
 import { MouseEventHandler, useState } from "react";
 
+
 export type PasswordFieldProps = {
-  fieldId: string
-  labelTitle: string;
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement> & { [key: string]: any }
+  fieldId      : string
+  labelTitle   : string;
+  inputProps?  : React.InputHTMLAttributes<HTMLInputElement> & { [key: string]: any }
   errorMessage?: string;
 }
 
@@ -20,7 +21,7 @@ export const PasswordField = (props: PasswordFieldProps) => {
 
   return (
     <>
-      <FormControl fullWidth={true} required={true} variant="outlined" >
+      <FormControl fullWidth={true} required={true} variant="outlined" margin="dense">
         <InputLabel htmlFor={props.fieldId}>{props.labelTitle}</InputLabel>
         <OutlinedInput
           margin="dense"
@@ -49,4 +50,5 @@ export const PasswordField = (props: PasswordFieldProps) => {
       </FormControl>
     </>
   )
+
 }

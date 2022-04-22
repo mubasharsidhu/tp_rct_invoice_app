@@ -1,7 +1,7 @@
 import { Box, Paper, TableContainer, Table} from "@mui/material"
 import router from "next/router"
 import { memo, useEffect, useState } from "react"
-import { DEFAULT_ROWS_PER_PAGE } from "../../../pages/config/config"
+import { DEFAULT_ROWS_PER_PAGE } from "../../config/config"
 import { ClientJobs } from "../../api/clients"
 import { ClientPropsModel } from "../../components/Clients/ClientDetail"
 import { ClientsTableBody } from "../../components/Clients/ClientsTableBody"

@@ -2,8 +2,8 @@ import { ClientDetailContainer } from "../../../src/containers/ClientDetailConta
 import { AuthContextProvider } from "../../../src/contexts/AuthContextProvider";
 import Layout from "../../../src/page-layout/Layout";
 
-export const ViewClient = () => {
 
+export const ViewClient = () => {
 
   return (
     <AuthContextProvider>
@@ -14,7 +14,6 @@ export const ViewClient = () => {
   )
 
 }
-
 
 
 export default ViewClient;

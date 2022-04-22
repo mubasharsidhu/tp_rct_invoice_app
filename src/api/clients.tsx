@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { DEFAULT_ROWS_PER_PAGE } from "../../pages/config/config";
+import { DEFAULT_ROWS_PER_PAGE } from "../config/config";
 
 
 export type Order        = 'asc' | 'desc';
@@ -71,8 +71,10 @@ export const ClientAPI = {
     }
 
     const jsonResponse = await httpResponse.json();
+    return;
 
   },
+
 
   getClientsByID: async (authToken: string, params: {
     clientID: string
@@ -110,6 +112,7 @@ export const ClientAPI = {
     }
 
   },
+
 
   getClients: async (authToken: string, params: {
     res?   : ServerResponse,
@@ -201,6 +204,7 @@ export const ClientJobs = {
     }
 
   },
+
 
   getClientByID: async (params: {
     authUserToken: string,

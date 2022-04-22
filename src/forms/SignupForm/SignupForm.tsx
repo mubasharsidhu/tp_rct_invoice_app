@@ -7,9 +7,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const SignupSchema = yup.object({
-  name           : yup.string().required(),
-  email          : yup.string().email().required(),
-  password       : yup.string().required(),
+  name           : yup.string().required("Name is a required field"),
+  email          : yup.string().email().required("Email is a required field"),
+  password       : yup.string().required("Password is a required field"),
   confirmPassword: yup.string().required("You must confirm Password")
     .test('password', 'Password Must match.', function (value) {
       return this.parent.password === value;
@@ -32,7 +32,7 @@ export type SignupFormProps = {
 export const SignupForm = (props: SignupFormProps) => {
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm<SignupInputs>({
-    mode: "onBlur",
+    mode    : "onBlur",
     resolver: yupResolver(SignupSchema)
   });
 
@@ -58,6 +58,7 @@ export const SignupForm = (props: SignupFormProps) => {
               label="Name"
               required={true}
               fullWidth={true}
+              margin="dense"
               inputProps={{...register("name", { required: true }) }}
               error={!!errors.name}
               helperText={errors.name?.message ?? " "}
@@ -68,6 +69,7 @@ export const SignupForm = (props: SignupFormProps) => {
               label="Email Address"
               required={true}
               fullWidth={true}
+              margin="dense"
               inputProps={{...register("email", { required: true }) }}
               error={!!errors.email}
               helperText={errors.email?.message ?? " "}

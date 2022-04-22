@@ -11,7 +11,9 @@ export type GenericMenuItemProps = {
 }
 
 export const GenericMenuItem = (props: GenericMenuItemProps) => {
+
   const router = useRouter();
+
   return (
     <>
       <MenuItem onClick={props.clickHandler ? props.clickHandler: () => { router.push( props.redirectURL ) }}>
@@ -20,4 +22,5 @@ export const GenericMenuItem = (props: GenericMenuItemProps) => {
       </MenuItem>
     </>
   )
+
 }

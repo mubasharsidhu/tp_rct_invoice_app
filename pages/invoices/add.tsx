@@ -2,7 +2,9 @@ import { InvoiceFormContainer } from "../../src/containers/InvoiceFormContainer/
 import { AuthContextProvider } from "../../src/contexts/AuthContextProvider";
 import Layout from "../../src/page-layout/Layout";
 
+
 export const AddInvoice = () => {
+
   return (
     <AuthContextProvider>
       <Layout pageTitle={"Add Invoice"} >
@@ -10,6 +12,8 @@ export const AddInvoice = () => {
       </Layout>
     </AuthContextProvider>
   )
+
 }
+
 
 export default AddInvoice;

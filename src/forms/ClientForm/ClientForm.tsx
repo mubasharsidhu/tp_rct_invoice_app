@@ -7,12 +7,12 @@ import { useEffect } from "react";
 
 
 const ClientSchema = yup.object({
-  clientName      : yup.string().default('tree').required(),
-  email           : yup.string().email().required(),
-  companyName     : yup.string().required(),
-  companyAddress  : yup.string().required(),
-  companyTaxNumber: yup.string().required(),
-  companyRegNumber: yup.string().required(),
+  clientName      : yup.string().required("Client Name is a required field"),
+  email           : yup.string().email("Email must be a valid email").required("Email is a required field"),
+  companyName     : yup.string().required("Company Name is a required field"),
+  companyAddress  : yup.string().required("Company Address is a required field"),
+  companyTaxNumber: yup.string().required("Tax Number is a required field"),
+  companyRegNumber: yup.string().required("Reg Number is a required field"),
 }).required();
 
 
@@ -108,7 +108,7 @@ export const ClientForm = (props: ClientFormProps) => {
           <TextField
             id="companyTaxNumber"
             name="companyTaxNumber"
-            label="Company Tax Number"
+            label="Tax Number"
             required={true}
             fullWidth={true}
             margin="dense"
@@ -120,7 +120,7 @@ export const ClientForm = (props: ClientFormProps) => {
           <TextField
             id="companyRegNumber"
             name="companyRegNumber"
-            label="Company Reg Number"
+            label="Reg Number"
             required={true}
             fullWidth={true}
             margin="dense"
@@ -135,4 +135,5 @@ export const ClientForm = (props: ClientFormProps) => {
       </Box>
     </>
   )
+
 }

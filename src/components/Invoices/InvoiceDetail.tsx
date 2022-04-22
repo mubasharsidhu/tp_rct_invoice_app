@@ -1,4 +1,4 @@
-import { Grid, Table, TableBody, TableCell, TableRow, Paper, Typography, Divider, TableHead, TableContainer } from "@mui/material"
+import { Grid, Table, TableBody, TableCell, TableRow, Paper, Typography, TableHead, TableContainer } from "@mui/material"
 import { ClientPropsModel } from "../Clients/ClientDetail"
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage"
 
@@ -22,7 +22,6 @@ type InvoiceDetailProps = {
   currentInvoiceClient: ClientPropsModel | undefined,
   formatDate          : (date: Date) => string;
 }
-
 
 export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
@@ -160,7 +159,7 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
         </Grid>
 
       </Grid>
-
     </>
   )
+
 }

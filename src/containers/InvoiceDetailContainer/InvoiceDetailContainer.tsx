@@ -114,5 +114,5 @@ export const InvoiceDetailContainer = React.forwardRef(( props, ref: React.Ref<H
 
     </Grid>
   )
-}
-)
+
+})

@@ -6,7 +6,7 @@ import { ClientTableContainer } from '../src/containers/ClientTableContainer/Cli
 import { InvoiceTableContainer } from '../src/containers/InvoiceTableContainer/InvoiceTableContainer'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import Layout from '../src/page-layout/Layout'
-import { DEFAULT_ROWS_PER_PAGE } from './config/config'
+import { DEFAULT_ROWS_PER_PAGE } from '../src/config/config'
 
 
 type ClientPageProps = {
@@ -14,8 +14,8 @@ type ClientPageProps = {
   total  : number
 }
 
-
 const Home: NextPage<ClientPageProps> = (props) => {
+
   return (
     <AuthContextProvider>
       <Layout pageTitle='Dashboard'>
@@ -32,6 +32,7 @@ const Home: NextPage<ClientPageProps> = (props) => {
       </Layout>
     </AuthContextProvider>
   )
+
 }
 
 
@@ -79,6 +80,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {},
   }
+
 }
+
 
 export default Home

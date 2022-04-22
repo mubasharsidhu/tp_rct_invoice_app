@@ -1,6 +1,7 @@
-import { ClientFormContainer as ClientFormContainer } from "../../src/containers/ClientFormContainer/ClientFormContainer";
+import { ClientFormContainer } from "../../src/containers/ClientFormContainer/ClientFormContainer";
 import { AuthContextProvider } from "../../src/contexts/AuthContextProvider";
 import Layout from "../../src/page-layout/Layout";
+
 
 export const EditClient = () => {
 
@@ -13,5 +14,6 @@ export const EditClient = () => {
   )
 
 }
+
 
 export default EditClient;

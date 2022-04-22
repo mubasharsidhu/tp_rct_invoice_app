@@ -1,6 +1,6 @@
 
 type LoginInputs = {
-  email: string,
+  email   : string,
   password: string,
 };
 
@@ -32,16 +32,16 @@ export const AuthAPI = {
       const jsonResponse = await httpResponse.json();
       return jsonResponse as {
         user_id: string,
-        email: string,
-        name: string,
-        token: string,
+        email  : string,
+        name   : string,
+        token  : string,
       }
     } catch (err) {
       return {
         user_id: '',
-        email: '',
-        name: '',
-        token: '',
+        email  : '',
+        name   : '',
+        token  : '',
       }
     }
 
@@ -49,7 +49,7 @@ export const AuthAPI = {
 
   signup: async (data: SignupInputs) => {
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/register`, {
-      method: "POST",
+      method : "POST",
       headers: {
         "Content-Type": "application/json"
       },

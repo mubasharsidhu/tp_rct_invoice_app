@@ -15,14 +15,15 @@ export type ClientPropsModel = {
   };
 }
 
+
 type ClientDetailProps = {
   genericError? : string
   currentClient?: ClientPropsModel | undefined,
   invoicesCount?: number,
 }
 
-
 export const ClientDetail = (props: ClientDetailProps) => {
+
   return (
     <>
       {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
@@ -83,7 +84,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
         </Grid>
 
       </Grid>
-
     </>
   )
+
 }

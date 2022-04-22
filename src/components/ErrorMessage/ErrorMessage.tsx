@@ -1,10 +1,9 @@
-import { Alert, Grid } from "@mui/material"
+import { Alert } from "@mui/material"
 
 
 export type ErrorMessageProps = {
-  message : string
+  message: string
 }
-
 
 export const ErrorMessage = (props: ErrorMessageProps) => {
 

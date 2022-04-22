@@ -20,13 +20,14 @@ type InvoiceItemSchemaData = yup.InferType<typeof InvoiceItemSchema>
 
 
 const InvoiceSchema = yup.object({
-  clientID      : yup.string().required("Please select a client"),
-  invoiceDate   : yup.date().required("The Date field is required.").typeError("The Date field is required and must have a valid Date format. (mm/dd/yyyy"),
-  invoiceDueDate: yup.date().required("The Due Date field is required.").typeError("The Due Date field is required and must have a valid Date format. (mm/dd/yyyy"),
+  clientID      : yup.string().required("Client Name is a required field"),
+  invoiceDate   : yup.date().required("Invoice Date is a required field").typeError("Invoice Date is a required field and must be a valid date (mm/dd/yyyy)"),
+  invoiceDueDate: yup.date().required("Invoice Due Date is a required field").typeError("Invoice Due Date is a required field and must be a valid date (mm/dd/yyyy)"),
   invoiceNumber : yup.string().required("Invoice Number is a required field"),
   projectCode   : yup.string().required("Project Code is a required field"),
   items         : yup.array().of(InvoiceItemSchema).required().min(1),
 })
+
 
 export interface InvoiceInputParams extends Omit<yup.InferType<typeof InvoiceSchema>, 'items'> {
   totalValue: number;
@@ -43,7 +44,6 @@ export type InvoiceFormProps = {
   onInvoiceDataSubmitRequest: (data: InvoiceInputParams) => unknown
 }
 
-
 export const InvoiceForm = (props: InvoiceFormProps) => {
 
   const [invoiceDate, setInvoiceDate]       = useState<Date | null>(null);
@@ -54,7 +54,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
     resolver     : yupResolver(InvoiceSchema),
     defaultValues: {
       clientID: "",
-      items: [{}]
+      items   : [{}]
     }
   });
 
@@ -148,7 +148,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
                 return (
                   <DatePicker
                     {...field}
-                    label="Date"
+                    label="Invoice Date"
                     value={field.value ? CommonJobs.formatDate(field.value) : "" }
                     disablePast={true}
                     allowSameDateSelection={true}
@@ -162,7 +162,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
                         <TextField
                           id="invoiceDate"
                           name="invoiceDate"
-                          label="Date"
+                          label="Invoice Date"
                           required={true}
                           fullWidth={true}
                           margin="dense"
@@ -181,12 +181,11 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
             <Controller
               name="invoiceDueDate"
               control={control}
-              //defaultValue={new Date()}
               render={({ field: { ref, ...field }, fieldState: { error } }) => {
                 return (
                   <DatePicker
                     {...field}
-                    label="Due Date"
+                    label="Invoice Due Date"
                     value={field.value ? CommonJobs.formatDate(field.value) : "" }
                     disablePast={true}
                     allowSameDateSelection={true}
@@ -200,7 +199,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
                         <TextField
                           id="invoiceDueDate"
                           name="invoiceDueDate"
-                          label="Due Date"
+                          label="Invoice Due Date"
                           required={true}
                           fullWidth={true}
                           margin="dense"
@@ -220,7 +219,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
           <TextField
             id="invoiceNumber"
             name="invoiceNumber"
-            label="Number"
+            label="Invoice Number"
             required={true}
             fullWidth={true}
             margin="dense"
@@ -305,4 +304,5 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
       </Box>
     </>
   )
+
 }

@@ -11,6 +11,7 @@ interface ClientsTableHeadProps {
 }
 
 export const ClientsTableHead = (props: ClientsTableHeadProps) => {
+
   const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property: ClientSortBy) => (event: MouseEvent<unknown>) => {
     onRequestSort(event, property);
@@ -49,4 +50,5 @@ export const ClientsTableHead = (props: ClientsTableHeadProps) => {
       </TableRow>
     </TableHead>
   );
+
 }

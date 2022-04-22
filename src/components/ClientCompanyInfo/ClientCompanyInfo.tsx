@@ -6,8 +6,8 @@ type ClientCompanyInfoProps = {
   selectedClientInfo: ClientPropsModel | null
 }
 
-
 export const ClientCompanyInfo = (props: ClientCompanyInfoProps) => {
+
   return (
     <Grid container justifyContent="center" >
       <Grid item sm={12} md={8}>
@@ -27,7 +27,7 @@ export const ClientCompanyInfo = (props: ClientCompanyInfoProps) => {
           </TableBody>
         </Table>
       </Grid>
-
     </Grid>
   )
+
 }

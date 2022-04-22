@@ -9,10 +9,10 @@ type ClientsTableBodyProps = {
   rows: ClientPropsModel[]
 }
 
-
 export const ClientsTableBody = (props: ClientsTableBodyProps) => {
 
   const router = useRouter();
+
   return (
     <>
       <TableBody>

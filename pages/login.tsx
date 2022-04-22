@@ -6,6 +6,7 @@ import { AuthAPI } from "../src/api/auth";
 import { BackdropLoader } from "../src/components/BackdropLoader/BackdropLoader";
 import { LoginForm, LoginInputs } from "../src/forms/LoginForm/LoginForm";
 
+
 const LoginPage = () => {
 
   const router        = useRouter();
@@ -16,6 +17,7 @@ const LoginPage = () => {
       router.push('/');
     }
   }, []);
+
 
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const onLoginRequest = async (data: LoginInputs) => {
@@ -48,6 +50,7 @@ const LoginPage = () => {
     return (<BackdropLoader />)
   }
 
+
   return (
     <>
       <LoginForm
@@ -59,6 +62,8 @@ const LoginPage = () => {
       />
     </>
   )
+
 }
+
 
 export default LoginPage

@@ -3,7 +3,7 @@ import React from 'react'
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import { InvoiceAPI, InvoiceResponseModel, InvalidUserTokenError } from '../src/api/invoices'
 import Layout from '../src/page-layout/Layout'
-import { DEFAULT_ROWS_PER_PAGE } from './config/config'
+import { DEFAULT_ROWS_PER_PAGE } from '../src/config/config'
 import { InvoiceTableContainer } from '../src/containers/InvoiceTableContainer/InvoiceTableContainer'
 import type { GenericMenuItemProps } from '../src/components/Generic/GenericMenuItem'
 import { Add } from '@mui/icons-material'
@@ -23,12 +23,10 @@ type InvoicesPageProps = {
   total   : number,
 }
 
-
 const InvoicesPage: NextPage<InvoicesPageProps> = (props) => {
 
   return (
     <AuthContextProvider>
-
       <Layout
         pageTitle={"Invoices"}
         subMenus={subMenus}
@@ -38,9 +36,7 @@ const InvoicesPage: NextPage<InvoicesPageProps> = (props) => {
           isMainPage={true}
         />
       </Layout>
-
     </AuthContextProvider>
-
   )
 
 }
@@ -89,6 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {},
   }
+
 }
 
 

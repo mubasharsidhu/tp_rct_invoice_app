@@ -1,6 +1,7 @@
-import { InvoiceFormContainer as InvoiceFormContainer } from "../../src/containers/InvoiceFormContainer/InvoiceFormContainer";
+import { InvoiceFormContainer } from "../../src/containers/InvoiceFormContainer/InvoiceFormContainer";
 import { AuthContextProvider } from "../../src/contexts/AuthContextProvider";
 import Layout from "../../src/page-layout/Layout";
+
 
 export const EditInvoice = () => {
 
@@ -13,5 +14,6 @@ export const EditInvoice = () => {
   )
 
 }
+
 
 export default EditInvoice;

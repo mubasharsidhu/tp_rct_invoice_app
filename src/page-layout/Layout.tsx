@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Backdrop, Button, CircularProgress, Container, Grid, Stack, Typography } from "@mui/material";
+import { Button, Container, Grid, Stack, Typography } from "@mui/material";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
 import { Footer } from "./Footer";
@@ -10,9 +10,9 @@ import { BackdropLoader } from "../components/BackdropLoader/BackdropLoader";
 
 type LayoutProps = {
   hideMenu?: boolean,
-  pageTitle     : string,
-  subMenus?     : Array<GenericMenuItemProps>,
-  children?     : ReactNode,
+  pageTitle: string,
+  subMenus?: Array<GenericMenuItemProps>,
+  children?: ReactNode,
 }
 
 const Layout = (props: LayoutProps ) => {
@@ -67,5 +67,6 @@ const Layout = (props: LayoutProps ) => {
   )
 
 }
+
 
 export default Layout;

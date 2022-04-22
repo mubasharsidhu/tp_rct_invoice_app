@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import { DEFAULT_ROWS_PER_PAGE } from "../../pages/config/config";
+import { DEFAULT_ROWS_PER_PAGE } from "../config/config";
 
 
 export type Order         = 'asc' | 'desc';
@@ -109,6 +109,7 @@ export const InvoiceAPI = {
 
   },
 
+
   getInvoiceByID: async (authToken: string, params: {
     invoiceID: string
   }) => {
@@ -129,7 +130,6 @@ export const InvoiceAPI = {
     try {
 
       const jsonReponse = await httpResponse.json();
-
       return jsonReponse as {
         type   : "success",
         invoice: InvoiceDetailResponseModel
@@ -144,6 +144,7 @@ export const InvoiceAPI = {
     }
 
   },
+
 
   getInvoices: async (authToken: string, params: {
     res?     : ServerResponse,
@@ -170,7 +171,6 @@ export const InvoiceAPI = {
       delete queryParams.limit;
       delete queryParams.offset;
     }
-
     const encodeParamsString = encodeURIComponent(JSON.stringify(queryParams));
 
     const httpResponse = await fetch(`${process.env.NEXT_PUBLIC_INVOICE_API_HOST}/invoices?params=${encodeParamsString}`, {
@@ -204,6 +204,7 @@ export const InvoiceAPI = {
   }
 
 }
+
 
 
 export const InvoiceJobs = {
@@ -242,6 +243,7 @@ export const InvoiceJobs = {
     }
 
   },
+
 
   getInvoiceByID : async (params: {
     authUserToken: string,

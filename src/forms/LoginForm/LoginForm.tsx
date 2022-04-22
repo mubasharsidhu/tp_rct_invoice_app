@@ -7,8 +7,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const loginSchema = yup.object({
-  email   : yup.string().email().required(),
-  password: yup.string().required(),
+  email   : yup.string().email("Email must be a valid email").required("Email is a required field"),
+  password: yup.string().required("Password is a required field"),
 }).required();
 
 export type LoginInputs = {
@@ -51,6 +51,7 @@ export const LoginForm = (props: LoginFormProps) => {
               label="Email Address"
               required={true}
               fullWidth={true}
+              margin="dense"
               inputProps={{...register("email", { required: true }) }}
               error={!!errors.email}
               helperText={errors.email?.message ?? " "}

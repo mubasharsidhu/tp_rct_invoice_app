@@ -4,7 +4,7 @@ import { ClientTableContainer } from '../src/containers/ClientTableContainer/Cli
 import { AuthContextProvider } from '../src/contexts/AuthContextProvider'
 import { ClientAPI, ClientResponseModel, InvalidUserTokenError } from '../src/api/clients'
 import Layout from '../src/page-layout/Layout'
-import { DEFAULT_ROWS_PER_PAGE } from './config/config'
+import { DEFAULT_ROWS_PER_PAGE } from '../src/config/config'
 import type { GenericMenuItemProps } from '../src/components/Generic/GenericMenuItem'
 import { Add } from '@mui/icons-material'
 
@@ -27,7 +27,6 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
 
   return (
     <AuthContextProvider>
-
       <Layout
         pageTitle={"Clients"}
         subMenus={subMenus}
@@ -37,9 +36,7 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
           isMainPage={true}
         />
       </Layout>
-
     </AuthContextProvider>
-
   )
 
 }
@@ -88,6 +85,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {},
   }
+
 }
 
 

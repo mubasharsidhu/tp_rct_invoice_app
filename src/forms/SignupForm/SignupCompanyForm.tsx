@@ -5,13 +5,13 @@ import { Box, Button, Step, StepLabel, Stepper, TextField } from "@mui/material"
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const SignupCompanySchema = yup.object({
-  companyName     : yup.string().required("This field is required").typeError("This field should contain valid text"),
-  companyAddress  : yup.string().required("This field is required").typeError("This field should contain valid text"),
-  companyTaxNumber: yup.string().required("This field is required").typeError("This field should contain valid text"),
-  companyRegNumber: yup.string().required("This field is required").typeError("This field should contain valid text"),
-  iban            : yup.string().typeError("This field contain valid text"),
-  swift           : yup.string().typeError("This field should contain valid text"),
-}).required();
+  companyName     : yup.string().required("Company Name is a required field"),
+  companyAddress  : yup.string().required("Company Address is a required field"),
+  companyTaxNumber: yup.string().required("Tax Number is a required field"),
+  companyRegNumber: yup.string().required("Reg Number is a required field"),
+  iban            : yup.string().typeError("IBAN must be a valid string"),
+  swift           : yup.string().typeError("Swift Code must be a valid string"),
+});
 
 export type SignupCompanyInputs = {
   companyName     : string,
@@ -83,7 +83,7 @@ export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
           <TextField
             id="companyTaxNumber"
             name="companyTaxNumber"
-            label="Company Tax Number"
+            label="Tax Number"
             required={true}
             fullWidth={true}
             margin="dense"
@@ -94,7 +94,7 @@ export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
           <TextField
             id="companyRegNumber"
             name="companyRegNumber"
-            label="Company Reg Number"
+            label="Reg Number"
             required={true}
             fullWidth={true}
             margin="dense"

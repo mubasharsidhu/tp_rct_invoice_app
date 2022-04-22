@@ -1,5 +1,3 @@
-import { responseSymbol } from "next/dist/server/web/spec-compliant/fetch-event";
-
 type SignupCompanyInputs = {
   companyName     : string,
   companyAddress  : string,
@@ -61,6 +59,7 @@ export const UsersAPI = {
 
   },
 
+
   companyDetails: async (authToken: string, params: SignupCompanyInputs) => {
 
     const payload = {
@@ -107,10 +106,12 @@ export const UsersAPI = {
 }
 
 
+
 export const UserJobs = {
   getMe : async (authUserToken: string) => {
 
     try {
+
       const response = await UsersAPI.me(authUserToken);
       return {
         success: response.success as boolean,

@@ -4,7 +4,9 @@ import { useAuthContext } from "../../contexts/AuthContextProvider";
 
 
 export const LogoutMenuItemContainer = () => {
+
   const { logout } = useAuthContext();
+
   return (
     <MenuItem onClick={ () => {
         logout();
@@ -15,4 +17,5 @@ export const LogoutMenuItemContainer = () => {
       Logout
     </MenuItem>
   )
+
 }

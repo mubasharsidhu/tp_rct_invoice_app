@@ -2,7 +2,9 @@ import { ClientFormContainer } from "../../src/containers/ClientFormContainer/Cl
 import { AuthContextProvider } from "../../src/contexts/AuthContextProvider";
 import Layout from "../../src/page-layout/Layout";
 
+
 export const AddClient = () => {
+
   return (
     <AuthContextProvider>
       <Layout pageTitle={"Add Client"} >
@@ -10,6 +12,8 @@ export const AddClient = () => {
       </Layout>
     </AuthContextProvider>
   )
+
 }
+
 
 export default AddClient;
