@@ -1,4 +1,4 @@
-import { Add } from "@mui/icons-material"
+import { Add, More } from "@mui/icons-material"
 import { Button, Grid, Stack, Typography } from "@mui/material"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -80,7 +80,7 @@ export const ClientDetailContainer = () => {
             {
               invoicesCount && invoicesCount > 0
               ? <Button variant="outlined" onClick={()=>{ router.push(`/invoices?clientID=${clientID}`)}} >
-                  <Add fontSize="small" />View more Invoices of <Typography sx={{ fontStyle: 'italic' }}>{currentClient?.name}</Typography>
+                  <More sx={{mr:1}} fontSize="small" /> View more Invoices of <Typography sx={{ fontStyle: 'italic' }}>{currentClient?.name}</Typography>
                 </Button>
               : null
             }
