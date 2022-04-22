@@ -63,7 +63,7 @@ const useUserAuth = () => {
           }
           else {
             if (router.asPath === `/signup/company`) {
-              //router.push(`/`);
+              router.push(`/`);
             }
           }
         }
