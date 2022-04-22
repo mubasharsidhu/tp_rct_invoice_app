@@ -77,6 +77,13 @@ export const ClientDetailContainer = () => {
             <Button variant="contained" onClick={()=>{ router.push(`/invoices/add?clientID=${clientID}`)}} >
               <Add fontSize="small" />Add Invoice
             </Button>
+            {
+              invoicesCount && invoicesCount > 0
+              ? <Button variant="outlined" onClick={()=>{ router.push(`/invoices?clientID=${clientID}`)}} >
+                  <Add fontSize="small" />View more Invoices of <Typography sx={{ fontStyle: 'italic' }}>{currentClient?.name}</Typography>
+                </Button>
+              : null
+            }
           </Stack>
         </Grid>
       </Grid>
