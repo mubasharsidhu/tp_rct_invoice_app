@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CompanyValidationError, UsersAPI, UserValidationError } from "../../api/users";
 import { BackdropLoader } from "../../components/BackdropLoader/BackdropLoader";
 import { useAuthContext } from "../../contexts/AuthContextProvider";
@@ -47,16 +47,24 @@ export const CompanyFormContainer = () => {
 
   }
 
-  if ( authData.meData?.companyDetails ) {
-    return (<BackdropLoader />)
-  }
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    if (authData.authUserToken && authData.meData && authData.meData.companyDetails) {
+      setIsLoading(false);
+    }
+  }, [authData.meData]);
 
   return (
     <>
-      <SignupCompanyForm
-        genericError={errorMessage}
-        onSignupCompanySubmit={onSignupCompanySubmit}
-      />
+      {
+        isLoading
+        ? <SignupCompanyForm
+            genericError={errorMessage}
+            onSignupCompanySubmit={onSignupCompanySubmit}
+          />
+        : <BackdropLoader />
+      }
     </>
   )
 

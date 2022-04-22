@@ -33,48 +33,56 @@ const useUserAuth = () => {
 
   useEffect(() => {
 
-    let isEffectActive = true;
-
     const userToken = getCookie("userToken") as string;
     if ( userToken ) {
       setAuthUserToken(userToken);
-
-      const meResponse = UserJobs.getMe(userToken);
-      meResponse.then((response) => {
-
-        if ( isEffectActive ) {
-          if (response.success) {
-            setMeData(response.me);
-            if ( response.me && response.me.companyDetails === null ) {
-              router.push(`/signup/company`);
-            }
-            else {
-              if (router.asPath === `/signup/company`) {
-                router.push(`/`);
-              }
-            }
-          }
-          else { // the token is expired
-            removeCookies('userToken');
-            router.push('/login');
-          }
-        }
-
-      })
-      .catch((err: unknown)=>{
-        //meData is not available, let's redirect to login
-        router.push('/login');
-      });
-
       setIsLoading(false);
-
     } else {
       router.push("/login");
     }
 
+  }, [])
+
+
+  useEffect(()=>{
+
+    if (!authUserToken) {
+      return
+    }
+    let isEffectActive = true;
+
+    const meResponse = UserJobs.getMe(authUserToken);
+    meResponse.then(async (response) => {
+
+      if ( isEffectActive ) {
+        if (response.success) {
+          setMeData(await response.me as MeResponseModel);
+
+          if ( response.me && response.me.companyDetails === null ) {
+            router.push(`/signup/company`);
+          }
+          else {
+            if (router.asPath === `/signup/company`) {
+              //router.push(`/`);
+            }
+          }
+        }
+        else { // the token is expired
+          removeCookies('userToken');
+          router.push('/login');
+        }
+      }
+
+    })
+    .catch((err: unknown)=>{
+      //meData is not available, let's redirect to login
+      router.push('/login');
+    });
+
     return () => { isEffectActive = false }
 
-  }, [])
+  }, [authUserToken]);
+
 
   return {
     setAuthUserToken,

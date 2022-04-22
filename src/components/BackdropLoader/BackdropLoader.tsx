@@ -10,7 +10,7 @@ export const BackdropLoader = () => {
         open
       >
         <Stack gap={1} justifyContent="center" alignItems="center">
-          <CircularProgress color="inherit" size={60} thickness={6} />
+          <CircularProgress color="inherit" size={60} thickness={4} />
           <Typography>Loading...</Typography>
         </Stack>
       </Backdrop>

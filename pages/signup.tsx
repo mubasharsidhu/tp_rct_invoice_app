@@ -45,26 +45,28 @@ export const SignupPage = () => {
 
   }
 
-
-  const [backdropLoader, setBackdropLoader] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
-    if (userAuthToken) {
-      setBackdropLoader(true);
+    if (!userAuthToken) {
+      setIsLoading(true);
     }
-  }, [])
-  if ( backdropLoader ) {
-    return (<BackdropLoader />)
-  }
-
+  }, []);
 
   return (
-    <SignupForm
-      genericError={errorMessage}
-      onSignupRequest={onSignupRequest}
-      onNavigateToLogin={() => {
-        router.push("/login");
-      } }
-    />
+    <>
+      {
+        isLoading
+        ? <SignupForm
+            genericError={errorMessage}
+            onSignupRequest={onSignupRequest}
+            onNavigateToLogin={() => {
+              router.push("/login");
+            } }
+          />
+        : <BackdropLoader />
+      }
+    </>
+
   )
 
 }

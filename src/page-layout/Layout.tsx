@@ -18,52 +18,54 @@ type LayoutProps = {
 const Layout = (props: LayoutProps ) => {
 
   const router   = useRouter();
-
   const authData = useAuthContext();
-  if ( !authData.meData?.companyDetails && router.asPath !== `/signup/company` ) {
-    return (<BackdropLoader />)
-  }
 
   return (
-    <Container fixed>
-      <Header />
-
+    <>
       {
-        props.hideMenu
-        ? null
-        : <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: "flex-end", pt:1 }}>
-            <Button variant="outlined" onClick={()=>{ router.push('/') }} >Dashboard</Button>
-            <Button variant="outlined" onClick={()=>{ router.push('/clients') }}>Clients</Button>
-            <Button variant="outlined" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
-          </Stack>
-      }
+        ( !authData.meData?.companyDetails && router.asPath !== `/signup/company` )
+        ? <BackdropLoader />
+        : <Container fixed>
+            <Header />
 
-      <Grid container spacing={2} sx={{py:1}}>
-        <Grid item >
-          <Typography component="h1" variant="h4">{props.pageTitle}</Typography>
-        </Grid>
-
-        {
-          props.subMenus
-          ?
-          props.subMenus.map((data, index)=> {
-            return (
-              <Grid item key={index}>
-                <Stack direction="row" spacing={2}>
-                  <Button variant="contained" onClick={data.clickHandler ? data.clickHandler : ()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
+            {
+              props.hideMenu
+              ? null
+              : <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: "flex-end", pt:1 }}>
+                  <Button variant="outlined" onClick={()=>{ router.push('/') }} >Dashboard</Button>
+                  <Button variant="outlined" onClick={()=>{ router.push('/clients') }}>Clients</Button>
+                  <Button variant="outlined" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
                 </Stack>
+            }
+
+            <Grid container spacing={2} sx={{py:1}}>
+              <Grid item >
+                <Typography component="h1" variant="h4">{props.pageTitle}</Typography>
               </Grid>
-            )
-          })
-          : null
-        }
 
-      </Grid>
+              {
+                props.subMenus
+                ?
+                props.subMenus.map((data, index)=> {
+                  return (
+                    <Grid item key={index}>
+                      <Stack direction="row" spacing={2}>
+                        <Button variant="contained" onClick={data.clickHandler ? data.clickHandler : ()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
+                      </Stack>
+                    </Grid>
+                  )
+                })
+                : null
+              }
 
-      {props.children}
+            </Grid>
 
-      <Footer />
-    </Container>
+            {props.children}
+
+            <Footer />
+          </Container>
+      }
+    </>
   )
 
 }
