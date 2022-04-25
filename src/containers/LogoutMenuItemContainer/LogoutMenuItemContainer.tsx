@@ -8,7 +8,7 @@ export const LogoutMenuItemContainer = () => {
   const { logout } = useAuthContext();
 
   return (
-    <MenuItem onClick={ () => {
+    <MenuItem className="logout" onClick={ () => {
         logout();
       }}>
       <ListItemIcon>

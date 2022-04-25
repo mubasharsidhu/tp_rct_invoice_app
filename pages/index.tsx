@@ -18,7 +18,7 @@ const Home: NextPage<ClientPageProps> = (props) => {
 
   return (
     <AuthContextProvider>
-      <Layout pageTitle='Dashboard'>
+      <Layout pageTitle='Dashboard' pageID='dashboard-page'>
         <Grid container rowSpacing={1} columnSpacing={3}>
           <Grid item md={12} lg={6}>
             <Typography>Clients</Typography>

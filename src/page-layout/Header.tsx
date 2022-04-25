@@ -1,7 +1,9 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, Grid } from "@mui/material"
 import React from "react"
+import { GenericMenuItem } from "../components/Generic/GenericMenuItem";
 import { LogoutMenuItemContainer } from "../containers/LogoutMenuItemContainer/LogoutMenuItemContainer";
 import { useAuthContext } from "../contexts/AuthContextProvider";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export const Header = () => {
 
@@ -27,7 +29,9 @@ export const Header = () => {
       >
         <Grid item xs={4}><h3>Invoice Manager </h3></Grid>
         <Grid item xs={8} sx={{ display: "flex", justifyContent: "flex-end"  }}>
-          <Box>
+          <Box
+            id="settings-menu"
+          >
             <Tooltip title="Click to open Settings">
               <IconButton
                 onClick={handleClick}
@@ -76,8 +80,16 @@ export const Header = () => {
             }}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
+          >
+
+            <GenericMenuItem key={`menuItem-company-details`}
+              icon={<SettingsIcon fontSize="small" />}
+              title={"Edit Company"}
+              redirectURL={`/signup/edit/company`}
+            />
+
             <LogoutMenuItemContainer />
+
           </Menu>
         </Grid>
       </Grid>

@@ -43,7 +43,13 @@ export const LoginForm = (props: LoginFormProps) => {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}><LockOutlinedIcon /></Avatar>
           <Typography component="h1" variant="h5">Sign in</Typography>
 
-          <Box component="form" onSubmit={handleSubmit(props.onLoginRequest)} noValidate sx={{ mt: 2 }}>
+          <Box
+            id="login-form"
+            component="form"
+            noValidate
+            sx={{ mt: 2 }}
+            onSubmit={handleSubmit(props.onLoginRequest)}
+          >
             {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
             <TextField
               id="email"
@@ -74,7 +80,7 @@ export const LoginForm = (props: LoginFormProps) => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Don't have an account?
-                <Button variant="text"
+                <Button variant="text" id="navigate-to-signup-button"
                   onClick={(ev) => {
                     ev.preventDefault();
                     props.onNavigateToSignUp();

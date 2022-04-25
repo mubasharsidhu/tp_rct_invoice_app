@@ -8,10 +8,10 @@ import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
 
 const SignupSchema = yup.object({
   name           : yup.string().required("Name is a required field"),
-  email          : yup.string().email().required("Email is a required field"),
+  email          : yup.string().email("Email must be a valid email").required("Email is a required field"),
   password       : yup.string().required("Password is a required field"),
   confirmPassword: yup.string().required("You must confirm Password")
-    .test('password', 'Password Must match.', function (value) {
+    .test('password', 'Password Must match', function (value) {
       return this.parent.password === value;
     }),
 }).required();
@@ -50,7 +50,13 @@ export const SignupForm = (props: SignupFormProps) => {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}><LockOutlinedIcon /></Avatar>
           <Typography component="h1" variant="h5">Sign up</Typography>
 
-          <Box component="form" onSubmit={handleSubmit(props.onSignupRequest)} noValidate sx={{ mt: 2 }}>
+          <Box
+            id="signup-form"
+            component="form"
+            noValidate
+            sx={{ mt: 2 }}
+            onSubmit={handleSubmit(props.onSignupRequest)}
+          >
             {props.genericError ? <ErrorMessage message={props.genericError} /> : null}
             <TextField
               id="name"
@@ -96,7 +102,7 @@ export const SignupForm = (props: SignupFormProps) => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 Already have an account?
-                <Button variant="text"
+                <Button variant="text" id="navigate-to-login-button"
                   onClick={(ev) => {
                     ev.preventDefault();
                     props.onNavigateToLogin();

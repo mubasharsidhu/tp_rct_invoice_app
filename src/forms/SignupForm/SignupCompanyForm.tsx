@@ -3,43 +3,54 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { Box, Button, Step, StepLabel, Stepper, TextField } from "@mui/material";
 import { ErrorMessage } from "../../components/ErrorMessage/ErrorMessage";
+import { useEffect } from "react";
+
 
 const SignupCompanySchema = yup.object({
   companyName     : yup.string().required("Company Name is a required field"),
   companyAddress  : yup.string().required("Company Address is a required field"),
   companyTaxNumber: yup.string().required("Tax Number is a required field"),
   companyRegNumber: yup.string().required("Reg Number is a required field"),
-  iban            : yup.string().typeError("IBAN must be a valid string"),
-  swift           : yup.string().typeError("Swift Code must be a valid string"),
+  iban            : yup.string().nullable().typeError("IBAN must be a valid string"),
+  swift           : yup.string().nullable().typeError("Swift Code must be a valid string"),
 });
+
 
 export type SignupCompanyInputs = {
   companyName     : string,
   companyAddress  : string,
   companyTaxNumber: string,
   companyRegNumber: string,
-  iban            : string,
-  swift           : string,
+  iban?           : string,
+  swift?          : string,
 };
 
+
 type SignupCompanyFormProps = {
-  genericError?        : string;
+  genericError?        : string,
+  formType             : "add" | "edit"
+  currentData          : SignupCompanyInputs | undefined,
   onSignupCompanySubmit: (data: SignupCompanyInputs) => unknown
 }
 
 export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignupCompanyInputs>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<SignupCompanyInputs>({
     mode    : "onBlur",
     resolver: yupResolver(SignupCompanySchema)
   });
+
+  useEffect(() => {
+    reset(props.currentData);
+  }, [props.currentData]);
+
 
   const steps = [ 'Sign up', 'Company Details', 'Completed' ];
 
   return (
     <>
       <Box sx={{ mb:4 }}>
-        <Stepper activeStep={1} alternativeLabel>
+        <Stepper activeStep={props.formType==="edit" ? 2 : 1} alternativeLabel>
           {steps.map((label) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
@@ -50,6 +61,7 @@ export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
 
       <Box sx={{ display:'flex', flexDirection:'column', alignItems:'center' }} >
         <Box
+          id="signup-company-form"
           maxWidth="sm"
           component="form"
           noValidate
@@ -123,7 +135,7 @@ export const SignupCompanyForm = (props: SignupCompanyFormProps) => {
             helperText={errors.swift?.message ?? " "}
           />
 
-          <Button type="submit" fullWidth={true} variant="contained" >Submit Company</Button>
+          <Button type="submit" fullWidth={true} variant="contained" id="signup-company-button" >Submit Company</Button>
 
         </Box>
       </Box>

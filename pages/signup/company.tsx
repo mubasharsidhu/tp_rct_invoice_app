@@ -9,8 +9,10 @@ export const SignupCompanyPage = () => {
     <AuthContextProvider>
       <Layout
         pageTitle='Company Details'
-        hideMenu={true} >
-        <CompanyFormContainer />
+        hideMenu={true}
+        pageID="signup-company-page"
+      >
+        <CompanyFormContainer formType={"add"} />
       </Layout>
     </AuthContextProvider>
   )

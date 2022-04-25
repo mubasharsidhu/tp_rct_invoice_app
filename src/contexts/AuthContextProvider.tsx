@@ -56,16 +56,12 @@ const useUserAuth = () => {
 
       if ( isEffectActive ) {
         if (response.success) {
-          setMeData(await response.me as MeResponseModel);
 
+          setMeData(await response.me as MeResponseModel);
           if ( response.me && response.me.companyDetails === null ) {
             router.push(`/signup/company`);
           }
-          else {
-            if (router.asPath === `/signup/company`) {
-              router.push(`/`);
-            }
-          }
+
         }
         else { // the token is expired
           removeCookies('userToken');
@@ -76,6 +72,7 @@ const useUserAuth = () => {
     })
     .catch((err: unknown)=>{
       //meData is not available, let's redirect to login
+      removeCookies('userToken');
       router.push('/login');
     });
 
