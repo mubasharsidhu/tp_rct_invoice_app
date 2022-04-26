@@ -1,6 +1,10 @@
 describe('The signup page', () => {
 
+  let dataset;
   beforeEach(() => {
+    cy.fixture('users.json').then(function (data) {
+      dataset = data;
+    });
     cy.visit('/signup');
   });
 
@@ -26,12 +30,8 @@ describe('The signup page', () => {
 
   it("should display email and confirm-password validation", () => {
 
-    const user = Cypress.env('users').invalidEmailUser;
-
-    cy.get('#name').type(`${user.userName}`);
-    cy.get('#email').type(`${user.userEmail}`);
-    cy.get('#password').type(`${user.userPassword}`);
-    cy.get('#confirmPassword').type(`misMatchIt${user.userPassword}{enter}`);
+    const user = dataset.users.invalidEmailUser;
+    cy.signup(user, 'misMatchIt');
 
     cy.get('#email').
       parent().should('have.class', 'Mui-error')
@@ -46,12 +46,8 @@ describe('The signup page', () => {
 
   it("should display validation error when email already exists", () => {
 
-    const user = Cypress.env('users').completeDBUser;
-
-    cy.get('#name').type(`${user.userName}`);
-    cy.get('#email').type(`${user.userEmail}`);
-    cy.get('#password').type(`${user.userPassword}`);
-    cy.get('#confirmPassword').type(`${user.userPassword}{enter}`);
+    const user = dataset.users.completeDBUser;
+    cy.signup(user);
 
     cy.get('#signup-form .MuiAlert-root .MuiAlert-message').should('be.visible');
 
@@ -60,12 +56,8 @@ describe('The signup page', () => {
 
   it("should redirect to company form page on successful signup", () => {
 
-    const user = Cypress.env('users').signupNewUser;
-
-    cy.get('#name').type(`${user.userName}`);
-    cy.get('#email').type(`${user.userEmail}`);
-    cy.get('#password').type(`${user.userPassword}`);
-    cy.get('#confirmPassword').type(`${user.userPassword}{enter}`);
+    const user = dataset.users.signupNewUser;
+    cy.signup(user);
 
     cy.url().should('include', '/signup/company');
     cy.getCookie('userToken').should('exist');

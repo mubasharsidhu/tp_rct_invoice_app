@@ -50,6 +50,7 @@ export const ClientForm = (props: ClientFormProps) => {
     <>
       <Box sx={{ display:'flex', flexDirection:'column', alignItems:'center' }} >
         <Box
+          id="client-form"
           maxWidth="sm"
           component="form"
           noValidate
@@ -129,7 +130,7 @@ export const ClientForm = (props: ClientFormProps) => {
             helperText={errors.companyRegNumber?.message ?? " "}
           />
 
-          <Button type="submit" fullWidth={true} variant="contained" >Submit Client</Button>
+          <Button type="submit" fullWidth={true} variant="contained" id="client-form-submit">Submit Client</Button>
 
         </Box>
       </Box>

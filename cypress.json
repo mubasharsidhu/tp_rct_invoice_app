@@ -1,49 +1,6 @@
 {
   "baseUrl": "http://localhost:3000",
   "env"    : {
-    "invoiceApiHost": "http://localhost:3139",
-    "users": {
-      "completeDBUser" : {
-        "userName"    : "Fake User",
-        "userEmail"   : "fake_user1@officehourtesting.com",
-        "userPassword": "123456",
-        "companyDetails": {
-          "name"     : "Fake Company Joe",
-          "address"  : "Fake Company JoeDress",
-          "vatNumber": "FakeTax123",
-          "regNumber": "FakeReg123",
-          "iban"     : "1234",
-          "swift"    : "5678"
-        }
-      },
-      "incompleteDBUser" : {
-        "userName"    : "Joe 2",
-        "userEmail"   : "joe2@gmail.com",
-        "userPassword": "111111",
-        "companyDetails": {
-          "name"     : "Joe Company Joe",
-          "address"  : "Joe Company JoeDress",
-          "vatNumber": "JoeTax123",
-          "regNumber": "JoeReg123",
-          "iban"     : "1234",
-          "swift"    : "5678"
-        }
-      },
-      "notInDBUser" : {
-        "userName"    : "Joe NotInDB",
-        "userEmail"   : "joe.not.in.db@gmail.com",
-        "userPassword": "111111"
-      },
-      "signupNewUser" : {
-        "userName"    : "Joe Tester",
-        "userEmail"   : "joe.cypress.tester@gmail.com",
-        "userPassword": "111111"
-      },
-      "invalidEmailUser" : {
-        "userName"    : "Joe Tester Invalid Email",
-        "userEmail"   : "joe.invalid.email.tt",
-        "userPassword": "111111"
-      }
-    }
+    "invoiceApiHost": "http://localhost:3139"
   }
 }

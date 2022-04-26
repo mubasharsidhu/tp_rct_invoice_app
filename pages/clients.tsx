@@ -30,6 +30,7 @@ const ClientsPage: NextPage<ClientPageProps> = (props) => {
       <Layout
         pageTitle={"Clients"}
         subMenus={subMenus}
+        pageID="client-page"
         >
         <ClientTableContainer
           initialPayload={props}

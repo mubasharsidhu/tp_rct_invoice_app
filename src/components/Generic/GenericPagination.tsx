@@ -13,6 +13,7 @@ export const GenericPagination= (props: GenericPaginationProps) => {
   return (
     <Box sx={{ display: "flex", justifyContent: "flex-end", py: 1  }}>
       <Pagination
+        id="pagination"
         count={Math.ceil(props.totalRecords / DEFAULT_ROWS_PER_PAGE)}
         page={props.currentPageNumber}
         onChange={props.handlePaginationChange}

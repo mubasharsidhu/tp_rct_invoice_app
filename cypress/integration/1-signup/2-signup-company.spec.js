@@ -9,7 +9,7 @@ describe('The signup-company Page', () => {
 
   it('should redirect to company details form page when company details are missing', function () {
 
-    const user = Cypress.env('users').incompleteDBUser;
+    const user = dataset.users.signupNewUser;
     cy.login(user.userEmail, user.userPassword);
 
     cy.visit('/');
@@ -23,7 +23,7 @@ describe('The signup-company Page', () => {
 
     cy.logout();
 
-    const user = Cypress.env('users').incompleteDBUser;
+    const user = dataset.users.signupNewUser;
     cy.login(user.userEmail, user.userPassword);
 
     cy.visit('/signup/company');
@@ -49,7 +49,7 @@ describe('The signup-company Page', () => {
 
     cy.logout();
 
-    const user = Cypress.env('users').incompleteDBUser;
+    const user = dataset.users.signupNewUser;
     cy.login(user.userEmail, user.userPassword);
 
     cy.visit('/signup/company');
@@ -69,7 +69,7 @@ describe('The signup-company Page', () => {
 
     cy.logout();
 
-    const user = Cypress.env('users').incompleteDBUser;
+    const user = dataset.users.signupNewUser; // it is now a complete user with company details added in previous test
     cy.login(user.userEmail, user.userPassword);
 
     cy.visit('/signup/edit/company');

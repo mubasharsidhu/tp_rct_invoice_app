@@ -35,9 +35,9 @@ const Layout = (props: LayoutProps ) => {
           props.hideMenu
           ? null
           : <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: "flex-end", pt:1 }}>
-              <Button variant="outlined" onClick={()=>{ router.push('/') }} >Dashboard</Button>
-              <Button variant="outlined" onClick={()=>{ router.push('/clients') }}>Clients</Button>
-              <Button variant="outlined" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
+              <Button variant="outlined" id="menu-dashboard" onClick={()=>{ router.push('/') }} >Dashboard</Button>
+              <Button variant="outlined" id="menu-clients" onClick={()=>{ router.push('/clients') }}>Clients</Button>
+              <Button variant="outlined" id="menu-invoices" onClick={()=>{ router.push('/invoices') }} >Invoices</Button>
             </Stack>
         }
 
@@ -53,7 +53,7 @@ const Layout = (props: LayoutProps ) => {
               return (
                 <Grid item key={index}>
                   <Stack direction="row" spacing={2}>
-                    <Button variant="contained" onClick={data.clickHandler ? data.clickHandler : ()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
+                    <Button id={data.title.replaceAll(' ', '')} variant="contained" onClick={data.clickHandler ? data.clickHandler : ()=>{ router.push( data.redirectURL ) }} >{data.icon}{data.title}</Button>
                   </Stack>
                 </Grid>
               )
