@@ -38,6 +38,7 @@ const useUserAuth = () => {
       setAuthUserToken(userToken);
       setIsLoading(false);
     } else {
+      removeCookies('userToken');
       router.push("/login");
     }
 

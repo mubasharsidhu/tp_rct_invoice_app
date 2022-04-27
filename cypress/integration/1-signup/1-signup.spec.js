@@ -44,19 +44,30 @@ describe('The signup page', () => {
   });
 
 
-  it("should display validation error when email already exists", () => {
+  it("should sign up successfully and redirect to company form page", () => {
 
-    const user = dataset.users.completeDBUser;
+    const user = dataset.users.signupNewUser;
     cy.signup(user);
 
+    cy.url().should('include', '/signup/company');
+    cy.getCookie('userToken').should('exist');
+    cy.get('#signup-company-page').should('be.visible');
+
+  });
+
+
+  it("should display validation error when email already exists", () => {
+
+    const user = dataset.users.signupNewUser;
+    cy.signup(user);
     cy.get('#signup-form .MuiAlert-root .MuiAlert-message').should('be.visible');
 
   });
 
 
-  it("should redirect to company form page on successful signup", () => {
+  it("should create another user and redirect to company form page on successful signup", () => {
 
-    const user = dataset.users.signupNewUser;
+    const user = dataset.users.signupNewUserNoCompany;
     cy.signup(user);
 
     cy.url().should('include', '/signup/company');

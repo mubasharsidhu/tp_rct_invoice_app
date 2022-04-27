@@ -43,7 +43,7 @@ describe('The login page', () => {
 
   it("should login successfully and redirect to Company form when company details are missing", () => {
 
-    const user = dataset.users.incompleteDBUser;
+    const user = dataset.users.signupNewUserNoCompany;
     cy.loginWithSuccess(user.userEmail, user.userPassword);
 
     cy.wait(8000).url().should('include', '/signup/company');
@@ -54,7 +54,7 @@ describe('The login page', () => {
 
   it("should login successfully and redirect to dashboad on ", () => {
 
-    const user = dataset.users.completeDBUser;
+    const user = dataset.users.signupNewUser;
     cy.loginWithSuccess(user.userEmail, user.userPassword);
     cy.get('#dashboard-page').should('be.visible');
 

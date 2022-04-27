@@ -1,18 +1,5 @@
 {
   "users": {
-    "completeDBUser" : {
-      "userName"    : "Fake User",
-      "userEmail"   : "fake_user1@officehourtesting.com",
-      "userPassword": "123456",
-      "companyDetails": {
-        "name"     : "Fake Company Joe",
-        "address"  : "Fake Company JoeDress",
-        "vatNumber": "FakeTax123",
-        "regNumber": "FakeReg123",
-        "iban"     : "1234",
-        "swift"    : "5678"
-      }
-    },
     "incompleteDBUser" : {
       "userName"    : "Joe 2",
       "userEmail"   : "joe2@gmail.com",
@@ -35,6 +22,11 @@
         "iban"     : "1234",
         "swift"    : "5678"
       }
+    },
+    "signupNewUserNoCompany" : {
+      "userName"    : "Joe Tester No Company",
+      "userEmail"   : "joe.cypress.tester.no.company@gmail.com",
+      "userPassword": "111111"
     },
     "invalidEmailUser" : {
       "userName"    : "Joe Tester Invalid Email",

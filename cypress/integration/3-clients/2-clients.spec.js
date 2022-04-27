@@ -4,7 +4,7 @@ describe('The Client page', () => {
   beforeEach(() => {
 
     cy.fixture('users.json').then(function (data) {
-      const user = data.users.completeDBUser;
+      const user = data.users.signupNewUser;
       cy.loginViaAPI(user.userEmail, user.userPassword);
     });
 
@@ -13,19 +13,19 @@ describe('The Client page', () => {
   });
 
 
-  it("should display results sorted by clientName (ASC/DESC)", () => {
+  it("should display results sorted by Client Name (ASC/DESC)", () => {
     cy.validateSorting("clientName", "Desc");
     cy.validateSorting("clientName", "Asc");
   });
 
 
-  it("should display results sorted by invoicesCount (ASC/DESC)", () => {
+  it("should display results sorted by Invoices Count (ASC/DESC)", () => {
     cy.validateSorting("invoicesCount", "Asc");
     cy.validateSorting("invoicesCount", "Desc");
   });
 
 
-  it("should display pagination", () => {
+  it("should display/validate pagination", () => {
     cy.validatePagination();
   });
 

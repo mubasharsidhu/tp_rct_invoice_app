@@ -1,6 +1,19 @@
 describe('The signup-company Page', () => {
 
+  let dataset;
+  beforeEach(() => {
+    cy.fixture('users.json').then(function (data) {
+      dataset = data;
+      const user = data.users.signupNewUser;
+      cy.loginViaAPI(user.userEmail, user.userPassword);
+    });
+
+
+  });
+
+
   it('should redirect to login-page when user is not logged in', function () {
+    cy.logoutViaAPI();
     cy.visit('/signup/company');
     cy.url().should('include', '/login');
     cy.get('#login-form').should('be.visible');
@@ -9,22 +22,17 @@ describe('The signup-company Page', () => {
 
   it('should redirect to company details form page when company details are missing', function () {
 
-    const user = dataset.users.signupNewUser;
-    cy.login(user.userEmail, user.userPassword);
+    cy.logoutViaAPI();
 
+    const user = dataset.users.signupNewUserNoCompany;
+    cy.loginViaAPI(user.userEmail, user.userPassword);
     cy.visit('/');
     cy.url().should('include', '/signup/company');
     cy.get('#signup-company-form').should('be.visible');
 
   });
 
-
   it('should display empty-form validation errors', function () {
-
-    cy.logout();
-
-    const user = dataset.users.signupNewUser;
-    cy.login(user.userEmail, user.userPassword);
 
     cy.visit('/signup/company');
 
@@ -47,13 +55,9 @@ describe('The signup-company Page', () => {
 
   it('should succefully add company details and redirect to dashboard', function () {
 
-    cy.logout();
-
-    const user = dataset.users.signupNewUser;
-    cy.login(user.userEmail, user.userPassword);
-
     cy.visit('/signup/company');
 
+    const user = dataset.users.signupNewUser;
     cy.get('#companyName').type(`${user.companyDetails.name}`);
     cy.get('#companyAddress').type(`${user.companyDetails.address}`);
     cy.get('#companyTaxNumber').type(`${user.companyDetails.vatNumber}`);
@@ -67,11 +71,7 @@ describe('The signup-company Page', () => {
 
   it('should succefully edit company details and redirect to dashboard', function () {
 
-    cy.logout();
-
     const user = dataset.users.signupNewUser; // it is now a complete user with company details added in previous test
-    cy.login(user.userEmail, user.userPassword);
-
     cy.visit('/signup/edit/company');
 
     cy.get('#companyName').clear().type(`${user.companyDetails.name}`);

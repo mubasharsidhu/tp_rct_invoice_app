@@ -1,0 +1,128 @@
+{
+  "invoices": {
+    "invoice1" :{
+      "clientName"    : "Merf tester",
+      "invoice_number": "123 tester 1",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 170,
+      "projectCode"   : "456 tester 1",
+      "meta"          : [
+        {
+          "price": 120,
+          "item" : "Eggs"
+        },
+        {
+          "price": 20,
+          "item": "rice"
+        },
+        {
+          "price": 30,
+          "item": "chilli"
+        }
+      ]
+    },
+    "invoice2" :{
+      "clientName"    : "Merf tester",
+      "invoice_number": "123 tester 2",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 100,
+      "projectCode"   : "456 tester 2",
+      "meta"          : [
+        {
+          "price": 10,
+          "item": "egg"
+        },
+        {
+          "price": 20,
+          "item": "rice"
+        },
+        {
+          "price": 30,
+          "item": "chilli"
+        },
+        {
+          "price": 40,
+          "item": "milli"
+        }
+      ]
+    },
+    "invoice3" :{
+      "clientName"    : "Merf tester",
+      "invoice_number": "123 tester 3",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 70,
+      "projectCode"   : "456 tester 3",
+      "meta"          : [
+        {
+          "price": 10,
+          "item": "egg"
+        },
+        {
+          "price": 20,
+          "item": "rice"
+        },
+        {
+          "price": 40,
+          "item": "milli"
+        }
+      ]
+    },
+    "invoice4" :{
+      "clientName"    : "Merf1 tester",
+      "invoice_number": "123 tester 4",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 90,
+      "projectCode"   : "456 tester 4",
+      "meta"          : [
+        {
+          "price": 20,
+          "item": "rice"
+        },
+        {
+          "price": 30,
+          "item": "chilli"
+        },
+        {
+          "price": 40,
+          "item": "milli"
+        }
+      ]
+    },
+    "invoice5" :{
+      "clientName"    : "Merf1 tester",
+      "invoice_number": "123 tester 5",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 30,
+      "projectCode"   : "456 tester 5",
+      "meta"          : [
+        {
+          "price": 10,
+          "item": "egg"
+        },
+        {
+          "price": 20,
+          "item": "rice"
+        }
+      ]
+    },
+    "invoice6" :{
+      "clientName"    : "Merf2 tester",
+      "invoice_number": "123 tester 6",
+      "date"          : "2022-04-19T19:00:00.000Z",
+      "dueDate"       : "2022-04-20T19:00:00.000Z",
+      "value"         : 40,
+      "projectCode"   : "456 tester 6",
+      "meta"          : [
+        {
+          "price": 40,
+          "item": "milli"
+        }
+      ]
+    }
+  }
+}

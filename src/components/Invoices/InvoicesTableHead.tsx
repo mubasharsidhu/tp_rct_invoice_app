@@ -22,6 +22,7 @@ export const InvoicesTableHead = (props: InvoicesTableHeadProps) => {
       <TableRow>
         {headCells.map((headCell: HeadCell) => (
           <TableCell
+            id={headCell.id}
             key={headCell.id}
             padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}

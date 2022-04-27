@@ -47,6 +47,7 @@ Cypress.Commands.add('loginViaAPI', (email, password) => {
   const body = { email: email, password: password };
 
   cy.request('POST', url, body).then((response) => {
+    expect(response.status).to.eq(200);
     expect(response.body).to.have.property('token');
     cy.setCookie('userToken', response.body.token);
   });
@@ -56,6 +57,7 @@ Cypress.Commands.add('loginViaAPI', (email, password) => {
 
 Cypress.Commands.add('loginWithSuccess', (email, password) => {
   cy.login(email, password);
+  cy.wait(300);
   cy.getCookie('userToken').should('exist');
   cy.url().should('include', '/');
 });
@@ -65,6 +67,34 @@ Cypress.Commands.add('logout', () => {
   cy.get('#settings-menu').should('exist').click();
   cy.get('#account-menu .logout').click();
   cy.getCookie('userToken').should('not.exist');
+});
+
+
+Cypress.Commands.add('logoutViaAPI', () => {
+  cy.clearCookie('userToken');
+  cy.getCookie('userToken').should('not.exist');
+});
+
+
+Cypress.Commands.add('addClientViaAPI', (client) => {
+
+  cy.getCookie('userToken').should('exist').then((userToken) => {
+
+    cy.request({
+      method : 'POST',
+      url    : `${Cypress.env('invoiceApiHost')}/clients`,
+      body   : client,
+      auth: {
+        'bearer': userToken.value
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body.client).to.have.property('id');
+      return response.body.client.id;
+    });
+  })
+
+
 });
 
 
@@ -94,5 +124,46 @@ Cypress.Commands.add('validatePagination', () => {
     }
     cy.wrap($el).click();
     cy.url().should('include', `page=${$el.text()}`);
+  });
+});
+
+
+Cypress.Commands.add('manageInvoice', (client) => {
+
+  cy.get("#clientID").clear().type(`${client.clientName}`);
+  cy.wait(1000);
+  cy.get("#clientID").type('{downarrow}{downarrow}{enter}');
+  cy.get("#client-company-table").should("be.visible");
+
+  cy.get('#invoiceDate').next().click();
+  cy.wait(1000);
+  cy.get('.MuiCalendarPicker-root div[role=grid] div[role=row] div[role=cell] button:not(:disabled)').first().click();
+
+  cy.get('#invoiceDueDate').next().click();
+  cy.wait(1000);
+  cy.get('.MuiCalendarPicker-root div[role=grid] div[role=row] div[role=cell] button:not(:disabled)').any().click();
+
+  cy.get('#invoiceNumber').clear().type(`${client.invoice_number}`);
+  cy.get('#projectCode').clear().type(`${client.projectCode}`);
+
+  cy.wrap(client.meta).each((data, index)=>{
+    cy.get(".metaItems .item").eq(index).type(data.item);
+    cy.get(".metaItems .price").eq(index).type(data.price);
+    cy.get("#add-new-metaitem").click();
+  });
+
+  cy.get('.metaItems:last button').click();
+  cy.wait(3000)
+  cy.get('#invoice-form-submit-btn').click();
+
+});
+
+
+Cypress.Commands.add('any', { prevSubject: 'element' }, (subject, size = 1) => {
+  cy.wrap(subject).then(elementList => {
+    elementList = (elementList.jquery) ? elementList.get() : elementList;
+    elementList = Cypress._.sampleSize(elementList, size);
+    elementList = (elementList.length > 1) ? elementList : elementList[0];
+    cy.wrap(elementList);
   });
 });

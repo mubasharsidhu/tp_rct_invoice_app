@@ -1,7 +1,6 @@
 {
   "clients": {
     "missconfiguredClient" :{
-      "user_id"       : "111",
       "email"         : "alice.com@gmail",
       "name"          : "Alice",
       "companyDetails": {
@@ -9,35 +8,9 @@
         "vatNumber": "12345",
         "regNumber": "12345",
         "address"  : "Home"
-      },
-      "id": "1644482579284"
-    },
-    "alice" :{
-      "user_id"       : "111",
-      "email"         : "alice@test.com",
-      "name"          : "Alice",
-      "companyDetails": {
-        "name"     : "Wonderland",
-        "vatNumber": "12345",
-        "regNumber": "12345",
-        "address"  : "Home"
-      },
-      "id": "1644482579284"
-    },
-    "bob" : {
-      "user_id"       : "222",
-      "email"         : "bob@test.com",
-      "name"          : "Bob Porter",
-      "companyDetails": {
-        "name"     : "Wonderland",
-        "vatNumber": "12345",
-        "regNumber": "12345",
-        "address"  : "Home"
-      },
-      "id": "1644482648082"
+      }
     },
     "merftester" : {
-      "user_id"       : "111",
       "email"         : "merftester@gm.com",
       "name"          : "Merf tester",
       "companyDetails": {
@@ -45,92 +18,79 @@
         "address"  : "merdress tester",
         "vatNumber": "123 tester",
         "regNumber": "456 tester"
-      },
-      "id": "7d8f5422-9f5c-4007-9296-11cfec413fd8"
-    },
-    "merf1tester" : {
-      "user_id"       : "111",
-      "email"         : "merf1tester@gm.com",
-      "name"          : "Merf1 tester",
-      "companyDetails": {
-        "name"     : "merfy1 tester",
-        "address"  : "merdress1 tester",
-        "vatNumber": "1231 tester",
-        "regNumber": "4561 tester"
-      },
-      "id": "d4ef73f9-9240-47f3-8108-e8828d3734f2"
-    },
-    "merf2tester" : {
-      "user_id"       : "111",
-      "id"            : "7292f5c9-e9bc-4b3a-8bf9-985f99405f61",
-      "email"         : "merf2tester@gm.com",
-      "name"          : "Merf2 tester",
-      "companyDetails": {
-        "name"     : "merfy2 tester",
-        "address"  : "merdress2 tester",
-        "vatNumber": "1232 tester",
-        "regNumber": "4562 tester"
       }
     },
-    "merf3tester" : {
-      "user_id"       : "111",
-      "id"            : "7292f5c9-e9bc-4b3a-8bf9-985f99405f61",
-      "email"         : "merf3tester@gm.com",
-      "name"          : "Merf3 tester",
-      "companyDetails": {
-        "name"     : "merfy3 tester",
-        "address"  : "merdress3 tester",
-        "vatNumber": "1233 tester",
-        "regNumber": "4563 tester"
-      }
-    },
-    "merf4tester" : {
-      "user_id"       : "111",
-      "id"            : "7292f5c9-e9bc-4b3a-8bf9-985f99405f61",
-      "email"         : "merf4tester@gm.com",
-      "name"          : "Merf4 tester",
-      "companyDetails": {
-        "name"     : "merfy4 tester",
-        "address"  : "merdress4 tester",
-        "vatNumber": "1234 tester",
-        "regNumber": "4564 tester"
-      }
-    },
-    "merf5tester" : {
-      "user_id"       : "111",
-      "id"            : "7292f5c9-e9bc-4b3a-8bf9-985f99405f61",
-      "email"         : "merf5tester@gm.com",
-      "name"          : "Merf5 tester",
-      "companyDetails": {
-        "name"     : "merfy5 tester",
-        "address"  : "merdress5 tester",
-        "vatNumber": "1235 tester",
-        "regNumber": "4565 tester"
-      }
-    },
-    "merf6tester" : {
-      "user_id"       : "111",
-      "id"            : "7292f5c9-e9bc-4b3a-8bf9-985f99405f61",
+    "merf6testerEdit" : {
       "email"         : "merf6tester@gm.com",
-      "name"          : "Merf6 tester",
+      "name"          : "Merf6 tester edit",
       "companyDetails": {
-        "name"     : "merfy6 tester",
-        "address"  : "merdress6 tester",
-        "vatNumber": "1236 tester",
-        "regNumber": "4566 tester"
+        "name"     : "merfy6 tester edit",
+        "address"  : "merdress6 tester edit",
+        "vatNumber": "1236 tester edit",
+        "regNumber": "4566 tester edit"
       }
     },
-    "aliceEdit" :{
-      "user_id"       : "111",
-      "email"         : "alice@test.com",
-      "name"          : "Alice edited",
-      "companyDetails": {
-        "name"     : "Wonderland edited",
-        "vatNumber": "12345 edited",
-        "regNumber": "12345 edited",
-        "address"  : "Home edited"
+    "moreclients" : [
+      {
+        "email"         : "merf1tester@gm.com",
+        "name"          : "Merf1 tester",
+        "companyDetails": {
+          "name"     : "merfy1 tester",
+          "address"  : "merdress1 tester",
+          "vatNumber": "1231 tester",
+          "regNumber": "4561 tester"
+        }
       },
-      "id": "1644482579284"
-    }
+      {
+        "email"         : "merf2tester@gm.com",
+        "name"          : "Merf2 tester",
+        "companyDetails": {
+          "name"     : "merfy2 tester",
+          "address"  : "merdress2 tester",
+          "vatNumber": "1232 tester",
+          "regNumber": "4562 tester"
+        }
+      },
+      {
+        "email"         : "merf3tester@gm.com",
+        "name"          : "Merf3 tester",
+        "companyDetails": {
+          "name"     : "merfy3 tester",
+          "address"  : "merdress3 tester",
+          "vatNumber": "1233 tester",
+          "regNumber": "4563 tester"
+        }
+      },
+      {
+        "email"         : "merf4tester@gm.com",
+        "name"          : "Merf4 tester",
+        "companyDetails": {
+          "name"     : "merfy4 tester",
+          "address"  : "merdress4 tester",
+          "vatNumber": "1234 tester",
+          "regNumber": "4564 tester"
+        }
+      },
+      {
+        "email"         : "merf5tester@gm.com",
+        "name"          : "Merf5 tester",
+        "companyDetails": {
+          "name"     : "merfy5 tester",
+          "address"  : "merdress5 tester",
+          "vatNumber": "1235 tester",
+          "regNumber": "4565 tester"
+        }
+      },
+      {
+        "email"         : "merf6tester@gm.com",
+        "name"          : "Merf6 tester",
+        "companyDetails": {
+          "name"     : "merfy6 tester",
+          "address"  : "merdress6 tester",
+          "vatNumber": "1236 tester",
+          "regNumber": "4566 tester"
+        }
+      }
+    ]
   }
 }

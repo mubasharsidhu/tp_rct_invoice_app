@@ -93,6 +93,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
       <Box sx={{ display:'flex', flexDirection:'column', alignItems:'center' }} >
 
         <Box
+          id="invoice-form"
           maxWidth="sm"
           component="form"
           noValidate
@@ -107,6 +108,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
               return (
                 <Autocomplete
                   {...field}
+                  id="clientID"
                   freeSolo
                   options={props.allClientsList ? props.allClientsList.map((option) => option) : []}
                   value={field.value && props.allClientsList
@@ -246,6 +248,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
           {items.map((field, index) => (
 
             <Stack
+              className="metaItems"
               key={field.id}
               divider={<Divider orientation="vertical" flexItem />}
               spacing={1}
@@ -268,6 +271,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
 
                 <TextField
                   id="item"
+                  className="item"
                   name="item"
                   label="Item"
                   required={true}
@@ -278,6 +282,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
 
                 <TextField
                   id="price"
+                  className="price"
                   name="price"
                   label="Price"
                   required={true}
@@ -290,6 +295,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
           ))}
 
           <Button
+            id="add-new-metaitem"
             variant="contained"
             onClick={(ev) => {
               ev.preventDefault();
@@ -298,7 +304,7 @@ export const InvoiceForm = (props: InvoiceFormProps) => {
             sx={{mt:2}}
           >+</Button>
 
-          <Button type="submit" fullWidth={true} variant="contained" sx={{mt:2}}>Submit Invoice</Button>
+          <Button id="invoice-form-submit-btn" type="submit" fullWidth={true} variant="contained" sx={{mt:2}}>Submit Invoice</Button>
 
         </Box>
       </Box>

@@ -1,11 +1,11 @@
-
-describe('The Client page', () => {
+describe('The Add/Edit Client page', () => {
 
   let datasetClients;
+  let clientIDforEdit;
   beforeEach(() => {
 
     cy.fixture('users.json').then(function (data) {
-      const user = data.users.completeDBUser;
+      const user = data.users.signupNewUser;
       cy.loginViaAPI(user.userEmail, user.userPassword);
     });
 
@@ -15,9 +15,7 @@ describe('The Client page', () => {
 
   });
 
-
   it("should display empty-form validation", () => {
-
 
     cy.visit('/clients/add');
 
@@ -44,7 +42,7 @@ describe('The Client page', () => {
   });
 
 
-  it("should display email validation", () => {
+  it("should display email validation error", () => {
 
     cy.visit('/clients/add');
 
@@ -58,11 +56,23 @@ describe('The Client page', () => {
   });
 
 
-  it("should display validation errors when data already exists", () => {
+  it("should insert a client successfuly and redirect to clients page", () => {
 
     cy.visit('/clients/add');
 
-    const client = datasetClients.clients.alice;
+    const client = datasetClients.clients.merftester;
+    cy.manageClient(client);
+    cy.url().should('include', '/clients');
+    cy.get('#client-page').should('be.visible');
+
+  });
+
+
+  it("should display validation errors when client data already exists", () => {
+
+    cy.visit('/clients/add');
+
+    const client = datasetClients.clients.merftester;
     cy.manageClient(client);
 
     cy.get('#client-form .MuiAlert-root .MuiAlert-message').should('be.visible');
@@ -70,105 +80,27 @@ describe('The Client page', () => {
   });
 
 
-  it("should redirect to clients page after successful client insertion", () => {
+  // Add a few more clients for pagination and other Testings
+  it("should successfully add a few more clients via API", () => {
 
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merftester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should redirect to clients page after successful client insertion", () => {
-
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merf1tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
+    const moreclients = datasetClients.clients.moreclients;
+    cy.wrap(moreclients).each((client)=>{
+      cy.addClientViaAPI(client).as('clientID');
+      cy.get('@clientID').should((clientIDClientID) => {
+        clientIDforEdit = clientIDClientID;
+      });
+    });
 
   });
 
 
-  it("should redirect to clients page after successful client insertion", () => {
+  // Edit the client
+  it("should edit the client and redirect to clients page after successful client edit", () => {
 
-    cy.visit('/clients/add');
+    cy.visit(`/clients/${clientIDforEdit}`);
 
-    const client = datasetClients.clients.merf2tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should redirect to clients page after successful client insertion", () => {
-
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merf3tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should redirect to clients page after successful client insertion", () => {
-
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merf4tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should redirect to clients page after successful client insertion", () => {
-
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merf5tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should redirect to clients page after successful client insertion", () => {
-
-    cy.visit('/clients/add');
-
-    const client = datasetClients.clients.merf6tester;
-    cy.manageClient(client);
-
-    cy.url().should('include', '/clients');
-    cy.get('#client-page').should('be.visible');
-
-  });
-
-
-  it("should edit the cliet and redirect to clients page after successful client edit", () => {
-
-    const alice = datasetClients.clients.alice;
-
-    cy.visit(`/clients/${alice.id}`);
-
-    const aliceEdit = datasetClients.clients.aliceEdit;
-    cy.manageClient(aliceEdit, `${alice.id}` );
+    const clientEdit = datasetClients.clients.merf6testerEdit;
+    cy.manageClient(clientEdit, `${clientIDforEdit}` );
 
     cy.url().should('include', '/clients');
     cy.get('#client-page').should('be.visible');

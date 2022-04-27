@@ -9,7 +9,7 @@ type ClientCompanyInfoProps = {
 export const ClientCompanyInfo = (props: ClientCompanyInfoProps) => {
 
   return (
-    <Grid container justifyContent="center" >
+    <Grid container justifyContent="center" id="client-company-table">
       <Grid item sm={12} md={8}>
         <Table
           aria-label="Company table" size="small"
