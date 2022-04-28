@@ -12,13 +12,14 @@ describe('The Invoice Detail page', () => {
     cy.get2InvoicesViaAPI().as('invoices');
     cy.get('@invoices').then((invoices) => {
       invoiceID    = invoices[0].invoice.id;
-      cy.visit(`/invoices/view/${invoiceID}`);
     });
 
   });
 
 
   it("should display the invoice tables exist", () => {
+    cy.visit(`/invoices/view/${invoiceID}`);
+    cy.wait(1000);
     cy.get(`#billedTo`).should('be.visible');
     cy.get(`#invoiceInformation`).should('be.visible');
     cy.get(`#invoicesTableData`).should('be.visible');
@@ -26,9 +27,24 @@ describe('The Invoice Detail page', () => {
   });
 
 
-  it("should click on 'Print Invoice' button to print invoice", () => {
+  it('Print button renders & opens modal', () => {
+    cy.visit(`/invoices/view/${invoiceID}`, {
+      onBeforeLoad: win => {
+        cy.stub(win, 'print').as('print');
+      },
+    });
     cy.wait(1000);
-    cy.get("#printInvoice").should('exist').click();
+    cy.get("#printInvoice")
+      .should('exist')
+      .and('be.visible')
+      .click();
+    cy.wait(1000);
+    cy.window().then(win => {
+      win.print();
+      expect(win.print).to.be.calledOnce;
+    });
+
   });
+
 
 });
