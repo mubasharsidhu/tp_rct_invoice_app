@@ -15,6 +15,7 @@ describe('The Client Detail page', () => {
       clientID    = clients[0].id;
       clientLabel = clients[0].name;
       cy.visit(`/clients/view/${clientID}`);
+      cy.wait(1000);
     });
 
   });
@@ -29,7 +30,7 @@ describe('The Client Detail page', () => {
 
   it("should click the 'Add Invoice' button to open invoice form page", () => {
     cy.get("#addInvoice").click();
-    cy.wait(1000);
+    cy.wait(2000);
     cy.url().should('include', `/invoices/add?clientID=${clientID}`);
     cy.get("#invoice-form").should('be.visible');
     cy.wait(300);

@@ -7,12 +7,16 @@ describe('The Dashboard page', () => {
       cy.loginViaAPI(user.userEmail, user.userPassword);
     });
     cy.visit('/');
+    cy.wait(1000);
   });
 
 
 
   it("should logout and redirect to login page", () => {
     cy.logout();
+    cy.wait(1000);
+    cy.visit('/');
+    cy.wait(1000);
     cy.url().should('include', '/login');
     cy.get('#login-form').should('be.visible');
   });
