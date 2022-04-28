@@ -130,7 +130,7 @@ export const ClientTableContainer = memo<ClientTableContainerProps>( (props) => 
       {errorMessage ? <ErrorMessage message={errorMessage} /> : null}
       <Paper sx={{ mb: 2 }}>
         <TableContainer>
-          <Table aria-labelledby="Clients" >
+          <Table id="clientsTableData" aria-labelledby="Clients" >
             <ClientsTableHead
               order={order}
               orderBy={orderBy}

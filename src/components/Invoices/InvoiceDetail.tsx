@@ -50,7 +50,7 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
                 <Grid item xs={12} sm={6} md={4}>
                   <TableContainer>
-                    <Table aria-label="Billed To" size="small">
+                    <Table id={"billedTo"} aria-label="Billed To" size="small">
                       <TableHead>
                         <TableRow><TableCell colSpan={2} align="center">Billed To</TableCell></TableRow>
                       </TableHead>
@@ -86,7 +86,7 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
                 <Grid item xs={12} sm={6} md={4}>
                   <TableContainer>
-                    <Table aria-label="Invoice Information" size="small">
+                    <Table id={"invoiceInformation"} aria-label="Invoice Information" size="small">
                       <TableHead>
                           <TableRow><TableCell colSpan={2} align="center">Invoice Information</TableCell></TableRow>
                         </TableHead>
@@ -112,7 +112,7 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
               <Grid item key={"Invoice Items"} xs={12} mb={3}>
                 <TableContainer>
-                  <Table aria-label="Invoice Items" size="small">
+                  <Table id={"invoicesTableData"} aria-label="Invoice Items" size="small">
                     <TableHead>
                       <TableRow><TableCell>Item</TableCell><TableCell align="right">Price</TableCell></TableRow>
                     </TableHead>
@@ -136,6 +136,7 @@ export const InvoiceDetail = (props: InvoiceDetailProps) => {
 
               <Grid item xs={12}>
                 <Table
+                  id={"summeryTable"}
                   aria-label="Totals"
                   size="small"
                   sx={{mt:3, display: 'flex', flexDirection: 'row-reverse',}}>

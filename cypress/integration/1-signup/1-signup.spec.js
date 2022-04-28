@@ -48,7 +48,7 @@ describe('The signup page', () => {
 
     const user = dataset.users.signupNewUser;
     cy.signup(user);
-
+    cy.wait(1000)
     cy.url().should('include', '/signup/company');
     cy.getCookie('userToken').should('exist');
     cy.get('#signup-company-page').should('be.visible');
@@ -60,6 +60,7 @@ describe('The signup page', () => {
 
     const user = dataset.users.signupNewUser;
     cy.signup(user);
+    cy.wait(500);
     cy.get('#signup-form .MuiAlert-root .MuiAlert-message').should('be.visible');
 
   });
@@ -69,7 +70,7 @@ describe('The signup page', () => {
 
     const user = dataset.users.signupNewUserNoCompany;
     cy.signup(user);
-
+    cy.wait(500);
     cy.url().should('include', '/signup/company');
     cy.getCookie('userToken').should('exist');
     cy.get('#signup-company-page').should('be.visible');

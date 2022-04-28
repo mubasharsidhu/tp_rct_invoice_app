@@ -7,7 +7,7 @@ export const EditClient = () => {
 
   return (
     <AuthContextProvider>
-      <Layout pageTitle={"Edit Client"} >
+      <Layout pageTitle={"Edit Client"} pageID={"client-edit-page"}>
         <ClientFormContainer formType={"edit"}/>
       </Layout>
     </AuthContextProvider>

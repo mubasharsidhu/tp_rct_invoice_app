@@ -74,12 +74,12 @@ export const ClientDetailContainer = () => {
         </Grid>
         <Grid item>
           <Stack direction="row" spacing={2}>
-            <Button variant="contained" onClick={()=>{ router.push(`/invoices/add?clientID=${clientID}`)}} >
+            <Button id={"addInvoice"} variant="contained" onClick={()=>{ router.push(`/invoices/add?clientID=${clientID}`)}} >
               <Add fontSize="small" />Add Invoice
             </Button>
             {
               invoicesCount && invoicesCount > 0
-              ? <Button variant="outlined" onClick={()=>{ router.push(`/invoices?clientID=${clientID}`)}} >
+              ? <Button id={"invoicesListButton"} variant="outlined" onClick={()=>{ router.push(`/invoices?clientID=${clientID}`)}} >
                   <More sx={{mr:1}} fontSize="small" /> View more Invoices of <Typography sx={{ fontStyle: 'italic' }}>{currentClient?.name}</Typography>
                 </Button>
               : null

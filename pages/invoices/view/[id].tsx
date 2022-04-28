@@ -34,9 +34,10 @@ export const ViewInvoice = () => {
     <AuthContextProvider>
       <Layout
         pageTitle={"View Invoice"}
+        pageID={"invoice-detail-page"}
       >
 
-        {<Button variant="outlined" onClick={printHandler} size="small" sx={{px:4, mb:1}}>Print This Invoice</Button>}
+        {<Button data-cy="printInvoice" id={"printInvoice"} variant="outlined" onClick={printHandler} size="small" sx={{px:4, mb:1}}>Print This Invoice</Button>}
 
         <InvoiceDetailContainer ref={componentRef} />
       </Layout>

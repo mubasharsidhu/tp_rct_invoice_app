@@ -1,4 +1,3 @@
-
 describe('The Add/Edit Invoice page', () => {
 
   let datasetInvoices;
@@ -16,7 +15,7 @@ describe('The Add/Edit Invoice page', () => {
   });
 
 
-  /* it("should display empty-form validation", () => {
+  it("should display empty-form validation", () => {
 
     cy.visit('/invoices/add');
 
@@ -43,31 +42,63 @@ describe('The Add/Edit Invoice page', () => {
       .parent().should('have.class', 'Mui-error')
       .next().should('have.text', 'Price must be a positive number');
 
-  }); */
+  });
 
 
 
-  it("should create new Invoice successfuly", () => {
+  it("should insert an invoice successfuly and redirect to invoices page", () => {
 
     cy.visit('/invoices/add');
-
-    const invoice = datasetInvoices.invoices.invoice1;
+    const invoice = datasetInvoices.invoices.invoicetester;
     cy.manageInvoice(invoice);
-
+    cy.wait(1000);
     cy.url().should('include', '/invoices');
     cy.get('#invoice-page').should('be.visible');
 
   });
 
 
+
   it("should display validation error onSubmit", () => {
 
     cy.visit('/invoices/add');
-
-    const invoice = datasetInvoices.invoices.invoice1;
+    const invoice = datasetInvoices.invoices.invoicetester;
     cy.manageInvoice(invoice);
-
     cy.get('#invoice-form .MuiAlert-root .MuiAlert-message').should('be.visible');
+
+  });
+
+
+
+  // Add a few more invoices for pagination and other Testings
+  it("should successfully add a few more invoices via API", () => {
+
+    const moreinvoices = datasetInvoices.invoices.moreinvoices;
+
+    cy.get2ClientsViaAPI().as('clients');
+    cy.get('@clients').then((clients) => {
+
+      cy.wrap(moreinvoices).each((invoice, index)=>{
+        invoice.client_id = index >= 6 ? clients[0].id : clients[1].id;
+        delete invoice.clientName;
+        cy.addInvoiceViaAPI(invoice);
+      });
+    });
+
+  });
+
+
+  it("should edit the invoice and redirect to invoices page after successful invoice edit", () => {
+
+    const invoices = cy.get2InvoicesViaAPI().as('invoices');
+    cy.get('@invoices').then((invoices) => {
+      const invoiceID = invoices[0].invoice.id;
+      cy.visit(`/invoices/${invoiceID}`);
+      const invoiceEdit = datasetInvoices.invoices.invoice6testerEdit;
+      cy.manageInvoice(invoiceEdit, `${invoiceID}`);
+      cy.url().should('include', '/invoices');
+      cy.get('#invoice-page').should('be.visible');
+    });
 
   });
 

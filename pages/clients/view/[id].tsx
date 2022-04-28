@@ -7,7 +7,7 @@ export const ViewClient = () => {
 
   return (
     <AuthContextProvider>
-      <Layout pageTitle={"View Client"} >
+      <Layout pageTitle={"View Client"} pageID={"client-detail-page"}>
         <ClientDetailContainer />
       </Layout>
     </AuthContextProvider>

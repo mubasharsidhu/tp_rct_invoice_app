@@ -30,10 +30,25 @@ describe('The Client page', () => {
   });
 
 
-  it("should click Add Client button and open client form", () => {
+  it("should click the 'Add Client' button and open client form", () => {
     cy.get("#AddClient").click();
     cy.url().should('include', `/clients/add`);
     cy.get(`#client-form`).should('be.visible');
+  });
+
+
+  it("should click a client table row and open the client detail page", () => {
+    cy.rowClickDetail('client');
+  });
+
+
+  it("should click the more:dots of a row and click on Edit link to open edit page", () => {
+    cy.moreDotEdit('client');
+  });
+
+
+  it("should click the more:dots of a row and click on 'Add a new invoice for the client' link to open invoice form page", () => {
+    cy.invoiceForClient();
   });
 
 

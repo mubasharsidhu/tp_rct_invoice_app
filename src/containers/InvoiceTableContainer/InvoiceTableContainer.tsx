@@ -206,6 +206,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
         props.isMainPage
         ? <Grid item xs={12} >
             <Autocomplete
+              id={"clientFilter"}
               sx={{maxWidth: "300px", mb:1}}
               size="small"
               freeSolo
@@ -236,7 +237,7 @@ export const InvoiceTableContainer = memo<InvoiceTableContainerProps>( (props) =
       <Grid item>
         <Paper sx={{ mb: 2 }}>
           <TableContainer>
-            <Table aria-labelledby="Invoices" >
+            <Table id={"invoicesTableData"} aria-labelledby="Invoices" >
               <InvoicesTableHead
                 order={order}
                 orderBy={orderBy}

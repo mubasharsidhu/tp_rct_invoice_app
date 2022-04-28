@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 
 
 export type GenericMenuItemProps = {
+  id?          : string,
   title        : string,
   icon         : ReactElement<IconProps>,
   redirectURL  : string,
@@ -16,7 +17,7 @@ export const GenericMenuItem = (props: GenericMenuItemProps) => {
 
   return (
     <>
-      <MenuItem onClick={props.clickHandler ? props.clickHandler: () => { router.push( props.redirectURL ) }}>
+      <MenuItem id={props.id} onClick={props.clickHandler ? props.clickHandler: () => { router.push( props.redirectURL ) }}>
         <ListItemIcon>{props.icon}</ListItemIcon>
         {props.title}
       </MenuItem>

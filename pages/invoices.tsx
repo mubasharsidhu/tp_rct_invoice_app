@@ -30,6 +30,7 @@ const InvoicesPage: NextPage<InvoicesPageProps> = (props) => {
       <Layout
         pageTitle={"Invoices"}
         subMenus={subMenus}
+        pageID="invoice-page"
         >
         <InvoiceTableContainer
           initialPayload={props}

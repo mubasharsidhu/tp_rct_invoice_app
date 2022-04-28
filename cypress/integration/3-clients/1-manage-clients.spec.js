@@ -18,7 +18,7 @@ describe('The Add/Edit Client page', () => {
   it("should display empty-form validation", () => {
 
     cy.visit('/clients/add');
-
+    cy.wait(500);
     cy.get('#client-form').submit();
     cy.get('#clientName')
       .parent().should('have.class', 'Mui-error')
@@ -45,10 +45,9 @@ describe('The Add/Edit Client page', () => {
   it("should display email validation error", () => {
 
     cy.visit('/clients/add');
-
     const client = datasetClients.clients.missconfiguredClient;
     cy.manageClient(client);
-
+    cy.wait(500);
     cy.get('#email')
       .parent().should('have.class', 'Mui-error')
       .next().should('have.text', 'Email must be a valid email');
@@ -59,9 +58,9 @@ describe('The Add/Edit Client page', () => {
   it("should insert a client successfuly and redirect to clients page", () => {
 
     cy.visit('/clients/add');
-
     const client = datasetClients.clients.merftester;
     cy.manageClient(client);
+    cy.wait(1000);
     cy.url().should('include', '/clients');
     cy.get('#client-page').should('be.visible');
 
@@ -71,10 +70,9 @@ describe('The Add/Edit Client page', () => {
   it("should display validation errors when client data already exists", () => {
 
     cy.visit('/clients/add');
-
     const client = datasetClients.clients.merftester;
     cy.manageClient(client);
-
+    cy.wait(500);
     cy.get('#client-form .MuiAlert-root .MuiAlert-message').should('be.visible');
 
   });
@@ -86,8 +84,8 @@ describe('The Add/Edit Client page', () => {
     const moreclients = datasetClients.clients.moreclients;
     cy.wrap(moreclients).each((client)=>{
       cy.addClientViaAPI(client).as('clientID');
-      cy.get('@clientID').should((clientIDClientID) => {
-        clientIDforEdit = clientIDClientID;
+      cy.get('@clientID').should((respClientID) => {
+        clientIDforEdit = respClientID;
       });
     });
 
@@ -98,10 +96,9 @@ describe('The Add/Edit Client page', () => {
   it("should edit the client and redirect to clients page after successful client edit", () => {
 
     cy.visit(`/clients/${clientIDforEdit}`);
-
     const clientEdit = datasetClients.clients.merf6testerEdit;
     cy.manageClient(clientEdit, `${clientIDforEdit}` );
-
+    cy.wait(500);
     cy.url().should('include', '/clients');
     cy.get('#client-page').should('be.visible');
 

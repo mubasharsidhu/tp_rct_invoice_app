@@ -25,7 +25,7 @@ export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
   return (
     <>
       <Box>
-        <Tooltip title="Click for more options">
+        <Tooltip className="moreToolTip" title="Click for more options">
           <IconButton
             onClick={handleClick}
             sx={{ ml: 2 }}
@@ -41,6 +41,7 @@ export const GenericTableDropdown = (props: GenericTableDropdownProps) => {
 
       <Menu
         anchorEl={anchorEl}
+        className={"dropDownMoreMenu"}
         id={`menu-${props.index}`}
         open={open}
         onClose={handleClose}
