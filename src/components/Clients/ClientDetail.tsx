@@ -30,7 +30,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
 
       <Grid container spacing={5}>
 
-        <Grid item id={"clientDetail"} key={"Client Detail"} xs={12} md={6} sx={{mb:5}}>
+        <Grid item data-testid={"clientDetail"} id={"clientDetail"} key={"Client Detail"} xs={12} md={6} sx={{mb:5}}>
           <Card>
             <CardHeader
               title={"Client Detail"}
@@ -55,7 +55,7 @@ export const ClientDetail = (props: ClientDetailProps) => {
           </Card>
         </Grid>
 
-        <Grid item id={"clientCompanyDetail"} key={"Company Detail"} sm={12} md={6} >
+        <Grid item data-testid={"clientCompanyDetail"} id={"clientCompanyDetail"} key={"Company Detail"} sm={12} md={6} >
           <Card>
             <CardHeader
               title={"Company Detail"}

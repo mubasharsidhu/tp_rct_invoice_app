@@ -17,7 +17,7 @@ export const GenericMenuItem = (props: GenericMenuItemProps) => {
 
   return (
     <>
-      <MenuItem id={props.id} onClick={props.clickHandler ? props.clickHandler: () => { router.push( props.redirectURL ) }}>
+      <MenuItem data-testid={`menu-item${props.id ?? ''}`} id={props.id} onClick={props.clickHandler ? props.clickHandler: () => { router.push( props.redirectURL ) }}>
         <ListItemIcon>{props.icon}</ListItemIcon>
         {props.title}
       </MenuItem>

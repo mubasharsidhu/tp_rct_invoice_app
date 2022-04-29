@@ -8,7 +8,7 @@ export type ErrorMessageProps = {
 export const ErrorMessage = (props: ErrorMessageProps) => {
 
   return (
-    <Alert severity="error" sx={{ mb: 3 }} >{props.message}</Alert>
+    <Alert data-testid={`alert-error-message`} severity="error" sx={{ mb: 3 }} >{props.message}</Alert>
   )
 
 }

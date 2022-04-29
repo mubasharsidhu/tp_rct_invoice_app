@@ -21,7 +21,7 @@ export const PasswordField = (props: PasswordFieldProps) => {
 
   return (
     <>
-      <FormControl fullWidth={true} required={true} variant="outlined" margin="dense">
+      <FormControl data-testid={`input-${props.fieldId}`} fullWidth={true} required={true} variant="outlined" margin="dense">
         <InputLabel htmlFor={props.fieldId}>{props.labelTitle}</InputLabel>
         <OutlinedInput
           margin="dense"
